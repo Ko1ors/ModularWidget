@@ -121,9 +121,13 @@
     <None Include="App.config" />
   </ItemGroup>
   <ItemGroup>
+    <Content Include="Images\block-icon.svg">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
     <Content Include="Images\ethereumLogo.svg">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
+    <Resource Include="Images\ethwallet-icon.png" />
     <Content Include="Images\gas-icon.svg">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>

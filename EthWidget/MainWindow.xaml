@@ -38,7 +38,11 @@
                 <RowDefinition Height="20*"/>
                 <RowDefinition Height="5*"/>
                 <RowDefinition Height="30*"/>
-                <RowDefinition Height="45*"/>
+                <RowDefinition Height="5*"/>
+                <RowDefinition Height="15*"/>
+                <RowDefinition Height="5*"/>
+                <RowDefinition Height="15*"/>
+                <RowDefinition Height="5*"/>
             </Grid.RowDefinitions>
             <StackPanel Grid.Row="0">
                 <shell:StackPanel.Background>
@@ -78,10 +82,28 @@
                             <Border Margin="8,0,0,0" BorderThickness="1,1,1,1" BorderBrush="Black" CornerRadius="15">
                                 <StackPanel>
                                     <Label Content="High" FontSize="10" FontFamily="Arial Black" HorizontalContentAlignment="Center"/>
-                                    <Label Content="100 gwei" FontSize="10" FontFamily="Arial Black" HorizontalContentAlignment="Center" BorderBrush="Black"  BorderThickness="0,1,0,0" Foreground="#A52A2A"/>
+                                    <Label Content="200 gwei" FontSize="10" FontFamily="Arial Black" HorizontalContentAlignment="Center" BorderBrush="Black"  BorderThickness="0,1,0,0" Foreground="#A52A2A"/>
                                 </StackPanel>
                             </Border>
                         </StackPanel>
+                    </StackPanel>
+                </StackPanel>
+            </Border>
+            <Border Grid.Row="5" BorderThickness="1,1,1,1" BorderBrush="Black" CornerRadius="10" Margin="10,0,10,0">
+                <StackPanel  Orientation="Horizontal">
+                    <svgc1:SvgViewbox Margin="20,0,0,0" Width="30" Source="Images/block-icon.svg"/>
+                    <StackPanel>
+                        <Label Content="AVERAGE BLOCK REWARD" Foreground="#FF8E8A8F"   FontSize="12" FontFamily="Arial Black"/>
+                        <Label Content="7 ETH"  FontSize="12" FontFamily="Arial Black"/>
+                    </StackPanel>
+                </StackPanel>
+            </Border>
+            <Border Grid.Row="7" BorderThickness="1,1,1,1" BorderBrush="Black" CornerRadius="10" Margin="10,0,10,0">
+                <StackPanel  Orientation="Horizontal">
+                    <Image Margin="20,0,0,0" Source="/Images/ethwallet-icon.png" Width="30" />
+                    <StackPanel>
+                        <Label Content="WALLET BALANCE" Foreground="#FF8E8A8F"   FontSize="12" FontFamily="Arial Black"/>
+                        <Label Content="1 ETH ❙ $400.00"   FontSize="12" FontFamily="Arial Black"/>
                     </StackPanel>
                 </StackPanel>
             </Border>
