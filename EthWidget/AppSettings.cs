@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace EthWidget
 {
-    public static class Settings
+    public static partial class AppSettings
     {
         public static string EthApiKey; // Etherscan.io api key
         public static string EthWallet;

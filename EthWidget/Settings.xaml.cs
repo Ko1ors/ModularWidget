@@ -10,32 +10,25 @@ using System.Windows.Documents;
 using System.Windows.Input;
 using System.Windows.Media;
 using System.Windows.Media.Imaging;
-using System.Windows.Navigation;
 using System.Windows.Shapes;
 
 namespace EthWidget
 {
     /// <summary>
-    /// Логика взаимодействия для MainWindow.xaml
+    /// Логика взаимодействия для Settings.xaml
     /// </summary>
-    public partial class MainWindow : Window
+    public partial class Settings : Window
     {
-        public MainWindow()
+        public Settings()
         {
             InitializeComponent();
-            this.Left = SystemParameters.PrimaryScreenWidth - this.Width * 1.1;
-            this.Top = SystemParameters.PrimaryScreenHeight * 0.05;
+            this.Left = SystemParameters.PrimaryScreenWidth - this.Width * 1.15;
+            this.Top = SystemParameters.PrimaryScreenHeight * 0.1;
         }
 
         private void ExitButton_Click(object sender, RoutedEventArgs e)
         {
             Close();
-        }
-
-        private void SettingsButton_Click(object sender, RoutedEventArgs e)
-        {
-            var settingsWindow = new Settings();
-            settingsWindow.ShowDialog();
         }
     }
 }
