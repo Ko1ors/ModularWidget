@@ -3,6 +3,7 @@
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
         xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:sys="clr-namespace:System;assembly=mscorlib" 
         xmlns:local="clr-namespace:EthWidget" xmlns:shell="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
         mc:Ignorable="d"
         Title="Settings" Height="400" Width="280" Top="0" ResizeMode="NoResize" WindowStartupLocation="Manual" BorderThickness="1">
@@ -53,21 +54,23 @@
                 </shell:StackPanel.Background>
             </StackPanel>
             <StackPanel Grid.Row="1" Orientation="Horizontal" FlowDirection="RightToLeft">
-                <TextBox Margin="10,0,0,0" Text="" VerticalContentAlignment="Center" FlowDirection="LeftToRight" FontFamily="Arial Black" Height="30" Width="150" VerticalAlignment="Center"/>
+                <TextBox Margin="10,0,0,0" x:Name="textBoxApiKey" Text="" VerticalContentAlignment="Center" FlowDirection="LeftToRight" FontFamily="Arial Black" Height="30" Width="150" VerticalAlignment="Center"/>
                 <Label Margin="10,0,0,0" Content="Api Key" Height="30" FontFamily="Arial Black" VerticalContentAlignment="Center" VerticalAlignment="Center"/>
             </StackPanel>
             <StackPanel Grid.Row="2" Orientation="Horizontal" FlowDirection="RightToLeft">
-                <TextBox Margin="10,0,0,0" Text="" VerticalContentAlignment="Center" FlowDirection="LeftToRight" FontFamily="Arial Black" Height="30" Width="150"/>
+                <TextBox Margin="10,0,0,0" x:Name="textBoxEthWallet" Text="" VerticalContentAlignment="Center" FlowDirection="LeftToRight" FontFamily="Arial Black" Height="30" Width="150"/>
                 <Label Margin="10,0,0,0" Content="ETH Wallet" Height="30" FontFamily="Arial Black" VerticalContentAlignment="Center" VerticalAlignment="Center"/>
             </StackPanel>
             <StackPanel Grid.Row="3" Orientation="Horizontal" FlowDirection="RightToLeft">
-                <TextBox Margin="10,0,0,0" Text="" VerticalContentAlignment="Center" FlowDirection="LeftToRight" FontFamily="Arial Black" Height="30" Width="150"/>
+                <TextBox Margin="10,0,0,0" x:Name="textBoxUpdateTime" Text="" VerticalContentAlignment="Center" FlowDirection="LeftToRight" FontFamily="Arial Black" Height="30" Width="150"/>
                 <Label Margin="10,0,0,0" Content="Update Time" Height="30" FontFamily="Arial Black" VerticalContentAlignment="Center" VerticalAlignment="Center"/>
             </StackPanel>
-            <StackPanel Grid.Row="5" Orientation="Horizontal" FlowDirection="RightToLeft">
-                <Button Margin="10,0,0,0" Width="70" Height="25" Content="Cancel" Click="ExitButton_Click" Background="Transparent"/>
-                <Button Margin="10,0,0,0" Width="50" Height="25" Content="Ok"  Background="Transparent"/>
-            </StackPanel>
+            <Border Grid.Row="5" BorderBrush="Black" BorderThickness="0,1,0,0">
+                <StackPanel  Orientation="Horizontal" FlowDirection="RightToLeft">
+                    <Button Margin="10,0,0,0" Width="70" Height="25" Content="Cancel" Click="ExitButton_Click" Background="Transparent"/>
+                    <Button Margin="10,0,0,0" Width="50" Height="25" Content="Ok" Click="OkButton_Click"  Background="Transparent"/>
+                </StackPanel>
+            </Border>
         </Grid>
     </Grid>
 </Window>

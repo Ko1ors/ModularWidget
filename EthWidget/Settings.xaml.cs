@@ -24,10 +24,23 @@ namespace EthWidget
             InitializeComponent();
             this.Left = SystemParameters.PrimaryScreenWidth - this.Width * 1.15;
             this.Top = SystemParameters.PrimaryScreenHeight * 0.1;
+            textBoxApiKey.Text = AppSettings.ethApiKey;
+            textBoxEthWallet.Text = AppSettings.ethWallet;
+            textBoxUpdateTime.Text = AppSettings.updateTime.ToString();       
         }
 
         private void ExitButton_Click(object sender, RoutedEventArgs e)
         {
+            Close();
+        }
+
+        private void OkButton_Click(object sender, RoutedEventArgs e)
+        {
+            int.TryParse(textBoxUpdateTime.Text, out int time);
+            if (time == 0)
+                time = 5;
+            AppSettings.Set(textBoxApiKey.Text,textBoxEthWallet.Text,time);
+            AppSettings.Save();
             Close();
         }
     }

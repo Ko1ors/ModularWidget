@@ -25,6 +25,7 @@ namespace EthWidget
             InitializeComponent();
             this.Left = SystemParameters.PrimaryScreenWidth - this.Width * 1.1;
             this.Top = SystemParameters.PrimaryScreenHeight * 0.05;
+            AppSettings.Load();
         }
 
         private void ExitButton_Click(object sender, RoutedEventArgs e)
