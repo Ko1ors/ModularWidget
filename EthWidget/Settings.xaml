@@ -5,7 +5,7 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:EthWidget" xmlns:shell="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
         mc:Ignorable="d"
-        Title="Settings" Height="400" Width="300" Top="0" ResizeMode="NoResize" WindowStartupLocation="Manual" BorderThickness="1">
+        Title="Settings" Height="400" Width="280" Top="0" ResizeMode="NoResize" WindowStartupLocation="Manual" BorderThickness="1">
     <shell:WindowChrome.WindowChrome>
         <shell:WindowChrome
 
@@ -21,12 +21,12 @@
     <Grid>
         <Grid.RowDefinitions>
             <RowDefinition Height="25"/>
-            <RowDefinition Height="*"/>
+            <RowDefinition Height="75*"/>
         </Grid.RowDefinitions>
         <Border VerticalAlignment="Stretch" BorderThickness="0,0,0,1" BorderBrush="Black" >
             <StackPanel Grid.Row="0" Orientation="Horizontal" Background="#FFF0F0F0" FlowDirection="RightToLeft">
                 <Button Content="✕" FontSize="16"  Click="ExitButton_Click" WindowChrome.IsHitTestVisibleInChrome="True" HorizontalAlignment="Right" BorderThickness="0,0,1,0"  Height="25" Width="25" Background="{x:Null}"/>
-                <Label Content="Settings" FontFamily="Arial Black" Margin="200,0,0,0"/>
+                <Label Content="Settings" FontFamily="Arial Black" Margin="180,0,0,0"/>
             </StackPanel>
         </Border>
         <Grid Grid.Row="1" >
@@ -39,7 +39,10 @@
             <Grid.RowDefinitions>
                 <RowDefinition Height="5*"/>
                 <RowDefinition Height="20*"/>
-                <RowDefinition Height="75*"/>
+                <RowDefinition Height="20*"/>
+                <RowDefinition Height="20*"/>
+                <RowDefinition Height="25*"/>
+                <RowDefinition Height="10*"/>
             </Grid.RowDefinitions>
             <StackPanel Grid.Row="0">
                 <shell:StackPanel.Background>
@@ -48,6 +51,22 @@
                         <shell:GradientStop Color="White" Offset="1"/>
                     </shell:LinearGradientBrush>
                 </shell:StackPanel.Background>
+            </StackPanel>
+            <StackPanel Grid.Row="1" Orientation="Horizontal" FlowDirection="RightToLeft">
+                <TextBox Margin="10,0,0,0" Text="" VerticalContentAlignment="Center" FlowDirection="LeftToRight" FontFamily="Arial Black" Height="30" Width="150" VerticalAlignment="Center"/>
+                <Label Margin="10,0,0,0" Content="Api Key" Height="30" FontFamily="Arial Black" VerticalContentAlignment="Center" VerticalAlignment="Center"/>
+            </StackPanel>
+            <StackPanel Grid.Row="2" Orientation="Horizontal" FlowDirection="RightToLeft">
+                <TextBox Margin="10,0,0,0" Text="" VerticalContentAlignment="Center" FlowDirection="LeftToRight" FontFamily="Arial Black" Height="30" Width="150"/>
+                <Label Margin="10,0,0,0" Content="ETH Wallet" Height="30" FontFamily="Arial Black" VerticalContentAlignment="Center" VerticalAlignment="Center"/>
+            </StackPanel>
+            <StackPanel Grid.Row="3" Orientation="Horizontal" FlowDirection="RightToLeft">
+                <TextBox Margin="10,0,0,0" Text="" VerticalContentAlignment="Center" FlowDirection="LeftToRight" FontFamily="Arial Black" Height="30" Width="150"/>
+                <Label Margin="10,0,0,0" Content="Update Time" Height="30" FontFamily="Arial Black" VerticalContentAlignment="Center" VerticalAlignment="Center"/>
+            </StackPanel>
+            <StackPanel Grid.Row="5" Orientation="Horizontal" FlowDirection="RightToLeft">
+                <Button Margin="10,0,0,0" Width="70" Height="25" Content="Cancel" Click="ExitButton_Click" Background="Transparent"/>
+                <Button Margin="10,0,0,0" Width="50" Height="25" Content="Ok"  Background="Transparent"/>
             </StackPanel>
         </Grid>
     </Grid>
