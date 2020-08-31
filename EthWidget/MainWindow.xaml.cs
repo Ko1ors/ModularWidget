@@ -23,6 +23,18 @@ namespace EthWidget
         public MainWindow()
         {
             InitializeComponent();
+            this.Left = SystemParameters.PrimaryScreenWidth - this.Width * 1.1;
+            this.Top = SystemParameters.PrimaryScreenHeight * 0.05;
+        }
+
+        private void ExitButton_Click(object sender, RoutedEventArgs e)
+        {
+            Close();
+        }
+
+        private void SettingsButton_Click(object sender, RoutedEventArgs e)
+        {
+
         }
     }
 }
