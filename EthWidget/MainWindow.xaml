@@ -25,14 +25,20 @@
             <RowDefinition Height="*"/>
         </Grid.RowDefinitions>
         <Border VerticalAlignment="Stretch" BorderThickness="0,0,0,1" BorderBrush="Black" >
-        <StackPanel Grid.Row="0" Orientation="Horizontal" Background="#FFF0F0F0" FlowDirection="RightToLeft">
-            <Button Content="✕" FontSize="16"  Click="ExitButton_Click" WindowChrome.IsHitTestVisibleInChrome="True" HorizontalAlignment="Right" BorderThickness="0,0,1,0"  Height="25" Width="25" Background="{x:Null}"/>
-            <Button FontSize="16"  Click="SettingsButton_Click" WindowChrome.IsHitTestVisibleInChrome="True" Height="25" Width="25" Background="{x:Null}" BorderThickness="0,0,1,0">
-                <TextBlock Text="…" Margin="0,-10,0,0"/>
-            </Button>
-        </StackPanel>
+            <StackPanel Grid.Row="0" Orientation="Horizontal" Background="#FFF0F0F0" FlowDirection="RightToLeft">
+                <Button Content="✕" FontSize="16"  Click="ExitButton_Click" WindowChrome.IsHitTestVisibleInChrome="True" HorizontalAlignment="Right" BorderThickness="0,0,1,0"  Height="25" Width="25" Background="{x:Null}"/>
+                <Button FontSize="16"  Click="SettingsButton_Click" WindowChrome.IsHitTestVisibleInChrome="True" Height="25" Width="25" Background="{x:Null}" BorderThickness="0,0,1,0">
+                    <TextBlock Text="…" Margin="0,-10,0,0"/>
+                </Button>
+            </StackPanel>
         </Border>
-        <Grid Grid.Row="1">
+        <Grid Grid.Row="1" >
+            <shell:Grid.Background>
+                <shell:LinearGradientBrush EndPoint="0.5,1" MappingMode="RelativeToBoundingBox" StartPoint="0.5,0">
+                    <shell:GradientStop Color="#FFECDCFF" Offset="1"/>
+                    <shell:GradientStop Color="White"/>
+                </shell:LinearGradientBrush>
+            </shell:Grid.Background>
             <Grid.RowDefinitions>
                 <RowDefinition Height="5*"/>
                 <RowDefinition Height="20*"/>
@@ -103,7 +109,7 @@
                     <Image Margin="20,0,0,0" Source="/Images/ethwallet-icon.png" Width="30" />
                     <StackPanel>
                         <Label Content="WALLET BALANCE" Foreground="#FF8E8A8F"   FontSize="12" FontFamily="Arial Black"/>
-                        <Label Content="1 ETH ❙ $400.00"   FontSize="12" FontFamily="Arial Black"/>
+                        <Label Content="1 ETH ❙ $400.00"   FontSize="12" FontFamily="Arial Black" FontWeight="Bold" Foreground="Black"/>
                     </StackPanel>
                 </StackPanel>
             </Border>
