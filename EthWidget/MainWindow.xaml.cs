@@ -40,7 +40,7 @@ namespace EthWidget
                 labelGasAvg.Content = $"{Manager.lastGasPrice.Result.ProposeGasPrice} gwei";
                 labelGasHigh.Content = $"{Manager.lastGasPrice.Result.FastGasPrice} gwei";
                 labelBlockReward.Content = $"{Manager.lastAvgBlockReward} ETH";
-                labelWalletBalance.Content = $"{Manager.lastWalletBalance} ETH";
+                labelWalletBalance.Content = $"{Manager.lastWalletBalance} ETH ❙ ${Math.Round(Double.Parse(Manager.lastEthPrice.Result.Ethusd.Replace('.', ',')) * Manager.lastWalletBalance,2).ToString().Replace(',', '.')}";
             });
         }
 
