@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -25,7 +26,15 @@ namespace EthWidget
             InitializeComponent();
             this.Left = SystemParameters.PrimaryScreenWidth - this.Width * 1.1;
             this.Top = SystemParameters.PrimaryScreenHeight * 0.05;
+            Manager.Completed += UpdateInformation;
             AppSettings.Load();
+            Manager.Start();
+        }
+
+        private void UpdateInformation()
+        {
+            Console.WriteLine("Information updated");
+            Trace.WriteLine("Information updated");
         }
 
         private void ExitButton_Click(object sender, RoutedEventArgs e)
