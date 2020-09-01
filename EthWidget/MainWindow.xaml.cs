@@ -32,9 +32,16 @@ namespace EthWidget
         }
 
         private void UpdateInformation()
-        {
-            Console.WriteLine("Information updated");
-            Trace.WriteLine("Information updated");
+        {    
+            this.Dispatcher.Invoke(() =>
+            {
+                labelEthPrice.Content = $"${Manager.lastEthPrice.Result.Ethusd} ❙ {Manager.lastEthPrice.Result.Ethbtc} BTC";
+                labelGasLow.Content = $"{Manager.lastGasPrice.Result.SafeGasPrice} gwei";
+                labelGasAvg.Content = $"{Manager.lastGasPrice.Result.ProposeGasPrice} gwei";
+                labelGasHigh.Content = $"{Manager.lastGasPrice.Result.FastGasPrice} gwei";
+                labelBlockReward.Content = $"{Manager.lastAvgBlockReward} ETH";
+                labelWalletBalance.Content = $"{Manager.lastWalletBalance} ETH";
+            });
         }
 
         private void ExitButton_Click(object sender, RoutedEventArgs e)
