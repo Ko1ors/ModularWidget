@@ -15,6 +15,8 @@ namespace EthWidget
     {
         private static System.Timers.Timer timer;
         private static int maxTries = 5;
+        private static Object inProgress = new object();
+
         public static event Notify Completed;
 
         public static DateTime lastUpdate;
@@ -26,24 +28,27 @@ namespace EthWidget
         {
             if(timer is null)
             {
-                GetETHInformation();
+                Task.Run(() => GetETHInformation());
                 SetTimer();        
             }
         }
 
         private static void GetETHInformation()
         {
-            if (!TryGetEthPrice())
-                return;
-            if (!TryGetEthGasPrice())
-                return;
-            if (!TryGetAvgBlockReward(int.Parse(lastGasPrice.Result.LastBlock)))
-                return;
-            if (!String.IsNullOrEmpty(AppSettings.ethWallet))
-                if (!TryGetWalletBalance())
+            lock (inProgress)
+            {
+                if (!TryGetEthPrice())
                     return;
-            lastUpdate = DateTime.Now;
-            OnComplete();
+                if (!TryGetEthGasPrice())
+                    return;
+                if (!TryGetAvgBlockReward(int.Parse(lastGasPrice.Result.LastBlock)))
+                    return;
+                if (!String.IsNullOrEmpty(AppSettings.ethWallet))
+                    if (!TryGetWalletBalance())
+                        return;
+                lastUpdate = DateTime.Now;
+                OnComplete();
+            }
         }
 
         private static bool TryGetEthPrice()
@@ -56,7 +61,7 @@ namespace EthWidget
                     lastEthPrice = result;
                     return true;
                 }
-                Thread.Sleep(500);
+                Thread.Sleep(500 * (i + 1));
             }
             return false;
         }
@@ -71,7 +76,7 @@ namespace EthWidget
                     lastGasPrice = result;
                     return true;
                 }
-                Thread.Sleep(500);
+                Thread.Sleep(500 * (i + 1));
             }
             return false;
         }
@@ -90,15 +95,15 @@ namespace EthWidget
                     if (result.Status != "0" && result.Message != "NOTOK")
                     {
                         success = true;
-                        blockreward += Double.Parse(result.Result.BlockReward);
+                        blockreward += Double.Parse(result.Result.BlockReward) / 1000000000000000000;
                         break;
                     }
-                    Thread.Sleep(500);
+                    Thread.Sleep(500 * (j +1));
                 }
                 if (!success)
                     return false;
             }
-            lastAvgBlockReward = blockreward / i;
+            lastAvgBlockReward = Math.Round(blockreward / i,5);
             return true;
         }
 
@@ -112,7 +117,7 @@ namespace EthWidget
                     lastWalletBalance = Math.Round(double.Parse(result.Result) / 100000000000000000,5);
                     return true;
                 }
-                Thread.Sleep(500);
+                Thread.Sleep(500 * (i + 1));
             }
             return false;
         }
@@ -127,7 +132,7 @@ namespace EthWidget
 
         private static void OnTimedEvent(object sender, ElapsedEventArgs e)
         {
-            GetETHInformation();
+            Task.Run(() => GetETHInformation());
         }
 
         private static void OnComplete()
