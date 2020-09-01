@@ -24,10 +24,12 @@ namespace EthWidget
         public static EthGasPrice lastGasPrice;
         public static double lastWalletBalance;
         public static double lastAvgBlockReward;
+        public static DateTime nextUpdate;
         public static void Start()
         {
             if(timer is null)
             {
+                nextUpdate = DateTime.Now.AddMinutes(AppSettings.updateTime);
                 Task.Run(() => GetETHInformation());
                 SetTimer();        
             }
@@ -132,6 +134,7 @@ namespace EthWidget
 
         private static void OnTimedEvent(object sender, ElapsedEventArgs e)
         {
+            nextUpdate = DateTime.Now.AddMinutes(AppSettings.updateTime);
             Task.Run(() => GetETHInformation());
         }
 

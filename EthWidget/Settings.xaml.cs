@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using System.Timers;
 using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Data;
@@ -26,7 +27,22 @@ namespace EthWidget
             this.Top = SystemParameters.PrimaryScreenHeight * 0.1;
             textBoxApiKey.Text = AppSettings.ethApiKey;
             textBoxEthWallet.Text = AppSettings.ethWallet;
-            textBoxUpdateTime.Text = AppSettings.updateTime.ToString();       
+            textBoxUpdateTime.Text = AppSettings.updateTime.ToString();
+
+            Timer timer = new Timer(1000);
+            timer.Elapsed += OnTimedEvent;
+            timer.AutoReset = true;
+            timer.Enabled = true;
+        }
+
+        private void OnTimedEvent(object sender, ElapsedEventArgs e)
+        {
+            if (Manager.nextUpdate != DateTime.MinValue)
+                this.Dispatcher.Invoke(() =>
+                {
+                    var time = (Manager.nextUpdate - DateTime.Now);
+                    labelNextUpdate.Content = $"Next update in {time.ToString("mm\\:ss")}";
+                });  
         }
 
         private void ExitButton_Click(object sender, RoutedEventArgs e)

@@ -42,7 +42,8 @@
                 <RowDefinition Height="20*"/>
                 <RowDefinition Height="20*"/>
                 <RowDefinition Height="20*"/>
-                <RowDefinition Height="25*"/>
+                <RowDefinition Height="15*"/>
+                <RowDefinition Height="10*"/>
                 <RowDefinition Height="10*"/>
             </Grid.RowDefinitions>
             <StackPanel Grid.Row="0">
@@ -65,7 +66,8 @@
                 <TextBox Margin="10,0,0,0" x:Name="textBoxUpdateTime" Text="" VerticalContentAlignment="Center" FlowDirection="LeftToRight" FontFamily="Arial Black" Height="30" Width="150"/>
                 <Label Margin="10,0,0,0" Content="Update Time" Height="30" FontFamily="Arial Black" VerticalContentAlignment="Center" VerticalAlignment="Center"/>
             </StackPanel>
-            <Border Grid.Row="5" BorderBrush="Black" BorderThickness="0,1,0,0">
+                <Label Grid.Row="5" x:Name="labelNextUpdate" FontFamily="Arial Black" Content="Next update in --" FontSize="10" VerticalAlignment="Bottom"/>
+            <Border Grid.Row="6" BorderBrush="Black" BorderThickness="0,1,0,0">
                 <StackPanel  Orientation="Horizontal" FlowDirection="RightToLeft">
                     <Button Margin="10,0,0,0" Width="70" Height="25" Content="Cancel" Click="ExitButton_Click" Background="Transparent"/>
                     <Button Margin="10,0,0,0" Width="50" Height="25" Content="Ok" Click="OkButton_Click"  Background="Transparent"/>
