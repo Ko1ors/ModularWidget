@@ -1,4 +1,6 @@
-﻿using System;
+﻿using EthWidget.Data;
+using Newtonsoft.Json;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Net;
@@ -8,7 +10,7 @@ using System.Windows.Documents;
 
 namespace EthWidget
 {
-    public static class ETHRequest
+    public static class EthRequest
     {
         private static readonly string ethPriceRequest = "https://api.etherscan.io/api?module=stats&action=ethprice&apikey=";
 
@@ -28,36 +30,64 @@ namespace EthWidget
             return result;
         }
 
-        public static void GetPrice(string api)
+        public static EthPrice GetPrice(string api)
         {
             string request = ethPriceRequest;
             if (api != null)
                 request += api;
-            Send(request);
+            try
+            {
+                return JsonConvert.DeserializeObject<EthPrice>(Send(request));
+            }
+            catch
+            {
+                return new EthPrice() { Status = "0"};
+            }
         }
 
-        public static void GetGasPrice(string api)
+        public static EthGasPrice GetGasPrice(string api)
         {
             string request = ethGasRequest;
             if (api != null)
                 request += api;
-            Send(request);
+            try
+            {
+                return JsonConvert.DeserializeObject<EthGasPrice>(Send(request));
+            }
+            catch
+            {
+                return new EthGasPrice() { Status = "0"};
+            }
         }
 
-        public static void GetBlockReward(string api, string blocknum)
+        public static BlockReward GetBlockReward(string api, string blocknum)
         {
             string request = ethBlockRequest.Replace("{blocknum}", blocknum);
             if (api != null)
                 request += api;
-            Send(request);
+            try
+            {
+                return JsonConvert.DeserializeObject<BlockReward>(Send(request));
+            }
+            catch
+            {
+                return new BlockReward() { Status = "0" };
+            }
         }
 
-        public static void GetWalletBalance(string api, string address)
+        public static WalletBalance GetWalletBalance(string api, string address)
         {
             string request = ethWalletRequest.Replace("{address}", address);
             if (api != null)
                 request += api;
-            Send(request);
+            try
+            {
+                return JsonConvert.DeserializeObject<WalletBalance>(Send(request));
+            }
+            catch
+            {
+                return new WalletBalance() { Status = "0" };
+            }
         }
     }
 }

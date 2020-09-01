@@ -7,7 +7,7 @@ using System.Threading.Tasks;
 
 namespace EthWidget.Data
 {
-    class EthGasPrice : Root
+    public class EthGasPrice : Root
     {
         [JsonProperty("result")]
         public EthGasPriceResult Result;

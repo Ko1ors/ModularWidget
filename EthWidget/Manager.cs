@@ -1,17 +1,27 @@
-﻿using System;
+﻿using EthWidget.Data;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
+using System.Threading;
 using System.Threading.Tasks;
 using System.Timers;
+using System.Windows.Documents;
 
 namespace EthWidget
 {
     public delegate void Notify();
     public static class Manager
     {
-        private static Timer timer;
+        private static System.Timers.Timer timer;
+        private static int maxTries = 5;
         public static event Notify Completed;
+
+        public static DateTime lastUpdate;
+        public static EthPrice lastEthPrice;
+        public static EthGasPrice lastGasPrice;
+        public static double lastWalletBalance;
+        public static double lastAvgBlockReward;
         public static void Start()
         {
             if(timer is null)
@@ -23,12 +33,93 @@ namespace EthWidget
 
         private static void GetETHInformation()
         {
+            if (!TryGetEthPrice())
+                return;
+            if (!TryGetEthGasPrice())
+                return;
+            if (!TryGetAvgBlockReward(int.Parse(lastGasPrice.Result.LastBlock)))
+                return;
+            if (!String.IsNullOrEmpty(AppSettings.ethWallet))
+                if (!TryGetWalletBalance())
+                    return;
+            lastUpdate = DateTime.Now;
             OnComplete();
+        }
+
+        private static bool TryGetEthPrice()
+        {
+            for (int i = 0; i < maxTries; i++)
+            {
+                var result = EthRequest.GetPrice(AppSettings.ethApiKey);
+                if (result.Status != "0" && result.Message != "NOTOK")
+                {
+                    lastEthPrice = result;
+                    return true;
+                }
+                Thread.Sleep(500);
+            }
+            return false;
+        }
+
+        private static bool TryGetEthGasPrice()
+        {
+            for (int i = 0; i < maxTries; i++)
+            {
+                var result = EthRequest.GetGasPrice(AppSettings.ethApiKey);
+                if (result.Status != "0" && result.Message != "NOTOK")
+                {
+                    lastGasPrice = result;
+                    return true;
+                }
+                Thread.Sleep(500);
+            }
+            return false;
+        }
+
+        private static bool TryGetAvgBlockReward(int lastblock)
+        {
+            double blockreward = 0;
+            bool success;
+            int i;
+            for (i = 0; i < 100; i++)
+            {
+                success = false;
+                for (int j = 0; j < maxTries; j++)
+                {
+                    var result = EthRequest.GetBlockReward(AppSettings.ethApiKey,lastblock--.ToString());
+                    if (result.Status != "0" && result.Message != "NOTOK")
+                    {
+                        success = true;
+                        blockreward += Double.Parse(result.Result.BlockReward);
+                        break;
+                    }
+                    Thread.Sleep(500);
+                }
+                if (!success)
+                    return false;
+            }
+            lastAvgBlockReward = blockreward / i;
+            return true;
+        }
+
+        private static bool TryGetWalletBalance()
+        {
+            for (int i = 0; i < maxTries; i++)
+            {
+                var result = EthRequest.GetWalletBalance(AppSettings.ethApiKey,AppSettings.ethWallet);
+                if (result.Status != "0" && result.Message != "NOTOK")
+                {
+                    lastWalletBalance = Math.Round(double.Parse(result.Result) / 100000000000000000,5);
+                    return true;
+                }
+                Thread.Sleep(500);
+            }
+            return false;
         }
 
         private static void SetTimer()
         {
-            timer = new Timer(AppSettings.updateTime * 60 * 1000);
+            timer = new System.Timers.Timer(AppSettings.updateTime * 60 * 1000);
             timer.Elapsed += OnTimedEvent;
             timer.AutoReset = true;
             timer.Enabled = true;

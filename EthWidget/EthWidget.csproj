@@ -91,7 +91,7 @@
     <Compile Include="Data\EthPriceResult.cs" />
     <Compile Include="Data\Root.cs" />
     <Compile Include="Data\WalletBalance.cs" />
-    <Compile Include="ETHRequest.cs" />
+    <Compile Include="EthRequest.cs" />
     <Compile Include="Manager.cs" />
     <Compile Include="Settings.xaml.cs">
       <DependentUpon>Settings.xaml</DependentUpon>

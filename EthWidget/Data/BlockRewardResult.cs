@@ -7,7 +7,7 @@ using System.Threading.Tasks;
 
 namespace EthWidget.Data
 {
-    class BlockRewardResult
+    public class BlockRewardResult
     {
         [JsonProperty("blockNumber")]
         public string BlockNumber;
