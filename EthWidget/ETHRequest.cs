@@ -46,7 +46,7 @@ namespace EthWidget
 
         public static void GetBlockReward(string api, string blocknum)
         {
-            string request = ethGasRequest.Replace("{blocknum}", blocknum);
+            string request = ethBlockRequest.Replace("{blocknum}", blocknum);
             if (api != null)
                 request += api;
             Send(request);
@@ -54,7 +54,7 @@ namespace EthWidget
 
         public static void GetWalletBalance(string api, string address)
         {
-            string request = ethGasRequest.Replace("{address}", address);
+            string request = ethWalletRequest.Replace("{address}", address);
             if (api != null)
                 request += api;
             Send(request);
