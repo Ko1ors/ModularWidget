@@ -114,7 +114,7 @@ namespace EthWidget
                 var result = EthRequest.GetWalletBalance(AppSettings.ethApiKey,AppSettings.ethWallet);
                 if (result.Status != "0" && result.Message != "NOTOK")
                 {
-                    lastWalletBalance = Math.Round(double.Parse(result.Result) / 100000000000000000,5);
+                    lastWalletBalance = Math.Round(double.Parse(result.Result) / 1000000000000000000,5);
                     return true;
                 }
                 Thread.Sleep(500 * (i + 1));
