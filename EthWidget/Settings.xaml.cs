@@ -41,7 +41,8 @@ namespace EthWidget
                 time = 5;
             AppSettings.Set(textBoxApiKey.Text,textBoxEthWallet.Text,time);
             AppSettings.Save();
-            Close();
+            System.Diagnostics.Process.Start(Application.ResourceAssembly.Location);
+            Application.Current.Shutdown();
         }
     }
 }
