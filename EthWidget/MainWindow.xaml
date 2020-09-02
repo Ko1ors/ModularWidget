@@ -106,7 +106,7 @@
             </Border>
             <Border Grid.Row="7" BorderThickness="1,1,1,1" BorderBrush="Black" CornerRadius="10" Margin="10,0,10,0">
                 <StackPanel  Orientation="Horizontal">
-                    <Image Margin="20,0,0,0" Source="/Images/ethwallet-icon.png" Width="30" />
+                    <Image Margin="20,0,0,0" Source="/Images/ethwallet-icon2.png" Width="30" />
                     <StackPanel>
                         <Label Content="WALLET BALANCE" Foreground="#FF8E8A8F"   FontSize="12" FontFamily="Arial Black"/>
                         <Label x:Name="labelWalletBalance" Content="ーー ETH ❙ $ーー"   FontSize="12" FontFamily="Arial Black" FontWeight="Bold" Foreground="Black"/>
