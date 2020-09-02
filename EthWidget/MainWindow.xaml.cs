@@ -35,12 +35,12 @@ namespace EthWidget
         {    
             this.Dispatcher.Invoke(() =>
             {
-                labelEthPrice.Content = $"${Manager.lastEthPrice.Result.Ethusd} ❙ {Manager.lastEthPrice.Result.Ethbtc} BTC";
-                labelGasLow.Content = $"{Manager.lastGasPrice.Result.SafeGasPrice} gwei";
-                labelGasAvg.Content = $"{Manager.lastGasPrice.Result.ProposeGasPrice} gwei";
-                labelGasHigh.Content = $"{Manager.lastGasPrice.Result.FastGasPrice} gwei";
-                labelBlockReward.Content = $"{Manager.lastAvgBlockReward} ETH";
-                labelWalletBalance.Content = $"{Manager.lastWalletBalance} ETH ❙ ${Math.Round(Double.Parse(Manager.lastEthPrice.Result.Ethusd.Replace('.', ',')) * Manager.lastWalletBalance,2).ToString().Replace(',', '.')}";
+                ethPriceUC.labelEthPrice.Content = $"${Manager.lastEthPrice.Result.Ethusd} ❙ {Manager.lastEthPrice.Result.Ethbtc} BTC";
+                gasTrackerUC.labelGasLow.Content = $"{Manager.lastGasPrice.Result.SafeGasPrice} gwei";
+                gasTrackerUC.labelGasAvg.Content = $"{Manager.lastGasPrice.Result.ProposeGasPrice} gwei";
+                gasTrackerUC.labelGasHigh.Content = $"{Manager.lastGasPrice.Result.FastGasPrice} gwei";
+                blockRewardUC.labelBlockReward.Content = $"{Manager.lastAvgBlockReward} ETH";
+                ethWalletBalanceUC.labelWalletBalance.Content = $"{Manager.lastWalletBalance} ETH ❙ ${Math.Round(Double.Parse(Manager.lastEthPrice.Result.Ethusd.Replace('.', ',')) * Manager.lastWalletBalance,2).ToString().Replace(',', '.')}";
             });
         }
 

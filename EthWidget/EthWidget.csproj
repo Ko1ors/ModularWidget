@@ -108,11 +108,31 @@
     <Compile Include="Data\EthPriceResult.cs" />
     <Compile Include="Data\Root.cs" />
     <Compile Include="Data\WalletBalance.cs" />
+    <Compile Include="UserControls\ETH\BlockRewardUC.xaml.cs">
+      <DependentUpon>BlockRewardUC.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="UserControls\ETH\EthPriceUC.xaml.cs">
+      <DependentUpon>EthPriceUC.xaml</DependentUpon>
+    </Compile>
     <Compile Include="EthRequest.cs" />
     <Compile Include="Manager.cs" />
     <Compile Include="Settings.xaml.cs">
       <DependentUpon>Settings.xaml</DependentUpon>
     </Compile>
+    <Compile Include="UserControls\ETH\EthWalletBalanceUC.xaml.cs">
+      <DependentUpon>EthWalletBalanceUC.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="UserControls\ETH\GasTrackerUC.xaml.cs">
+      <DependentUpon>GasTrackerUC.xaml</DependentUpon>
+    </Compile>
+    <Page Include="UserControls\ETH\BlockRewardUC.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="UserControls\ETH\EthPriceUC.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
     <Page Include="MainWindow.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
@@ -126,6 +146,14 @@
       <SubType>Code</SubType>
     </Compile>
     <Page Include="Settings.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="UserControls\ETH\EthWalletBalanceUC.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="UserControls\ETH\GasTrackerUC.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
