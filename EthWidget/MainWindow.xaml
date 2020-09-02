@@ -7,7 +7,7 @@
         xmlns:svgc1="http://sharpvectors.codeplex.com/svgc/" 
         xmlns:local="clr-namespace:EthWidget.UserControls.ETH" xmlns:local1="clr-namespace:EthWidget"
         mc:Ignorable="d"
-        Title="MainWindow" Height="400" Width="300" Top="0" ResizeMode="NoResize" WindowStartupLocation="Manual" BorderThickness="1" ShowInTaskbar="False">
+        Title="MainWindow" Height="400" Width="300" ResizeMode="NoResize" SizeToContent="Height" WindowStartupLocation="Manual" BorderThickness="1" ShowInTaskbar="False">
     <shell:WindowChrome.WindowChrome>
         <shell:WindowChrome
 
@@ -42,9 +42,9 @@
             </shell:Grid.Background>
             <Grid.RowDefinitions>
                 <RowDefinition Height="5*"/>
-                <RowDefinition Height="95*"/>
+                <RowDefinition Height="95*" />
             </Grid.RowDefinitions>
-            <StackPanel Grid.Row="0">
+            <StackPanel Grid.Row="0" Height="17">
                 <shell:StackPanel.Background>
                     <shell:LinearGradientBrush EndPoint="0.5,1" StartPoint="0.5,0">
                         <shell:GradientStop Color="#FFF0F0F0" Offset="0"/>
@@ -52,11 +52,11 @@
                     </shell:LinearGradientBrush>
                 </shell:StackPanel.Background>
             </StackPanel>
-            <StackPanel Grid.Row="1">
-                <local1:EthPriceUC x:Name="ethPriceUC" Margin="0,0,0,0"/>
-                <local:GasTrackerUC x:Name="gasTrackerUC"  Margin="0,15,0,0"/>
-                <local:BlockRewardUC x:Name="blockRewardUC" Margin="0,15,0,0"/>
-                <local:EthWalletBalanceUC x:Name="ethWalletBalanceUC" Margin="0,15,0,0"/>
+            <StackPanel Grid.Row="1" >
+                <local1:EthPriceUC x:Name="ethPriceUC" Margin="0,0,0,15"/>
+                <local:GasTrackerUC x:Name="gasTrackerUC" Margin="0,0,0,15"/>
+                <local:BlockRewardUC x:Name="blockRewardUC" Margin="0,0,0,15" />
+                <local:EthWalletBalanceUC x:Name="ethWalletBalanceUC" Margin="0,0,0,15"/>
             </StackPanel>
         </Grid>
     </Grid>
