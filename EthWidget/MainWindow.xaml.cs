@@ -1,18 +1,5 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Diagnostics;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using System.Windows;
-using System.Windows.Controls;
-using System.Windows.Data;
-using System.Windows.Documents;
-using System.Windows.Input;
-using System.Windows.Media;
-using System.Windows.Media.Imaging;
-using System.Windows.Navigation;
-using System.Windows.Shapes;
 
 namespace EthWidget
 {
@@ -26,13 +13,16 @@ namespace EthWidget
             InitializeComponent();
             this.Left = SystemParameters.PrimaryScreenWidth - this.Width * 1.1;
             this.Top = SystemParameters.PrimaryScreenHeight * 0.05;
+
             Manager.Completed += UpdateInformation;
             AppSettings.Load();
+            if (String.IsNullOrEmpty(AppSettings.ethWallet))
+                ethWalletBalanceUC.Visibility = Visibility.Collapsed;
             Manager.Start();
         }
 
         private void UpdateInformation()
-        {    
+        {
             this.Dispatcher.Invoke(() =>
             {
                 ethPriceUC.labelEthPrice.Content = $"${Manager.lastEthPrice.Result.Ethusd} ❙ {Manager.lastEthPrice.Result.Ethbtc} BTC";
@@ -40,7 +30,8 @@ namespace EthWidget
                 gasTrackerUC.labelGasAvg.Content = $"{Manager.lastGasPrice.Result.ProposeGasPrice} gwei";
                 gasTrackerUC.labelGasHigh.Content = $"{Manager.lastGasPrice.Result.FastGasPrice} gwei";
                 blockRewardUC.labelBlockReward.Content = $"{Manager.lastAvgBlockReward} ETH";
-                ethWalletBalanceUC.labelWalletBalance.Content = $"{Manager.lastWalletBalance} ETH ❙ ${Math.Round(Double.Parse(Manager.lastEthPrice.Result.Ethusd.Replace('.', ',')) * Manager.lastWalletBalance,2).ToString().Replace(',', '.')}";
+                if (!String.IsNullOrEmpty(AppSettings.ethWallet))
+                    ethWalletBalanceUC.labelWalletBalance.Content = $"{Manager.lastWalletBalance} ETH ❙ ${Math.Round(Double.Parse(Manager.lastEthPrice.Result.Ethusd.Replace('.', ',')) * Manager.lastWalletBalance, 2).ToString().Replace(',', '.')}";
             });
         }
 
