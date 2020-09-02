@@ -5,13 +5,13 @@
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
              xmlns:local="clr-namespace:EthWidget.UserControls.ETH" xmlns:svgc1="http://sharpvectors.codeplex.com/svgc/"
              mc:Ignorable="d" 
-             d:DesignHeight="49" d:DesignWidth="272">
-    <Border BorderThickness="1,1,1,1" BorderBrush="Black" CornerRadius="10" Margin="10,0,10,0">
+             Height="60" Width="280">
+    <Border BorderThickness="1,1,1,1" BorderBrush="Black" CornerRadius="10">
         <StackPanel  Orientation="Horizontal">
-            <svgc1:SvgViewbox Margin="20,0,0,0" Width="30" Source="pack://application:,,,/Images/block-icon.svg"/>
+            <svgc1:SvgViewbox Margin="20,0,0,0" Width="30" Height="50" Source="pack://application:,,,/Images/block-icon.svg"/>
             <StackPanel>
-                <Label Content="AVERAGE BLOCK REWARD" Foreground="#FF8E8A8F"   FontSize="12" FontFamily="Arial Black"/>
-                <Label x:Name="labelBlockReward" Content="ーー ETH"  FontSize="12" FontFamily="Arial Black"/>
+                <Label Content="AVERAGE BLOCK REWARD" Foreground="#FF8E8A8F" FontSize="12" FontFamily="Arial Black"/>
+                <Label x:Name="labelBlockReward" Content="ーー ETH" FontSize="12" FontFamily="Arial Black"/>
             </StackPanel>
         </StackPanel>
     </Border>

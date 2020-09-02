@@ -5,10 +5,10 @@
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
              xmlns:local="clr-namespace:EthWidget.UserControls.ETH" xmlns:svgc1="http://sharpvectors.codeplex.com/svgc/"
              mc:Ignorable="d" 
-             d:DesignHeight="98" d:DesignWidth="272">
-    <Border Grid.Row="3" BorderThickness="1,1,1,1" BorderBrush="Black" CornerRadius="10" Margin="10,0,10,0">
+             Height="90" Width="280">
+    <Border BorderThickness="1,1,1,1" BorderBrush="Black" CornerRadius="10" >
         <StackPanel  Orientation="Horizontal">
-            <svgc1:SvgViewbox Margin="15,0,0,0" Width="40" Source="pack://application:,,,/Images/gas-icon.svg"/>
+            <svgc1:SvgViewbox Margin="15,10,0,0" Width="40" Source="pack://application:,,,/Images/gas-icon.svg" />
             <StackPanel>
                 <Label Content="GAS TRACKER" Foreground="#FF8E8A8F" Margin="0,5,0,0"  FontSize="12" FontFamily="Arial Black"/>
                 <StackPanel Orientation="Horizontal">

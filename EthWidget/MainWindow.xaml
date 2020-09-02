@@ -42,14 +42,7 @@
             </shell:Grid.Background>
             <Grid.RowDefinitions>
                 <RowDefinition Height="5*"/>
-                <RowDefinition Height="20*"/>
-                <RowDefinition Height="5*"/>
-                <RowDefinition Height="30*"/>
-                <RowDefinition Height="5*"/>
-                <RowDefinition Height="15*"/>
-                <RowDefinition Height="5*"/>
-                <RowDefinition Height="15*"/>
-                <RowDefinition Height="5*"/>
+                <RowDefinition Height="95*"/>
             </Grid.RowDefinitions>
             <StackPanel Grid.Row="0">
                 <shell:StackPanel.Background>
@@ -59,10 +52,12 @@
                     </shell:LinearGradientBrush>
                 </shell:StackPanel.Background>
             </StackPanel>
-            <local1:EthPriceUC x:Name="ethPriceUC" Grid.Row="1"/>
-            <local:GasTrackerUC x:Name="gasTrackerUC" Grid.Row="3"/>
-            <local:BlockRewardUC x:Name="blockRewardUC" Grid.Row="5"/>
-            <local:EthWalletBalanceUC x:Name="ethWalletBalanceUC" Grid.Row="7"/>
+            <StackPanel Grid.Row="1">
+                <local1:EthPriceUC x:Name="ethPriceUC" Margin="0,0,0,0"/>
+                <local:GasTrackerUC x:Name="gasTrackerUC"  Margin="0,15,0,0"/>
+                <local:BlockRewardUC x:Name="blockRewardUC" Margin="0,15,0,0"/>
+                <local:EthWalletBalanceUC x:Name="ethWalletBalanceUC" Margin="0,15,0,0"/>
+            </StackPanel>
         </Grid>
     </Grid>
 </Window>
