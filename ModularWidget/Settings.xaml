@@ -59,7 +59,7 @@
                 <Label Margin="10,0,0,0" Content="Update Time" Height="30" FontFamily="Arial Black" VerticalContentAlignment="Center" VerticalAlignment="Center"/>
                 <TextBox  x:Name="textBoxUpdateTime" Text="" VerticalContentAlignment="Center"  FontFamily="Arial Black" Height="30" Width="250"/>
             </StackPanel>
-                <Label Grid.Row="5" x:Name="labelNextUpdate" FontFamily="Arial Black" Content="Next update in --" FontSize="10" VerticalAlignment="Bottom"/>
+                <Label Grid.Row="3" x:Name="labelNextUpdate" FontFamily="Arial Black" Content="Next update in --" FontSize="10" VerticalAlignment="Bottom"/>
             <Border Grid.Row="6" BorderBrush="Black" BorderThickness="0,1,0,0">
                 <StackPanel  Orientation="Horizontal" FlowDirection="RightToLeft">
                     <Button Margin="10,0,0,0" Width="70" Height="25" Content="Cancel" Click="ExitButton_Click" Background="Transparent"/>
