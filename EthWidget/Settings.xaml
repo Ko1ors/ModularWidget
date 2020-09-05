@@ -38,9 +38,7 @@
             </shell:Grid.Background>
             <Grid.RowDefinitions>
                 <RowDefinition Height="5*"/>
-                <RowDefinition Height="20*"/>
-                <RowDefinition Height="20*"/>
-                <RowDefinition Height="20*"/>
+                <RowDefinition Height="60*"/>
                 <RowDefinition Height="15*"/>
                 <RowDefinition Height="10*"/>
                 <RowDefinition Height="10*"/>
@@ -53,17 +51,13 @@
                     </shell:LinearGradientBrush>
                 </shell:StackPanel.Background>
             </StackPanel>
-            <StackPanel Grid.Row="1" Orientation="Horizontal" FlowDirection="RightToLeft">
-                <TextBox Margin="10,0,0,0" x:Name="textBoxApiKey" Text="" VerticalContentAlignment="Center" FlowDirection="LeftToRight" FontFamily="Arial Black" Height="30" Width="150" VerticalAlignment="Center"/>
+            <StackPanel Grid.Row="1">
                 <Label Margin="10,0,0,0" Content="Api Key" Height="30" FontFamily="Arial Black" VerticalContentAlignment="Center" VerticalAlignment="Center"/>
-            </StackPanel>
-            <StackPanel Grid.Row="2" Orientation="Horizontal" FlowDirection="RightToLeft">
-                <TextBox Margin="10,0,0,0" x:Name="textBoxEthWallet" Text="" VerticalContentAlignment="Center" FlowDirection="LeftToRight" FontFamily="Arial Black" Height="30" Width="150"/>
+                <TextBox  x:Name="textBoxApiKey" Text="" VerticalContentAlignment="Center" FontFamily="Arial Black" Height="30" Width="250" VerticalAlignment="Center"/>
                 <Label Margin="10,0,0,0" Content="ETH Wallet" Height="30" FontFamily="Arial Black" VerticalContentAlignment="Center" VerticalAlignment="Center"/>
-            </StackPanel>
-            <StackPanel Grid.Row="3" Orientation="Horizontal" FlowDirection="RightToLeft">
-                <TextBox Margin="10,0,0,0" x:Name="textBoxUpdateTime" Text="" VerticalContentAlignment="Center" FlowDirection="LeftToRight" FontFamily="Arial Black" Height="30" Width="150"/>
+                <TextBox  x:Name="textBoxEthWallet" Text="" VerticalContentAlignment="Center"  FontFamily="Arial Black" Height="30" Width="250"/>
                 <Label Margin="10,0,0,0" Content="Update Time" Height="30" FontFamily="Arial Black" VerticalContentAlignment="Center" VerticalAlignment="Center"/>
+                <TextBox  x:Name="textBoxUpdateTime" Text="" VerticalContentAlignment="Center"  FontFamily="Arial Black" Height="30" Width="250"/>
             </StackPanel>
                 <Label Grid.Row="5" x:Name="labelNextUpdate" FontFamily="Arial Black" Content="Next update in --" FontSize="10" VerticalAlignment="Bottom"/>
             <Border Grid.Row="6" BorderBrush="Black" BorderThickness="0,1,0,0">
