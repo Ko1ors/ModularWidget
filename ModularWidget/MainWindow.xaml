@@ -1,0 +1,63 @@
+﻿<Window x:Class="ModularWidget.MainWindow"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:shell="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:svgc1="http://sharpvectors.codeplex.com/svgc/" 
+        xmlns:local="clr-namespace:ModularWidget.UserControls.ETH" xmlns:local1="clr-namespace:ModularWidget"
+        mc:Ignorable="d"
+        Title="MainWindow" Height="400" Width="300" ResizeMode="NoResize" SizeToContent="Height" WindowStartupLocation="Manual" BorderThickness="1" ShowInTaskbar="False">
+    <shell:WindowChrome.WindowChrome>
+        <shell:WindowChrome
+
+            ResizeBorderThickness="5"
+
+            CaptionHeight="15"
+
+            CornerRadius="0,0,0,0"
+            
+            GlassFrameThickness="0">
+        </shell:WindowChrome>
+    </shell:WindowChrome.WindowChrome>
+    <Grid>
+        <Grid.RowDefinitions>
+            <RowDefinition Height="25"/>
+            <RowDefinition Height="*"/>
+        </Grid.RowDefinitions>
+        <Border VerticalAlignment="Stretch" BorderThickness="0,0,0,1" BorderBrush="Black" >
+            <StackPanel Grid.Row="0" Orientation="Horizontal" Background="#FFF0F0F0" FlowDirection="RightToLeft">
+                <Button Content="✕" FontSize="16"  Click="ExitButton_Click" WindowChrome.IsHitTestVisibleInChrome="True" HorizontalAlignment="Right" BorderThickness="0,0,1,0"  Height="25" Width="25" Background="{x:Null}"/>
+                <Button FontSize="16"  Click="SettingsButton_Click" WindowChrome.IsHitTestVisibleInChrome="True" Height="25" Width="25" Background="{x:Null}" BorderThickness="0,0,1,0">
+                    <TextBlock Text="…" Margin="0,-10,0,0"/>
+                </Button>
+            </StackPanel>
+        </Border>
+        <Grid Grid.Row="1" >
+            <shell:Grid.Background>
+                <shell:LinearGradientBrush EndPoint="0.5,1" MappingMode="RelativeToBoundingBox" StartPoint="0.5,0">
+                    <shell:GradientStop Color="#FFECDCFF" Offset="1"/>
+                    <shell:GradientStop Color="White"/>
+                </shell:LinearGradientBrush>
+            </shell:Grid.Background>
+            <Grid.RowDefinitions>
+                <RowDefinition Height="5*"/>
+                <RowDefinition Height="95*" />
+            </Grid.RowDefinitions>
+            <StackPanel Grid.Row="0" Height="17">
+                <shell:StackPanel.Background>
+                    <shell:LinearGradientBrush EndPoint="0.5,1" StartPoint="0.5,0">
+                        <shell:GradientStop Color="#FFF0F0F0" Offset="0"/>
+                        <shell:GradientStop Color="White" Offset="1"/>
+                    </shell:LinearGradientBrush>
+                </shell:StackPanel.Background>
+            </StackPanel>
+            <StackPanel Grid.Row="1" >
+                <local1:EthPriceUC x:Name="ethPriceUC" Margin="0,0,0,15"/>
+                <local:GasTrackerUC x:Name="gasTrackerUC" Margin="0,0,0,15"/>
+                <local:BlockRewardUC x:Name="blockRewardUC" Margin="0,0,0,15" />
+                <local:EthWalletBalanceUC x:Name="ethWalletBalanceUC" Margin="0,0,0,15"/>
+            </StackPanel>
+        </Grid>
+    </Grid>
+</Window>
