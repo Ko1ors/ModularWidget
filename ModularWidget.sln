@@ -9,6 +9,8 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "TestModule", "TestModule\Te
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Test2Module", "Test2Module\Test2Module.csproj", "{2F9E3135-1E08-4591-9702-ACC9AE21B6EE}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ETCModule", "ETCModule\ETCModule.csproj", "{EFB1F0C2-3B18-4827-9302-3AF746CFE3E0}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -27,6 +29,10 @@ Global
 		{2F9E3135-1E08-4591-9702-ACC9AE21B6EE}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{2F9E3135-1E08-4591-9702-ACC9AE21B6EE}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{2F9E3135-1E08-4591-9702-ACC9AE21B6EE}.Release|Any CPU.Build.0 = Release|Any CPU
+		{EFB1F0C2-3B18-4827-9302-3AF746CFE3E0}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{EFB1F0C2-3B18-4827-9302-3AF746CFE3E0}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{EFB1F0C2-3B18-4827-9302-3AF746CFE3E0}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{EFB1F0C2-3B18-4827-9302-3AF746CFE3E0}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
