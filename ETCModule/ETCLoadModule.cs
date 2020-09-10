@@ -27,7 +27,7 @@ namespace ETCModule
             if (regName == this.regName)
             {
                 Manager.RegionCreated -= Manager_RegionCreated;
-                regionManager.RegisterViewWithRegion(regName, typeof(EtcWalletBalanceUC));
+                regionManager.RegisterViewWithRegion(regName, typeof(MainUC));
             }
         }
 
