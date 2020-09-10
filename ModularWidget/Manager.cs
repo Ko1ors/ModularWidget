@@ -18,9 +18,9 @@ namespace ModularWidget
         private static Object inProgress = new object();
 
         public static event Notify Completed;
-        public static event Notify RegionRequested;
-        public delegate void RegionCreateHandler(string regName);
-        public static event RegionCreateHandler RegionCreated;
+        public delegate void RegionHandler(string regName);
+        public static event RegionHandler RegionRequested;
+        public static event RegionHandler RegionCreated;
 
         public static DateTime lastUpdate;
         public static EthPrice lastEthPrice;
@@ -146,9 +146,9 @@ namespace ModularWidget
             Completed?.Invoke();
         }
 
-        public static void RegionRequest()
+        public static void RegionRequest(string regName)
         {
-            RegionRequested?.Invoke();
+            RegionRequested?.Invoke(regName);
         }
 
         public static void RegionCreate(string regName)

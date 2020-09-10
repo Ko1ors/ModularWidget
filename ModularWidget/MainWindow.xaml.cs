@@ -51,10 +51,10 @@ namespace ModularWidget
             settingsWindow.ShowDialog();
         }
 
-        private void CreateRegion()
+        private void CreateRegion(string regName)
         {
             RegionUC reg = new RegionUC();
-            reg.RegionName = "test";
+            reg.RegionName = regName;
             AddRegion(reg);
             Manager.RegionCreate(reg.RegionName);
         }

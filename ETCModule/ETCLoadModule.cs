@@ -1,4 +1,5 @@
-﻿using ModularWidget;
+﻿using ETCModule.Views;
+using ModularWidget;
 using Prism.Ioc;
 using Prism.Modularity;
 using Prism.Regions;
@@ -10,19 +11,24 @@ using System.Threading.Tasks;
 
 namespace ETCModule
 {
-    class ETCLoadModule : IModule
+    public class ETCLoadModule : IModule
     {
         IRegionManager regionManager;
+        private readonly string regName = "etcregion";
         public void OnInitialized(IContainerProvider containerProvider)
         {
             regionManager = containerProvider.Resolve<IRegionManager>();
             Manager.RegionCreated += Manager_RegionCreated;
-            Manager.RegionRequest();
+            Manager.RegionRequest(regName);
         }
 
         private void Manager_RegionCreated(string regName)
         {
-            //regionManager.RegisterViewWithRegion(regName, typeof(ViewB));
+            if (regName == this.regName)
+            {
+                Manager.RegionCreated -= Manager_RegionCreated;
+                regionManager.RegisterViewWithRegion(regName, typeof(EtcWalletBalanceUC));
+            }
         }
 
         public void RegisterTypes(IContainerRegistry containerRegistry)
