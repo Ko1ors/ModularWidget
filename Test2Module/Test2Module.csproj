@@ -97,5 +97,11 @@
       <Generator>MSBuild:Compile</Generator>
     </Page>
   </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\ModularWidget\ModularWidget.csproj">
+      <Project>{CEB73470-CB43-4B0A-AEC9-F4C41B0AF3F3}</Project>
+      <Name>ModularWidget</Name>
+    </ProjectReference>
+  </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>

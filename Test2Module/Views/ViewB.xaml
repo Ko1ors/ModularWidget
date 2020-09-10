@@ -5,8 +5,32 @@
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
              xmlns:local="clr-namespace:Test2Module.Views"
              mc:Ignorable="d" 
-             d:DesignHeight="300" d:DesignWidth="300">
-    <Grid>
-        <TextBlock Text="View B" FontSize="38"/>
-    </Grid>
+             Height="90" Width="280">
+    <Border BorderThickness="1,1,1,1" BorderBrush="Black" CornerRadius="10" >
+        <StackPanel  Orientation="Horizontal">
+            <StackPanel>
+                <Label Content="GAS TRACKER" Foreground="#FF8E8A8F" Margin="0,5,0,0"  FontSize="12" FontFamily="Arial Black"/>
+                <StackPanel Orientation="Horizontal">
+                    <Border Margin="10,0,0,0" BorderThickness="1,1,1,1" BorderBrush="Black" CornerRadius="15">
+                        <StackPanel>
+                            <Label Content="Low" FontSize="10" FontFamily="Arial Black" HorizontalContentAlignment="Center"/>
+                            <Label x:Name="labelGasLow" Content="ーー gwei" FontSize="10" FontFamily="Arial Black" HorizontalContentAlignment="Center" BorderBrush="Black"  BorderThickness="0,1,0,0" Foreground="#FF39CFC1"/>
+                        </StackPanel>
+                    </Border>
+                    <Border Margin="8,0,0,0" BorderThickness="1,1,1,1" BorderBrush="Black" CornerRadius="15">
+                        <StackPanel>
+                            <Label Content="Average" FontSize="10" FontFamily="Arial Black" HorizontalContentAlignment="Center"/>
+                            <Label x:Name="labelGasAvg" Content="ーー gwei" FontSize="10" FontFamily="Arial Black" HorizontalContentAlignment="Center" BorderBrush="Black"  BorderThickness="0,1,0,0" Foreground="#3498DB"/>
+                        </StackPanel>
+                    </Border>
+                    <Border Margin="8,0,0,0" BorderThickness="1,1,1,1" BorderBrush="Black" CornerRadius="15">
+                        <StackPanel>
+                            <Label Content="High" FontSize="10" FontFamily="Arial Black" HorizontalContentAlignment="Center"/>
+                            <Label x:Name="labelGasHigh" Content="ーー gwei" FontSize="10" FontFamily="Arial Black" HorizontalContentAlignment="Center" BorderBrush="Black"  BorderThickness="0,1,0,0" Foreground="#A52A2A"/>
+                        </StackPanel>
+                    </Border>
+                </StackPanel>
+            </StackPanel>
+        </StackPanel>
+    </Border>
 </UserControl>

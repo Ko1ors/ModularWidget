@@ -18,6 +18,9 @@ namespace ModularWidget
         private static Object inProgress = new object();
 
         public static event Notify Completed;
+        public static event Notify RegionRequested;
+        public delegate void RegionCreateHandler(string regName);
+        public static event RegionCreateHandler RegionCreated;
 
         public static DateTime lastUpdate;
         public static EthPrice lastEthPrice;
@@ -88,7 +91,7 @@ namespace ModularWidget
             double blockreward = 0;
             bool success;
             int i;
-            for (i = 0; i < 100; i++)
+            for (i = 0; i < 10; i++)
             {
                 success = false;
                 for (int j = 0; j < maxTries; j++)
@@ -141,6 +144,21 @@ namespace ModularWidget
         private static void OnComplete()
         {
             Completed?.Invoke();
+        }
+
+        public static void RegionRequest()
+        {
+            RegionRequested?.Invoke();
+        }
+
+        public static void RegionCreate(string regName)
+        {
+            RegionCreated.Invoke(regName);
+        }
+
+        public static void ThrowException()
+        {
+            throw new Exception("It is work");
         }
     }
 }

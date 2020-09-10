@@ -8,7 +8,7 @@
         xmlns:svgc1="http://sharpvectors.codeplex.com/svgc/" 
         xmlns:local="clr-namespace:ModularWidget.UserControls.ETH" xmlns:local1="clr-namespace:ModularWidget"
         mc:Ignorable="d"
-        Title="MainWindow" Height="400" Width="300" ResizeMode="NoResize" WindowStartupLocation="Manual" BorderThickness="1" ShowInTaskbar="False">
+        Title="MainWindow" Height="400" Width="300" ResizeMode="NoResize" SizeToContent="Height" WindowStartupLocation="Manual" BorderThickness="1" ShowInTaskbar="False">
     <shell:WindowChrome.WindowChrome>
         <shell:WindowChrome
 
@@ -24,8 +24,7 @@
     <Grid>
         <Grid.RowDefinitions>
             <RowDefinition Height="25"/>
-            <RowDefinition Height="60*"/>
-            <RowDefinition Height="15*"/>
+            <RowDefinition Height="75*"/>
         </Grid.RowDefinitions>
         <Border VerticalAlignment="Stretch" BorderThickness="0,0,0,1" BorderBrush="Black" >
             <StackPanel Grid.Row="0" Orientation="Horizontal" Background="#FFF0F0F0" FlowDirection="RightToLeft">
@@ -54,13 +53,12 @@
                     </shell:LinearGradientBrush>
                 </shell:StackPanel.Background>
             </StackPanel>
-            <StackPanel Grid.Row="1" >
+            <StackPanel Grid.Row="1" x:Name="stackPanelBlock">
                 <local1:EthPriceUC x:Name="ethPriceUC" Margin="0,0,0,15"/>
                 <local:GasTrackerUC x:Name="gasTrackerUC" Margin="0,0,0,15"/>
                 <local:BlockRewardUC x:Name="blockRewardUC" Margin="0,0,0,15" />
                 <local:EthWalletBalanceUC x:Name="ethWalletBalanceUC" Margin="0,0,0,15"/>
             </StackPanel>
         </Grid>
-        <ContentControl Grid.Row="2" prism:RegionManager.RegionName="ContentRegion" />
     </Grid>
 </Window>

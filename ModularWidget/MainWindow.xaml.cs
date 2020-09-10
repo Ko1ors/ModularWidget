@@ -1,5 +1,8 @@
-﻿using System;
+﻿using ModularWidget.UserControls;
+using System;
+
 using System.Windows;
+using System.Windows.Controls;
 
 namespace ModularWidget
 {
@@ -15,6 +18,8 @@ namespace ModularWidget
             this.Top = SystemParameters.PrimaryScreenHeight * 0.05;
 
             Manager.Completed += UpdateInformation;
+            Manager.RegionRequested += CreateRegion;
+
             AppSettings.Load();
             if (String.IsNullOrEmpty(AppSettings.ethWallet))
                 ethWalletBalanceUC.Visibility = Visibility.Collapsed;
@@ -44,6 +49,19 @@ namespace ModularWidget
         {
             var settingsWindow = new Settings();
             settingsWindow.ShowDialog();
+        }
+
+        private void CreateRegion()
+        {
+            RegionUC reg = new RegionUC();
+            reg.RegionName = "test";
+            AddRegion(reg);
+            Manager.RegionCreate(reg.RegionName);
+        }
+
+        private void AddRegion(RegionUC reg)
+        {
+           stackPanelBlock.Children.Add(reg);
         }
     }
 }
