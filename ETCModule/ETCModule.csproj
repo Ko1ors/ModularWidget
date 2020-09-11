@@ -94,6 +94,7 @@
     <Compile Include="Data\EtcPrice.cs" />
     <Compile Include="Data\EtcWalletBalance.cs" />
     <Compile Include="ETCLoadModule.cs" />
+    <Compile Include="Models\EtcInformation.cs" />
     <Compile Include="Models\EtcRequest.cs" />
     <Compile Include="Properties\AssemblyInfo.cs">
       <SubType>Code</SubType>

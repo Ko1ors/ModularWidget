@@ -156,12 +156,12 @@ namespace ModularWidget
 
         public static void RegionCreate(string regName)
         {
-            RegionCreated.Invoke(regName);
+            RegionCreated?.Invoke(regName);
         }
 
         private static void UpdateInfo()
         {
-            UpdateRequested.Invoke();
+            UpdateRequested?.Invoke();
         }
 
         public static void ThrowException()

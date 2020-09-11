@@ -7,7 +7,7 @@
              mc:Ignorable="d" 
              d:DesignHeight="450" Width="280">
     <StackPanel>
-        <local:EtcPriceUC Margin="0,0,0,15"/>
-        <local:EtcWalletBalanceUC/>
+        <local:EtcPriceUC x:Name="etcPriceUC" Margin="0,0,0,15"/>
+        <local:EtcWalletBalanceUC x:Name="etcWalletBalanceUC"/>
     </StackPanel>
 </UserControl>

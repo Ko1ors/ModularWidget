@@ -38,7 +38,7 @@ namespace ETCModule.Models
             }
         }
 
-        public static EtcWalletBalance GetEtcWalletBalance(string address)
+        public static EtcWalletBalance GetWalletBalance(string address)
         {
             string request = etcWalletRequest.Replace("{address}", address);
             try
