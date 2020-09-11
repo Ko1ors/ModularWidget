@@ -21,6 +21,7 @@ namespace ModularWidget
         public delegate void RegionHandler(string regName);
         public static event RegionHandler RegionRequested;
         public static event RegionHandler RegionCreated;
+        public static event Notify UpdateRequested;
 
         public static DateTime lastUpdate;
         public static EthPrice lastEthPrice;
@@ -33,6 +34,7 @@ namespace ModularWidget
             if(timer is null)
             {
                 nextUpdate = DateTime.Now.AddMinutes(AppSettings.updateTime);
+                UpdateInfo();
                 Task.Run(() => GetETHInformation());
                 SetTimer();        
             }
@@ -138,6 +140,7 @@ namespace ModularWidget
         private static void OnTimedEvent(object sender, ElapsedEventArgs e)
         {
             nextUpdate = DateTime.Now.AddMinutes(AppSettings.updateTime);
+            UpdateInfo();
             Task.Run(() => GetETHInformation());
         }
 
@@ -154,6 +157,11 @@ namespace ModularWidget
         public static void RegionCreate(string regName)
         {
             RegionCreated.Invoke(regName);
+        }
+
+        private static void UpdateInfo()
+        {
+            UpdateRequested.Invoke();
         }
 
         public static void ThrowException()
