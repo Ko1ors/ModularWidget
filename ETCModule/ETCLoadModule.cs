@@ -6,6 +6,7 @@ using Prism.Modularity;
 using Prism.Regions;
 using System;
 using System.Collections.Generic;
+using System.Configuration;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -20,7 +21,7 @@ namespace ETCModule
         private EtcInformation etcInfo;
         public void OnInitialized(IContainerProvider containerProvider)
         {
-            regionManager = containerProvider.Resolve<IRegionManager>();
+            regionManager = containerProvider.Resolve<IRegionManager>(); 
             Manager.RegionCreated += Manager_RegionCreated;
             Manager.RegionRequest(regName);
             etcInfo = new EtcInformation();
@@ -32,9 +33,9 @@ namespace ETCModule
         {
             etcView.Dispatcher.Invoke(() =>
             {
-                etcView.etcPriceUC.labelEtcPrice.Content = $"${etcInfo.lastEtcPrice.Result.Ethusd} ❙ {Math.Round(Double.Parse(etcInfo.lastEtcPrice.Result.Ethbtc),5)} BTC";
-                if (!String.IsNullOrEmpty(Properties.Settings.Default.etcWalletAddress))
-                    etcView.etcWalletBalanceUC.labelEtcWalletBalance.Content = $"{etcInfo.lastWalletBalance} ETC ❙ ${Double.Parse(etcInfo.lastWalletBalance) * Double.Parse(etcInfo.lastEtcPrice.Result.Ethusd)}";
+                etcView.etcPriceUC.labelEtcPrice.Content = $"${etcInfo.lastEtcPrice.Result.Ethusd.Replace(",", ".")} ❙ {Math.Round(Double.Parse(etcInfo.lastEtcPrice.Result.Ethbtc),5).ToString().Replace(",", ".")} BTC";
+                if (!String.IsNullOrEmpty(etcInfo.etcWalletAddress))
+                    etcView.etcWalletBalanceUC.labelEtcWalletBalance.Content = $"{etcInfo.lastWalletBalance.Replace(",",".")} ETC ❙ ${Math.Round(Double.Parse(etcInfo.lastWalletBalance) * Double.Parse(etcInfo.lastEtcPrice.Result.Ethusd),2).ToString().Replace(",",".")}";
             });
         }
 

@@ -34,9 +34,9 @@ namespace ModularWidget
                 gasTrackerUC.labelGasLow.Content = $"{Manager.lastGasPrice.Result.SafeGasPrice} gwei";
                 gasTrackerUC.labelGasAvg.Content = $"{Manager.lastGasPrice.Result.ProposeGasPrice} gwei";
                 gasTrackerUC.labelGasHigh.Content = $"{Manager.lastGasPrice.Result.FastGasPrice} gwei";
-                blockRewardUC.labelBlockReward.Content = $"{Manager.lastAvgBlockReward} ETH";
+                blockRewardUC.labelBlockReward.Content = $"{Manager.lastAvgBlockReward.ToString().Replace(",", ".")} ETH";
                 if (!String.IsNullOrEmpty(AppSettings.ethWallet))
-                    ethWalletBalanceUC.labelWalletBalance.Content = $"{Manager.lastWalletBalance} ETH ❙ ${Math.Round(Double.Parse(Manager.lastEthPrice.Result.Ethusd.Replace('.', ',')) * Manager.lastWalletBalance, 2).ToString().Replace(',', '.')}";
+                    ethWalletBalanceUC.labelWalletBalance.Content = $"{Manager.lastWalletBalance.ToString().Replace(",", ".")} ETH ❙ ${Math.Round(Double.Parse(Manager.lastEthPrice.Result.Ethusd.Replace('.', ',')) * Manager.lastWalletBalance, 2).ToString().Replace(',', '.')}";
             });
         }
 
