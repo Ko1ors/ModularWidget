@@ -1,4 +1,5 @@
 ﻿using ModularWidget;
+using MusicWinModule.Views;
 using Prism.Ioc;
 using Prism.Modularity;
 using Prism.Regions;
@@ -11,7 +12,7 @@ namespace MusicWinModule
     {
         IRegionManager regionManager;
         private readonly string regName = "musicregion";
-        private UserControl musicView;
+        private UserControl musicView = new MusicUC();
         public void OnInitialized(IContainerProvider containerProvider)
         {
             regionManager = containerProvider.Resolve<IRegionManager>();
