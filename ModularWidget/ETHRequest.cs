@@ -1,12 +1,6 @@
 ﻿using ModularWidget.Data;
 using Newtonsoft.Json;
-using System;
-using System.Collections.Generic;
-using System.Linq;
 using System.Net;
-using System.Text;
-using System.Threading.Tasks;
-using System.Windows.Documents;
 
 namespace ModularWidget
 {
@@ -41,7 +35,7 @@ namespace ModularWidget
             }
             catch
             {
-                return new EthPrice() { Status = "0"};
+                return new EthPrice() { Status = "0" };
             }
         }
 
@@ -56,7 +50,7 @@ namespace ModularWidget
             }
             catch
             {
-                return new EthGasPrice() { Status = "0"};
+                return new EthGasPrice() { Status = "0" };
             }
         }
 

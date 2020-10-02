@@ -1,6 +1,6 @@
-﻿using Prism.Modularity;
+﻿using Prism.Ioc;
+using Prism.Modularity;
 using Prism.Unity;
-using Prism.Ioc;
 using System.Windows;
 
 namespace ModularWidget

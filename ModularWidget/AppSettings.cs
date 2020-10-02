@@ -1,11 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using System.Windows;
-
-namespace ModularWidget
+﻿namespace ModularWidget
 {
     public static partial class AppSettings
     {
@@ -30,9 +23,9 @@ namespace ModularWidget
 
         public static void Load()
         {
-           ethApiKey = Properties.Settings.Default.ethApiKey;
-           ethWallet = Properties.Settings.Default.ethWallet;
-           updateTime = Properties.Settings.Default.updateTime;
+            ethApiKey = Properties.Settings.Default.ethApiKey;
+            ethWallet = Properties.Settings.Default.ethWallet;
+            updateTime = Properties.Settings.Default.updateTime;
         }
     }
 }

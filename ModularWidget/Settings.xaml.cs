@@ -1,17 +1,6 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using System.Timers;
 using System.Windows;
-using System.Windows.Controls;
-using System.Windows.Data;
-using System.Windows.Documents;
-using System.Windows.Input;
-using System.Windows.Media;
-using System.Windows.Media.Imaging;
-using System.Windows.Shapes;
 
 namespace ModularWidget
 {
@@ -42,7 +31,7 @@ namespace ModularWidget
                 {
                     var time = (Manager.nextUpdate - DateTime.Now);
                     labelNextUpdate.Content = $"Next update in {time.ToString("mm\\:ss")}";
-                });  
+                });
         }
 
         private void ExitButton_Click(object sender, RoutedEventArgs e)
@@ -55,7 +44,7 @@ namespace ModularWidget
             int.TryParse(textBoxUpdateTime.Text, out int time);
             if (time == 0)
                 time = 5;
-            AppSettings.Set(textBoxApiKey.Text,textBoxEthWallet.Text,time);
+            AppSettings.Set(textBoxApiKey.Text, textBoxEthWallet.Text, time);
             AppSettings.Save();
             System.Diagnostics.Process.Start(Application.ResourceAssembly.Location);
             Application.Current.Shutdown();

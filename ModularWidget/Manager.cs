@@ -1,12 +1,8 @@
 ﻿using ModularWidget.Data;
 using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
 using System.Threading;
 using System.Threading.Tasks;
 using System.Timers;
-using System.Windows.Documents;
 
 namespace ModularWidget
 {
@@ -31,12 +27,12 @@ namespace ModularWidget
         public static DateTime nextUpdate;
         public static void Start()
         {
-            if(timer is null)
+            if (timer is null)
             {
                 nextUpdate = DateTime.Now.AddMinutes(AppSettings.updateTime);
                 UpdateInfo();
                 Task.Run(() => GetETHInformation());
-                SetTimer();        
+                SetTimer();
             }
         }
 
@@ -98,19 +94,19 @@ namespace ModularWidget
                 success = false;
                 for (int j = 0; j < maxTries; j++)
                 {
-                    var result = EthRequest.GetBlockReward(AppSettings.ethApiKey,lastblock--.ToString());
+                    var result = EthRequest.GetBlockReward(AppSettings.ethApiKey, lastblock--.ToString());
                     if (result.Status != "0" && result.Message != "NOTOK")
                     {
                         success = true;
                         blockreward += Double.Parse(result.Result.BlockReward) / 1000000000000000000;
                         break;
                     }
-                    Thread.Sleep(500 * (j +1));
+                    Thread.Sleep(500 * (j + 1));
                 }
                 if (!success)
                     return false;
             }
-            lastAvgBlockReward = Math.Round(blockreward / i,5);
+            lastAvgBlockReward = Math.Round(blockreward / i, 5);
             return true;
         }
 
@@ -118,10 +114,10 @@ namespace ModularWidget
         {
             for (int i = 0; i < maxTries; i++)
             {
-                var result = EthRequest.GetWalletBalance(AppSettings.ethApiKey,AppSettings.ethWallet);
+                var result = EthRequest.GetWalletBalance(AppSettings.ethApiKey, AppSettings.ethWallet);
                 if (result.Status != "0" && result.Message != "NOTOK")
                 {
-                    lastWalletBalance = Math.Round(double.Parse(result.Result) / 1000000000000000000,5);
+                    lastWalletBalance = Math.Round(double.Parse(result.Result) / 1000000000000000000, 5);
                     return true;
                 }
                 Thread.Sleep(500 * (i + 1));

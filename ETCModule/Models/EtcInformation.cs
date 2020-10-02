@@ -66,7 +66,7 @@ namespace ETCModule.Models
                 var result = EtcRequest.GetWalletBalance(etcWalletAddress);
                 if (!result.Result.Contains("Invalid address hash"))
                 {
-                    lastWalletBalance = Convert.ToString(Math.Round(float.Parse(result.Result) / 1000000000000000000d,4));
+                    lastWalletBalance = Convert.ToString(Math.Round(float.Parse(result.Result) / 1000000000000000000d, 4));
                     return true;
                 }
                 Thread.Sleep(500 * (i + 1));

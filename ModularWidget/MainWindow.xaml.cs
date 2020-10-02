@@ -2,7 +2,6 @@
 using System;
 
 using System.Windows;
-using System.Windows.Controls;
 
 namespace ModularWidget
 {
@@ -61,7 +60,7 @@ namespace ModularWidget
 
         private void AddRegion(RegionUC reg)
         {
-           stackPanelBlock.Children.Add(reg);
+            stackPanelBlock.Children.Add(reg);
         }
     }
 }

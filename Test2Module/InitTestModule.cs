@@ -1,8 +1,8 @@
-﻿using Test2Module.Views;
+﻿using ModularWidget;
 using Prism.Ioc;
 using Prism.Modularity;
 using Prism.Regions;
-using ModularWidget;
+using Test2Module.Views;
 
 namespace Test2Module
 {
