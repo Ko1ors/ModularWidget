@@ -22,6 +22,7 @@ namespace ETCModule.Models
         public EtcPrice lastEtcPrice;
 
         private readonly string settingsPath = AppDomain.CurrentDomain.BaseDirectory + "etc-settings.json";
+        private readonly Double divisor = 1000000000000000000d;
 
         public void Start()
         {
@@ -67,7 +68,7 @@ namespace ETCModule.Models
                 var result = EtcRequest.GetWalletBalance(etcWalletAddress);
                 if (!result.Result.Contains("Invalid address hash"))
                 {
-                    lastWalletBalance = Convert.ToString(Math.Round(float.Parse(result.Result) / 1000000000000000000d, 4));
+                    lastWalletBalance = Convert.ToString(Math.Round(float.Parse(result.Result) / divisor, 4));
                     return true;
                 }
                 Thread.Sleep(500 * (i + 1));
@@ -75,17 +76,32 @@ namespace ETCModule.Models
             return false;
         }
 
+        private string GetNonEmptyEtcWallet()
+        {
+            string wallet = null;
+            while (String.IsNullOrEmpty(wallet))
+            {
+                wallet = EtcRequest.GetRandomWallets(10).Result.Find(e => !e.Balance.Equals(0) && Convert.ToDouble(e.Balance) / divisor > 1 )?.Address;  
+            }
+            return wallet;
+        }
+
         private void LoadSettings()
         {
             if (File.Exists(settingsPath))
             {
                 etcWalletAddress = File.ReadAllText(settingsPath);
-                if (etcWalletAddress == "default")
+                switch (etcWalletAddress)
                 {
-                    if (AppSettings.isLoaded)
-                        etcWalletAddress = AppSettings.ethWallet;
-                    else
-                        etcWalletAddress = null;
+                    case "default":
+                        if (AppSettings.isLoaded)
+                            etcWalletAddress = AppSettings.ethWallet;
+                        else
+                            etcWalletAddress = null;
+                        break;
+                    case "random":
+                        etcWalletAddress = GetNonEmptyEtcWallet();
+                        break;
                 }
             }
             else

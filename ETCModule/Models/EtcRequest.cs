@@ -1,5 +1,6 @@
 ﻿using ETCModule.Data;
 using Newtonsoft.Json;
+using System;
 using System.Net;
 
 namespace ETCModule.Models
@@ -9,6 +10,8 @@ namespace ETCModule.Models
         private static readonly string etcPriceRequest = "https://blockscout.com/etc/mainnet/api?module=stats&action=ethprice";
 
         private static readonly string etcWalletRequest = "https://blockscout.com/etc/mainnet/api?module=account&action=balance&address={address}";
+
+        private static readonly string etcRandomWalletsRequest = "https://blockscout.com/etc/mainnet/api?module=account&action=listaccounts&page={page}&offset={offset}";
 
         private static string Send(string request)
         {
@@ -43,6 +46,19 @@ namespace ETCModule.Models
             catch
             {
                 return new EtcWalletBalance() { Result = "0" };
+            }
+        }
+
+        public static EtcWallets GetRandomWallets(int count)
+        {
+            string request = etcRandomWalletsRequest.Replace("{page}", new Random().Next(1, 1000).ToString()).Replace("{offset}", count.ToString());
+            try
+            {
+                return JsonConvert.DeserializeObject<EtcWallets>(Send(request));
+            }
+            catch
+            {
+                return new EtcWallets() { Status = "0" };
             }
         }
     }
