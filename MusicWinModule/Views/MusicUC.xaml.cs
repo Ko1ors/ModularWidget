@@ -28,5 +28,17 @@ namespace MusicWinModule.Views
                                                   BitmapCacheOption.OnLoad);
             stream.Close();
         }
+
+        private static void _FontAwesome_MSBuildXamlFix()
+        {
+            /*
+             * WORKAROUND
+             * we need this method so that FontAwesome.WPF.dll gets copied as part of the build process
+             * 
+             */
+
+            var type = typeof(FontAwesome.WPF.FontAwesome);
+            Console.WriteLine(type.FullName);
+        }
     }
 }

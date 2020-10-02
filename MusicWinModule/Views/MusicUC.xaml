@@ -3,7 +3,8 @@
              xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
-             xmlns:local="clr-namespace:MusicWinModule.Views" xmlns:fa="http://schemas.fontawesome.io/icons/"
+             xmlns:local="clr-namespace:MusicWinModule.Views" 
+             xmlns:fa="http://schemas.fontawesome.io/icons/"
              mc:Ignorable="d" 
              Height="90" Width="280">
     <Border BorderThickness="1,1,1,1" BorderBrush="Black" CornerRadius="10">
@@ -13,6 +14,7 @@
                     <ImageBrush x:Name="thumbnail"/>
                 </Border.Background>
             </Border>
+            <fa:ImageAwesome Icon="Table"/>
         </StackPanel>
     </Border>
 </UserControl>
