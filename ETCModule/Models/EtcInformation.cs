@@ -78,13 +78,15 @@ namespace ETCModule.Models
         private void LoadSettings()
         {
             if (File.Exists(settingsPath))
-                etcWalletAddress = File.ReadAllText(settingsPath);
-            if (etcWalletAddress == "default")
             {
-                if (AppSettings.isLoaded)
-                    etcWalletAddress = AppSettings.ethWallet;
-                else
-                    etcWalletAddress = null;
+                etcWalletAddress = File.ReadAllText(settingsPath);
+                if (etcWalletAddress == "default")
+                {
+                    if (AppSettings.isLoaded)
+                        etcWalletAddress = AppSettings.ethWallet;
+                    else
+                        etcWalletAddress = null;
+                }
             }
             else
                 File.WriteAllText(settingsPath, etcWalletAddress);
