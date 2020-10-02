@@ -6,6 +6,8 @@
         public static string ethWallet;
         public static int updateTime;
 
+        public static bool isLoaded { get; private set; }
+
         public static void Set(string apiKey, string wallet, int time)
         {
             ethApiKey = apiKey;
@@ -26,6 +28,7 @@
             ethApiKey = Properties.Settings.Default.ethApiKey;
             ethWallet = Properties.Settings.Default.ethWallet;
             updateTime = Properties.Settings.Default.updateTime;
+            isLoaded = true;
         }
     }
 }

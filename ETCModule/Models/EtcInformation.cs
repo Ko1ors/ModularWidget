@@ -4,6 +4,7 @@ using Newtonsoft.Json;
 using System;
 using System.IO;
 using System.Threading;
+using System.Windows;
 
 namespace ETCModule.Models
 {
@@ -78,6 +79,13 @@ namespace ETCModule.Models
         {
             if (File.Exists(settingsPath))
                 etcWalletAddress = File.ReadAllText(settingsPath);
+            if (etcWalletAddress == "default")
+            {
+                if (AppSettings.isLoaded)
+                    etcWalletAddress = AppSettings.ethWallet;
+                else
+                    etcWalletAddress = null;
+            }
             else
                 File.WriteAllText(settingsPath, etcWalletAddress);
         }
