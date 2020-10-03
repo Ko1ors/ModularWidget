@@ -7,14 +7,52 @@
              xmlns:fa="http://schemas.fontawesome.io/icons/"
              mc:Ignorable="d" 
              Height="90" Width="280">
+    <UserControl.Resources>
+        <Style TargetType="Button" x:Key="RoundButtonStyle">
+            <Setter Property="Background" Value="#14141f"/>
+            <Setter Property="FontFamily" Value="Arial Black"/>
+            <Setter Property="Foreground" Value="White"/>
+            <Setter Property="Height" Value="auto"/>
+            <Setter Property="Margin" Value="10"/>
+            <Setter Property="Template">
+                <Setter.Value>
+                    <ControlTemplate TargetType="{x:Type Button}">
+                        <Grid>
+                            <Border x:Name="NavButton" CornerRadius="20" BorderBrush="White" BorderThickness="2" />
+                            <ContentPresenter HorizontalAlignment="Center" VerticalAlignment="Center"/>
+                        </Grid>
+                        <ControlTemplate.Triggers>
+                            <Trigger Property="IsMouseOver" Value="True">
+                                <Setter TargetName="NavButton" Property="BorderBrush" Value="#FFE6DDDD"/>
+                                <Setter TargetName="NavButton" Property="Background" Value="WhiteSmoke"/>
+                            </Trigger>
+                            <Trigger Property="IsPressed" Value="True">
+                                <Setter TargetName="NavButton" Property="Background" Value="White"/>
+                            </Trigger>
+                        </ControlTemplate.Triggers>
+                    </ControlTemplate>
+                </Setter.Value>
+            </Setter>
+        </Style>
+    </UserControl.Resources>
     <Border BorderThickness="1,1,1,1" BorderBrush="Black" CornerRadius="10">
         <StackPanel  Orientation="Horizontal">
-            <Border BorderThickness="1,1,1,1" BorderBrush="Black" Width="75" Height="75" CornerRadius="10" Margin="10,0,5,0">
+            <Border BorderThickness="1,1,1,1" BorderBrush="Black" Width="75" Height="75" CornerRadius="10" Margin="10,0,0,0">
                 <Border.Background>
                     <ImageBrush x:Name="thumbnail"/>
                 </Border.Background>
             </Border>
-            <fa:ImageAwesome Icon="Table"/>
+            <Grid Margin="0,0,0,25"  Width="193" VerticalAlignment="Top">
+                <Button Height="40" Width="40" Margin="20,0,0,0" Style="{StaticResource RoundButtonStyle}" HorizontalAlignment="Left">
+                    <fa:ImageAwesome Icon="StepBackward" Foreground="DarkSlateGray" Height="20" Width="14"  />
+                </Button>
+                <Button Height="40" Width="40" Style="{StaticResource RoundButtonStyle}" HorizontalAlignment="Center">
+                    <fa:ImageAwesome Icon="Play" Foreground="DarkSlateGray" Height="18" Width="18" HorizontalAlignment="Right"/>
+                </Button>
+                <Button Height="40" Width="40" Margin="0,0,20,0" Style="{StaticResource RoundButtonStyle}" HorizontalAlignment="Right">
+                    <fa:ImageAwesome Icon="StepForward" Foreground="DarkSlateGray" Height="20" Width="14"/>
+                </Button>
+            </Grid>
         </StackPanel>
     </Border>
 </UserControl>

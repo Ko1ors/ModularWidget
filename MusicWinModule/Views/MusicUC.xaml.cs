@@ -13,6 +13,7 @@ namespace MusicWinModule.Views
     {
         public MusicUC()
         {
+            FontAwesome_MSBuildXamlFix();
             InitializeComponent();
             UpdateThumbnailAsync();
         }
@@ -29,7 +30,7 @@ namespace MusicWinModule.Views
             stream.Close();
         }
 
-        private static void _FontAwesome_MSBuildXamlFix()
+        private static void FontAwesome_MSBuildXamlFix()
         {
             /*
              * WORKAROUND
