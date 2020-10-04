@@ -1,9 +1,7 @@
 ﻿using System;
 using System.IO;
 using System.Threading;
-using System.Threading.Tasks;
 using System.Windows.Controls;
-using System.Windows.Documents;
 using System.Windows.Media.Imaging;
 using System.Windows.Threading;
 using Windows.Media.Control;
@@ -38,9 +36,7 @@ namespace MusicWinModule.Views
         {
             var session = sender.GetCurrentSession();
             if (session != null)  
-            {
-                System.Threading.Tasks.Task.Run(() => TryUpdate(session, 10, 50)); 
-            }
+                TryUpdate(session, 10, 50);
         }
 
         private void TryUpdate(GlobalSystemMediaTransportControlsSession session, int tries, int timeBetween)
@@ -107,34 +103,6 @@ namespace MusicWinModule.Views
         private GlobalSystemMediaTransportControlsSessionManager GetGlobalSystemMediaTransportControlsSessionManager()
         {
             return GlobalSystemMediaTransportControlsSessionManager.RequestAsync().GetAwaiter().GetResult();
-        }
-
-        private async System.Threading.Tasks.Task UpdateThumbnailAsync(GlobalSystemMediaTransportControlsSession session)
-        {
-            
-           //var sessionManager = GetGlobalSystemMediaTransportControlsSessionManager();
-            //var gsmtcsm = sessionManager.GetCurrentSession();
-            var mediaProperties = session.TryGetMediaPropertiesAsync().GetAwaiter().GetResult();
-            var ras = await mediaProperties.Thumbnail.OpenReadAsync();
-            
-            var stream = ras.AsStream();
-            thumbnail.ImageSource = BitmapFrame.Create(stream,
-                                                  BitmapCreateOptions.None,
-                                                  BitmapCacheOption.OnLoad);
-            stream.Close();
-        }
-
-        private async System.Threading.Tasks.Task UpdateThumbnailAsync()
-        {
-            var gsmtcsm = sessionManager.GetCurrentSession();
-            var mediaProperties = gsmtcsm.TryGetMediaPropertiesAsync().GetAwaiter().GetResult();
-            var ras = await mediaProperties.Thumbnail.OpenReadAsync();
-            Console.WriteLine(mediaProperties.Thumbnail.ToString());
-            var stream = ras.AsStream();
-            thumbnail.ImageSource = BitmapFrame.Create(stream,
-                                                  BitmapCreateOptions.None,
-                                                  BitmapCacheOption.OnLoad);
-            stream.Close();
         }
 
         private static void FontAwesome_MSBuildXamlFix()
