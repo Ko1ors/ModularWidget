@@ -1,7 +1,9 @@
 ﻿using System;
 using System.IO;
 using System.Threading;
+using System.Threading.Tasks;
 using System.Windows.Controls;
+using System.Windows.Documents;
 using System.Windows.Media.Imaging;
 using System.Windows.Threading;
 using Windows.Media.Control;
@@ -22,6 +24,14 @@ namespace MusicWinModule.Views
             if (sessionManager == null)
                 throw new Exception();
             sessionManager.CurrentSessionChanged += SessionManager_CurrentSessionChanged;
+            TryUpdateOnStart();
+        }
+
+        private void TryUpdateOnStart()
+        {
+            var session = sessionManager.GetCurrentSession();
+            if (session != null)
+                TryUpdate(session, 10, 50);
         }
 
         private void SessionManager_CurrentSessionChanged(GlobalSystemMediaTransportControlsSessionManager sender, CurrentSessionChangedEventArgs args)
@@ -29,13 +39,14 @@ namespace MusicWinModule.Views
             var session = sender.GetCurrentSession();
             if (session != null)  
             {
-                TryUpdate(session, 10, 50);
+                System.Threading.Tasks.Task.Run(() => TryUpdate(session, 10, 50)); 
             }
         }
 
         private void TryUpdate(GlobalSystemMediaTransportControlsSession session, int tries, int timeBetween)
         {
-            TryUpdateThumbnail(session, 10, 50);
+            TryUpdateTitleAndArtist(session, 5, 50);
+            TryUpdateThumbnail(session, 10, 50);        
         }
 
         private void TryUpdateThumbnail(GlobalSystemMediaTransportControlsSession session, int tries, int timeBetween)
@@ -49,12 +60,41 @@ namespace MusicWinModule.Views
                         throw new Exception();
                     var ras =  mediaProperties.Thumbnail.OpenReadAsync();
                     ras.AsTask().Wait();
-                    var stream = ras.GetResults().AsStream();
-                    Dispatcher.BeginInvoke(DispatcherPriority.Background, (SendOrPostCallback)delegate
+                    using (var stream = ras.GetResults().AsStream())
                     {
-                        thumbnail.ImageSource = BitmapFrame.Create(stream, BitmapCreateOptions.None, BitmapCacheOption.OnLoad);
+                        Dispatcher.BeginInvoke(DispatcherPriority.Background, (SendOrPostCallback)delegate
+                        {
+                            thumbnail.ImageSource = BitmapFrame.Create(stream, BitmapCreateOptions.None, BitmapCacheOption.OnLoad);
+                        }, null).Wait();
+                        ras.Close();
                         stream.Close();
-                    }, null);   
+                        break;
+                    }
+                }
+                catch
+                {
+                    Thread.Sleep(timeBetween);
+                    tries--;
+                }
+            }
+        }
+
+        private void TryUpdateTitleAndArtist(GlobalSystemMediaTransportControlsSession session, int tries, int timeBetween)
+        {
+            while (tries > 0)
+            {
+                try
+                {
+                    var mediaProperties = session.TryGetMediaPropertiesAsync().GetAwaiter().GetResult();
+                    if (mediaProperties.Title == null && mediaProperties.Artist == null)
+                        throw new Exception();
+
+                        Dispatcher.BeginInvoke(DispatcherPriority.Background, (SendOrPostCallback)delegate
+                        {
+                            title.Text = mediaProperties.Title;
+                            artist.Text = mediaProperties.Artist;
+                        }, null).Wait();
+                        break;
                 }
                 catch
                 {
