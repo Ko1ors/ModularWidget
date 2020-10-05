@@ -117,6 +117,12 @@ namespace MusicWinModule.Views
 
         private void ForceUpdateThumbnail(GlobalSystemMediaTransportControlsSession sender)
         {
+            /*
+             * WORKAROUND 
+             * 
+             * 
+             */
+
             Thread.Sleep(100);
             TryUpdateThumbnail(sender, 10, 50);
         }
