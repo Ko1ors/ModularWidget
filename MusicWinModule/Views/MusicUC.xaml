@@ -62,7 +62,7 @@
                         </ToolTip>
                     </TextBlock.ToolTip>
                 </TextBlock>
-                <TextBlock x:Name="artist" Text="Artist name" Height="14" FontSize="12" Margin="0,3,0,0" FontFamily="Arial Black" Width="180" TextTrimming="CharacterEllipsis" />
+                <TextBlock x:Name="artist" Text="{Binding Path=Artist, ElementName=musicUC, FallbackValue=Artist name, TargetNullValue=Artist name }" Height="14" FontSize="12" Margin="0,3,0,0" FontFamily="Arial Black" Width="180" TextTrimming="CharacterEllipsis" />
             </StackPanel>
         </StackPanel>
     </Border>

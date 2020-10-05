@@ -17,6 +17,7 @@ namespace MusicWinModule.Views
         private GlobalSystemMediaTransportControlsSessionManager sessionManager;
 
         public static readonly DependencyProperty TitleProperty = DependencyProperty.Register("Title", typeof(string), typeof(MusicUC), new FrameworkPropertyMetadata("Title"));
+        public static readonly DependencyProperty ArtistProperty = DependencyProperty.Register("Artist", typeof(string), typeof(MusicUC), new FrameworkPropertyMetadata("Artist"));
         private string Title { 
             get 
             {
@@ -27,6 +28,19 @@ namespace MusicWinModule.Views
                 this.SetValue(TitleProperty, value);
             } 
         }
+
+        private string Artist
+        {
+            get
+            {
+                return (string)this.GetValue(ArtistProperty);
+            }
+            set
+            {
+                this.SetValue(ArtistProperty, value);
+            }
+        }
+
         public MusicUC()
         {
             FontAwesome_MSBuildXamlFix();
@@ -35,6 +49,7 @@ namespace MusicWinModule.Views
             if (sessionManager == null)
                 throw new Exception();
             Title = null;
+            Artist = null;
             sessionManager.CurrentSessionChanged += SessionManager_CurrentSessionChanged;
             TryUpdateOnStart();
         }
@@ -101,7 +116,7 @@ namespace MusicWinModule.Views
                         Dispatcher.BeginInvoke(DispatcherPriority.Render, (SendOrPostCallback)delegate
                         {
                             Title = mediaProperties.Title;
-                            artist.Text = mediaProperties.Artist;
+                            Artist = mediaProperties.Artist;
                         }, null);
                         break;
                 }
