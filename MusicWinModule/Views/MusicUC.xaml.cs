@@ -34,7 +34,7 @@ namespace MusicWinModule.Views
             sessionManager = GetGlobalSystemMediaTransportControlsSessionManager();
             if (sessionManager == null)
                 throw new Exception();
-            Title = "Music title";
+            Title = null;
             sessionManager.CurrentSessionChanged += SessionManager_CurrentSessionChanged;
             TryUpdateOnStart();
         }
