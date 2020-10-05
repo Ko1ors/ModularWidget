@@ -49,7 +49,7 @@
                         <fa:ImageAwesome Icon="StepBackward" Foreground="DarkSlateGray" Height="20" Width="14"/>
                     </Button>
                     <Button Height="40" Width="40" Margin="0,0,0,0"  Style="{StaticResource RoundButtonStyle}" HorizontalAlignment="Center">
-                        <fa:ImageAwesome Icon="Play" Foreground="DarkSlateGray" Height="18" Width="18" HorizontalAlignment="Right"/>
+                        <fa:ImageAwesome Icon="{Binding Path=ButtonLogo, ElementName=musicUC, FallbackValue=Play }" Foreground="DarkSlateGray" Height="18" Width="18" HorizontalAlignment="Right"/>
                     </Button>
                     <Button Height="40" Width="40" Margin="0,0,20,0" Style="{StaticResource RoundButtonStyle}" HorizontalAlignment="Right">
                         <fa:ImageAwesome Icon="StepForward" Foreground="DarkSlateGray" Height="20" Width="14"/>
