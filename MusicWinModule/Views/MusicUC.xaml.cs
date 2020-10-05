@@ -48,8 +48,6 @@ namespace MusicWinModule.Views
             sessionManager = GetGlobalSystemMediaTransportControlsSessionManager();
             if (sessionManager == null)
                 throw new Exception();
-            Title = null;
-            Artist = null;
             sessionManager.CurrentSessionChanged += SessionManager_CurrentSessionChanged;
             TryUpdateOnStart();
         }
@@ -59,6 +57,8 @@ namespace MusicWinModule.Views
             var session = sessionManager.GetCurrentSession();
             if (session != null)
                 TryUpdate(session, 10, 50);
+            else
+                SetDefault();
         }
 
         private void SessionManager_CurrentSessionChanged(GlobalSystemMediaTransportControlsSessionManager sender, CurrentSessionChangedEventArgs args)
@@ -66,6 +66,8 @@ namespace MusicWinModule.Views
             var session = sender.GetCurrentSession();
             if (session != null)  
                 TryUpdate(session, 10, 50);
+            else
+                SetDefault();
         }
 
         private void TryUpdate(GlobalSystemMediaTransportControlsSession session, int tries, int timeBetween)
@@ -126,6 +128,16 @@ namespace MusicWinModule.Views
                     tries--;
                 }
             }
+        }
+
+        private void SetDefault()
+        {
+            Dispatcher.BeginInvoke(DispatcherPriority.Render, (SendOrPostCallback)delegate
+            {
+                Title = null;
+                Artist = null;
+                thumbnail.ImageSource = null;
+            },null);
         }
 
         private GlobalSystemMediaTransportControlsSessionManager GetGlobalSystemMediaTransportControlsSessionManager()
