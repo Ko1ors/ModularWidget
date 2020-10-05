@@ -129,7 +129,6 @@ namespace MusicWinModule.Views
 
         private void UpdateLogoButton(GlobalSystemMediaTransportControlsSession session)
         {
-            
             Dispatcher.BeginInvoke(DispatcherPriority.Render, (SendOrPostCallback)delegate
             {
                 if (session.GetPlaybackInfo().Controls.IsPauseEnabled)
@@ -241,6 +240,29 @@ namespace MusicWinModule.Views
 
             var type = typeof(FontAwesome.WPF.FontAwesome);
             Console.WriteLine(type.FullName);
+        }
+
+        private void PlayButton_Click(object sender, RoutedEventArgs e)
+        {
+            if(currentSession != null)
+            {
+                if (currentSession.GetPlaybackInfo().Controls.IsPauseEnabled)
+                    currentSession.TryPauseAsync();
+                else
+                    currentSession.TryPlayAsync();
+            }
+        }
+
+        private void StepBackward_Click(object sender, RoutedEventArgs e)
+        {
+            if (currentSession != null)
+                currentSession.TrySkipPreviousAsync();
+        }
+
+        private void StepForward_Click(object sender, RoutedEventArgs e)
+        {
+            if (currentSession != null)
+                currentSession.TrySkipNextAsync();
         }
     }
 }
