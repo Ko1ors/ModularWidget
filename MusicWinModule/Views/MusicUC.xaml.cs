@@ -1,6 +1,7 @@
 ﻿using System;
 using System.IO;
 using System.Threading;
+using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Media.Imaging;
 using System.Windows.Threading;
@@ -14,6 +15,18 @@ namespace MusicWinModule.Views
     public partial class MusicUC : UserControl
     {
         private GlobalSystemMediaTransportControlsSessionManager sessionManager;
+
+        public static readonly DependencyProperty TitleProperty = DependencyProperty.Register("Title", typeof(string), typeof(MusicUC), new FrameworkPropertyMetadata("Title"));
+        private string Title { 
+            get 
+            {
+                return (string)this.GetValue(TitleProperty);
+            } 
+            set
+            {
+                this.SetValue(TitleProperty, value);
+            } 
+        }
         public MusicUC()
         {
             FontAwesome_MSBuildXamlFix();
@@ -21,6 +34,7 @@ namespace MusicWinModule.Views
             sessionManager = GetGlobalSystemMediaTransportControlsSessionManager();
             if (sessionManager == null)
                 throw new Exception();
+            Title = "Music title";
             sessionManager.CurrentSessionChanged += SessionManager_CurrentSessionChanged;
             TryUpdateOnStart();
         }
@@ -58,12 +72,11 @@ namespace MusicWinModule.Views
                     ras.AsTask().Wait();
                     using (var stream = ras.GetResults().AsStream())
                     {
-                        Dispatcher.BeginInvoke(DispatcherPriority.Background, (SendOrPostCallback)delegate
+                        Dispatcher.BeginInvoke(DispatcherPriority.Render, (SendOrPostCallback)delegate
                         {
                             thumbnail.ImageSource = BitmapFrame.Create(stream, BitmapCreateOptions.None, BitmapCacheOption.OnLoad);
                         }, null).Wait();
                         ras.Close();
-                        stream.Close();
                         break;
                     }
                 }
@@ -85,11 +98,11 @@ namespace MusicWinModule.Views
                     if (mediaProperties.Title == null && mediaProperties.Artist == null)
                         throw new Exception();
 
-                        Dispatcher.BeginInvoke(DispatcherPriority.Background, (SendOrPostCallback)delegate
+                        Dispatcher.BeginInvoke(DispatcherPriority.Render, (SendOrPostCallback)delegate
                         {
-                            title.Text = mediaProperties.Title;
+                            Title = mediaProperties.Title;
                             artist.Text = mediaProperties.Artist;
-                        }, null).Wait();
+                        }, null);
                         break;
                 }
                 catch

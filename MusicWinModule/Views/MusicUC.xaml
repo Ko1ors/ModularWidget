@@ -6,7 +6,8 @@
              xmlns:local="clr-namespace:MusicWinModule.Views" 
              xmlns:fa="http://schemas.fontawesome.io/icons/"
              mc:Ignorable="d" 
-             Height="100" Width="280">
+             Height="100" Width="280"
+             x:Name="musicUC">
     <UserControl.Resources>
         <Style TargetType="Button" x:Key="RoundButtonStyle">
             <Setter Property="Background" Value="#14141f"/>
@@ -54,10 +55,10 @@
                         <fa:ImageAwesome Icon="StepForward" Foreground="DarkSlateGray" Height="20" Width="14"/>
                     </Button>
                 </Grid>
-                <TextBlock x:Name="title" Text="Music title" Height="16" FontSize="14" MaxWidth="180" Margin="0,8,0,0" FontFamily="Arial Black" Width="180" TextTrimming="CharacterEllipsis" >
+                <TextBlock Text="{Binding Path=Title, ElementName=musicUC}" Height="16" FontSize="14" MaxWidth="180" Margin="0,8,0,0" FontFamily="Arial Black" Width="180" TextTrimming="CharacterEllipsis" >
                     <TextBlock.ToolTip>
-                        <ToolTip DataContext="{Binding Path=PlacementTarget, RelativeSource={x:Static RelativeSource.Self}}">
-                            <TextBlock Text="{Binding Text,ElementName=title}"/>
+                        <ToolTip DataContext="{Binding Path=PlacementTarget.Parent.Parent.Parent.Parent, RelativeSource={x:Static RelativeSource.Self}}" MaxWidth="350" >
+                            <TextBlock Text="{Binding Path=Title}" TextWrapping="Wrap"/>
                         </ToolTip>
                     </TextBlock.ToolTip>
                 </TextBlock>
