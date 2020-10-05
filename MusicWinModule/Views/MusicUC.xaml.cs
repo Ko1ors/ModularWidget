@@ -16,7 +16,7 @@ namespace MusicWinModule.Views
     public partial class MusicUC : UserControl
     {
         private GlobalSystemMediaTransportControlsSessionManager sessionManager;
-        private GlobalSystemMediaTransportControlsSession session;
+        private GlobalSystemMediaTransportControlsSession currentSession;
 
         public static readonly DependencyProperty TitleProperty = DependencyProperty.Register("Title", typeof(string), typeof(MusicUC), new FrameworkPropertyMetadata("Title"));
         public static readonly DependencyProperty ArtistProperty = DependencyProperty.Register("Artist", typeof(string), typeof(MusicUC), new FrameworkPropertyMetadata("Artist"));
@@ -64,17 +64,15 @@ namespace MusicWinModule.Views
             InitializeComponent();
             sessionManager = GetGlobalSystemMediaTransportControlsSessionManager();
             if (sessionManager == null)
-                throw new Exception(); 
-            session = sessionManager.GetCurrentSession();
-            if(session != null)
-                session.PlaybackInfoChanged += Session_PlaybackInfoChanged;
-            else
-                sessionManager.CurrentSessionChanged += SessionManager_CurrentSessionChanged;
+                throw new Exception();
+            sessionManager.CurrentSessionChanged += SessionManager_CurrentSessionChanged;
             TryUpdateOnStart();
         }
 
+
         private void TryUpdateOnStart()
         {
+            var session = sessionManager.GetCurrentSession();
             if (session != null)
                 TryUpdate(session, 10, 50);
             else
@@ -83,67 +81,52 @@ namespace MusicWinModule.Views
 
         private void SessionManager_CurrentSessionChanged(GlobalSystemMediaTransportControlsSessionManager sender, CurrentSessionChangedEventArgs args)
         {
-            var currentSession = sender.GetCurrentSession();
-            if (currentSession != null && session == null)
-            {
-                sessionManager.CurrentSessionChanged -= SessionManager_CurrentSessionChanged;
-                session = currentSession;
-                session.PlaybackInfoChanged += Session_PlaybackInfoChanged;
+            var session = sender.GetCurrentSession();
+            if (session != null)  
                 TryUpdate(session, 10, 50);
-            }
             else
                 SetDefault();
         }
 
         private void TryUpdate(GlobalSystemMediaTransportControlsSession session, int tries, int timeBetween)
         {          
-            TryUpdateTitleAndArtist(session, tries, timeBetween);
-            TryUpdateThumbnail(session, tries, timeBetween);        
+            UpdatePlaybackInfo(session);
+            TryUpdateTitleAndArtist(session, 5, 50);
+            TryUpdateThumbnail(session, 10, 50);        
         }
 
+        private void UpdatePlaybackInfo(GlobalSystemMediaTransportControlsSession session)
+        {
+            var pi = session.GetPlaybackInfo();
+            UpdateLogoButton(session);
+            if(currentSession != null)
+                currentSession.PlaybackInfoChanged -= Session_PlaybackInfoChanged;
+            currentSession = session;
+            currentSession.PlaybackInfoChanged += Session_PlaybackInfoChanged;
+        }
 
         private void Session_PlaybackInfoChanged(GlobalSystemMediaTransportControlsSession sender, PlaybackInfoChangedEventArgs args)
         {
-            UpdateLogoButton(sender);
-            if (session != null && sender != null)
+            if (currentSession != null && SessionsEquals(sender, currentSession))
             {
-                session = sender;
-                TryUpdate(session, 10, 50);
-            }     
+                UpdateLogoButton(sender);
+                TryUpdateTitleAndArtist(sender, 5, 50);
+                ForceUpdateThumbnail(sender);
+            }
         }
 
-        private bool SessionsEquals(GlobalSystemMediaTransportControlsSession s1, GlobalSystemMediaTransportControlsSession s2)
+        private void ForceUpdateThumbnail(GlobalSystemMediaTransportControlsSession sender)
         {
-            if (s1 == null && s2 == null)
-                return true;
-            if (s1 == null || s2 == null)
-                return false;
-            if (s1.SourceAppUserModelId != s2.SourceAppUserModelId)
-                return false;
-            var mp1 = s1.TryGetMediaPropertiesAsync().GetAwaiter().GetResult();
-            var mp2 = s2.TryGetMediaPropertiesAsync().GetAwaiter().GetResult();
-            return MediaPropertiesEquals(mp1, mp2);
+            Thread.Sleep(100);
+            TryUpdateThumbnail(sender, 10, 50);
         }
 
-        private bool MediaPropertiesEquals(GlobalSystemMediaTransportControlsSessionMediaProperties mp1, GlobalSystemMediaTransportControlsSessionMediaProperties mp2)
+        private void UpdateLogoButton(GlobalSystemMediaTransportControlsSession session)
         {
-            if (mp1 == null && mp2 == null)
-                return true;
-            if (mp1 == null || mp2 == null)
-                return false;
-            bool t = mp1.AlbumArtist == mp2.AlbumArtist && mp1.AlbumTitle == mp2.AlbumTitle && mp1.AlbumTrackCount == mp2.AlbumTrackCount
-                && mp1.Artist == mp2.Artist && mp1.Subtitle == mp2.Subtitle && mp1.Title == mp2.Title && mp1.TrackNumber == mp2.TrackNumber;
-            Console.WriteLine(t);
-            Console.WriteLine(mp1.Title);
-            Console.WriteLine(mp2.Title);
-            return t;
-        }
-
-        private void UpdateLogoButton(GlobalSystemMediaTransportControlsSession currentSession)
-        {
+            
             Dispatcher.BeginInvoke(DispatcherPriority.Render, (SendOrPostCallback)delegate
             {
-                if (currentSession.GetPlaybackInfo().Controls.IsPauseEnabled)
+                if (session.GetPlaybackInfo().Controls.IsPauseEnabled)
                     ButtonLogo = "Pause";
                 else
                     ButtonLogo = "Play";
@@ -212,6 +195,29 @@ namespace MusicWinModule.Views
                 Artist = null;
                 thumbnail.ImageSource = null;
             },null);
+        }
+
+        private bool SessionsEquals(GlobalSystemMediaTransportControlsSession s1, GlobalSystemMediaTransportControlsSession s2)
+        {
+            if (s1 == null && s2 == null)
+                return true;
+            if (s1 == null || s2 == null)
+                return false;
+            if (s1.SourceAppUserModelId != s2.SourceAppUserModelId)
+                return false;
+            var mp1 = s1.TryGetMediaPropertiesAsync().GetAwaiter().GetResult();
+            var mp2 = s2.TryGetMediaPropertiesAsync().GetAwaiter().GetResult();
+            return MediaPropertiesEquals(mp1, mp2);
+        }
+
+        private bool MediaPropertiesEquals(GlobalSystemMediaTransportControlsSessionMediaProperties mp1, GlobalSystemMediaTransportControlsSessionMediaProperties mp2)
+        {
+            if (mp1 == null && mp2 == null)
+                return true;
+            if (mp1 == null || mp2 == null)
+                return false;
+            return mp1.AlbumArtist == mp2.AlbumArtist && mp1.AlbumTitle == mp2.AlbumTitle && mp1.AlbumTrackCount == mp2.AlbumTrackCount
+                && mp1.Artist == mp2.Artist && mp1.Subtitle == mp2.Subtitle && mp1.Title == mp2.Title && mp1.TrackNumber == mp2.TrackNumber;
         }
 
         private GlobalSystemMediaTransportControlsSessionManager GetGlobalSystemMediaTransportControlsSessionManager()
