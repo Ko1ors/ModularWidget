@@ -112,7 +112,14 @@ namespace MusicWinModule.Views
                 UpdateLogoButton(sender);
                 TryUpdateTitleAndArtist(sender, 5, 50);
                 ForceUpdateThumbnail(sender);
+                ForceUpdateSession(sender);
             }
+        }
+
+        private void ForceUpdateSession(GlobalSystemMediaTransportControlsSession sender)
+        {
+            if (!sender.GetPlaybackInfo().Controls.IsPlayEnabled)
+                SetDefault();
         }
 
         private void ForceUpdateThumbnail(GlobalSystemMediaTransportControlsSession sender)
@@ -245,7 +252,7 @@ namespace MusicWinModule.Views
         private void PlayButton_Click(object sender, RoutedEventArgs e)
         {
             if(currentSession != null)
-            {
+            {            
                 if (currentSession.GetPlaybackInfo().Controls.IsPauseEnabled)
                     currentSession.TryPauseAsync();
                 else
