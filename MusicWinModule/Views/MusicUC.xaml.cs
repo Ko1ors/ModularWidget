@@ -92,7 +92,11 @@ namespace MusicWinModule.Views
         {          
             UpdatePlaybackInfo(session);
             TryUpdateTitleAndArtist(session, 5, 50);
-            TryUpdateThumbnail(session, 10, 50);        
+            TryUpdateThumbnail(session, 10, 50);
+            Dispatcher.BeginInvoke(DispatcherPriority.Render, (SendOrPostCallback)delegate
+            {
+                Visibility = Visibility.Visible;
+            }, null).Wait();
         }
 
         private void UpdatePlaybackInfo(GlobalSystemMediaTransportControlsSession session)
@@ -110,16 +114,27 @@ namespace MusicWinModule.Views
             if (currentSession != null && SessionsEquals(sender, currentSession))
             {
                 UpdateLogoButton(sender);
-                TryUpdateTitleAndArtist(sender, 5, 50);
+                TryUpdateTitleAndArtist(sender, 5, 50);              
                 ForceUpdateThumbnail(sender);
+                Dispatcher.BeginInvoke(DispatcherPriority.Render, (SendOrPostCallback)delegate
+                {
+                    Visibility = Visibility.Visible;
+                }, null).Wait();
                 ForceUpdateSession(sender);
             }
         }
 
         private void ForceUpdateSession(GlobalSystemMediaTransportControlsSession sender)
         {
-            if (!sender.GetPlaybackInfo().Controls.IsPlayEnabled)
-                SetDefault();
+            /*
+             * WORKAROUND 
+             * 
+             * 
+             */
+            Console.WriteLine(sender.GetTimelineProperties().StartTime);
+            Console.WriteLine(sender.GetTimelineProperties().EndTime);
+            //if (sender.GetTimelineProperties().Position)
+            // SetDefault();
         }
 
         private void ForceUpdateThumbnail(GlobalSystemMediaTransportControlsSession sender)
@@ -203,6 +218,7 @@ namespace MusicWinModule.Views
         {
             Dispatcher.BeginInvoke(DispatcherPriority.Render, (SendOrPostCallback)delegate
             {
+                Visibility = Visibility.Collapsed;
                 Title = null;
                 Artist = null;
                 thumbnail.ImageSource = null;
