@@ -97,7 +97,6 @@ namespace MusicWinModule.Views
 
         private void UpdatePlaybackInfo(GlobalSystemMediaTransportControlsSession session)
         {
-            var pi = session.GetPlaybackInfo();
             UpdateLogoButton(session);
             if(currentSession != null)
                 currentSession.PlaybackInfoChanged -= Session_PlaybackInfoChanged;
@@ -109,10 +108,19 @@ namespace MusicWinModule.Views
         {
             if (currentSession != null && SessionsEquals(sender, currentSession))
             {
+                currentSession = sessionManager.GetCurrentSession();
                 UpdateLogoButton(sender);
                 TryUpdateTitleAndArtist(sender, 5, 50);
                 ForceUpdateThumbnail(sender);
+                ForceUpdateSession();
             }
+        }
+
+        private void ForceUpdateSession()
+        {
+            Thread.Sleep(500);
+            if (sessionManager.GetCurrentSession() == null)
+                SetDefault();
         }
 
         private void ForceUpdateThumbnail(GlobalSystemMediaTransportControlsSession sender)
@@ -246,7 +254,7 @@ namespace MusicWinModule.Views
         {
             if(currentSession != null)
             {
-                if (currentSession.GetPlaybackInfo().Controls.IsPauseEnabled)
+                if (sessionManager.GetCurrentSession().GetPlaybackInfo().Controls.IsPauseEnabled)
                     currentSession.TryPauseAsync();
                 else
                     currentSession.TryPlayAsync();
