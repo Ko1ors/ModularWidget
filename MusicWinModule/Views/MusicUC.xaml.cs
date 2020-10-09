@@ -109,7 +109,6 @@ namespace MusicWinModule.Views
         {
             if (currentSession != null && SessionsEquals(sender, currentSession))
             {
-                currentSession = sessionManager.GetCurrentSession();
                 UpdateLogoButton(currentSession);
                 TryUpdateTitleAndArtist(currentSession, 5, 50);
                 ForceUpdateThumbnail(currentSession);
@@ -128,7 +127,7 @@ namespace MusicWinModule.Views
 
             Thread.Sleep(500);
             Console.WriteLine(DateTimeOffset.Now.ToUnixTimeMilliseconds() - sessionUpdateTime);
-            if (sessionManager.GetCurrentSession() == null && DateTimeOffset.Now.ToUnixTimeMilliseconds() - sessionUpdateTime >= 400)
+            if (sessionManager.GetCurrentSession() == null && DateTimeOffset.Now.ToUnixTimeMilliseconds() - sessionUpdateTime >= 500)
                 SetDefault();
         }
 
@@ -146,13 +145,16 @@ namespace MusicWinModule.Views
 
         private void UpdateLogoButton(GlobalSystemMediaTransportControlsSession session)
         {
-            Dispatcher.BeginInvoke(DispatcherPriority.Render, (SendOrPostCallback)delegate
+            if (session != null)
             {
-                if (session.GetPlaybackInfo().Controls.IsPauseEnabled)
-                    ButtonLogo = "Pause";
-                else
-                    ButtonLogo = "Play";
-            }, null);
+                Dispatcher.BeginInvoke(DispatcherPriority.Render, (SendOrPostCallback)delegate
+                {
+                    if (session.GetPlaybackInfo().Controls.IsPauseEnabled)
+                        ButtonLogo = "Pause";
+                    else
+                        ButtonLogo = "Play";
+                }, null);
+            }
         }
 
         private void TryUpdateThumbnail(GlobalSystemMediaTransportControlsSession session, int tries, int timeBetween)
