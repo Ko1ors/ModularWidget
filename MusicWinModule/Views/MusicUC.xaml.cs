@@ -17,6 +17,7 @@ namespace MusicWinModule.Views
     {
         private GlobalSystemMediaTransportControlsSessionManager sessionManager;
         private GlobalSystemMediaTransportControlsSession currentSession;
+        private long sessionUpdateTime;
 
         public static readonly DependencyProperty TitleProperty = DependencyProperty.Register("Title", typeof(string), typeof(MusicUC), new FrameworkPropertyMetadata("Title"));
         public static readonly DependencyProperty ArtistProperty = DependencyProperty.Register("Artist", typeof(string), typeof(MusicUC), new FrameworkPropertyMetadata("Artist"));
@@ -109,17 +110,25 @@ namespace MusicWinModule.Views
             if (currentSession != null && SessionsEquals(sender, currentSession))
             {
                 currentSession = sessionManager.GetCurrentSession();
-                UpdateLogoButton(sender);
-                TryUpdateTitleAndArtist(sender, 5, 50);
-                ForceUpdateThumbnail(sender);
+                UpdateLogoButton(currentSession);
+                TryUpdateTitleAndArtist(currentSession, 5, 50);
+                ForceUpdateThumbnail(currentSession);
+                sessionUpdateTime = DateTimeOffset.Now.ToUnixTimeMilliseconds();
                 ForceUpdateSession();
             }
         }
 
         private void ForceUpdateSession()
         {
+            /*
+             * WORKAROUND 
+             * 
+             * 
+             */
+
             Thread.Sleep(500);
-            if (sessionManager.GetCurrentSession() == null)
+            Console.WriteLine(DateTimeOffset.Now.ToUnixTimeMilliseconds() - sessionUpdateTime);
+            if (sessionManager.GetCurrentSession() == null && DateTimeOffset.Now.ToUnixTimeMilliseconds() - sessionUpdateTime >= 400)
                 SetDefault();
         }
 
