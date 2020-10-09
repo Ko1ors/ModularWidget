@@ -2,6 +2,7 @@
 using System.ComponentModel;
 using System.IO;
 using System.Threading;
+using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Media.Imaging;
@@ -90,7 +91,8 @@ namespace MusicWinModule.Views
         }
 
         private void TryUpdate(GlobalSystemMediaTransportControlsSession session, int tries, int timeBetween)
-        {          
+        {
+            SetVisibility(Visibility.Visible);
             UpdatePlaybackInfo(session);
             TryUpdateTitleAndArtist(session, 5, 50);
             TryUpdateThumbnail(session, 10, 50);        
@@ -107,13 +109,15 @@ namespace MusicWinModule.Views
 
         private void Session_PlaybackInfoChanged(GlobalSystemMediaTransportControlsSession sender, PlaybackInfoChangedEventArgs args)
         {
+            Console.WriteLine(args.ToString());
             if (currentSession != null && SessionsEquals(sender, currentSession))
             {
                 UpdateLogoButton(currentSession);
+                SetVisibility(Visibility.Visible);
                 TryUpdateTitleAndArtist(currentSession, 5, 50);
                 ForceUpdateThumbnail(currentSession);
                 sessionUpdateTime = DateTimeOffset.Now.ToUnixTimeMilliseconds();
-                ForceUpdateSession();
+                Task.Run(() => ForceUpdateSession());
             }
         }
 
@@ -213,12 +217,22 @@ namespace MusicWinModule.Views
 
         private void SetDefault()
         {
+            SetVisibility(Visibility.Collapsed);
             Dispatcher.BeginInvoke(DispatcherPriority.Render, (SendOrPostCallback)delegate
             {
                 Title = null;
                 Artist = null;
                 thumbnail.ImageSource = null;
+               
             },null);
+        }
+
+        private void SetVisibility(Visibility visibility)
+        {
+            Dispatcher.BeginInvoke(DispatcherPriority.Render, (SendOrPostCallback)delegate
+            {
+                Visibility = visibility;
+            }, null);
         }
 
         private bool SessionsEquals(GlobalSystemMediaTransportControlsSession s1, GlobalSystemMediaTransportControlsSession s2)
