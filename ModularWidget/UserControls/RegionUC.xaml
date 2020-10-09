@@ -7,5 +7,5 @@
              xmlns:prism="http://prismlibrary.com/"
              mc:Ignorable="d" 
              d:DesignHeight="450" Width="280">
-    <ContentControl x:Name="contentControl" Margin="0,0,0,15" prism:RegionManager.RegionName="{Binding RegionName}"/>
+    <ContentControl x:Name="contentControl" prism:RegionManager.RegionName="{Binding RegionName}"/>
 </UserControl>

@@ -7,7 +7,8 @@
              xmlns:fa="http://schemas.fontawesome.io/icons/"
              mc:Ignorable="d" 
              Height="100" Width="280"
-             x:Name="musicUC">
+             x:Name="musicUC"
+             Margin="0,0,0,15">
     <UserControl.Resources>
         <Style TargetType="Button" x:Key="RoundButtonStyle">
             <Setter Property="Background" Value="#14141f"/>
