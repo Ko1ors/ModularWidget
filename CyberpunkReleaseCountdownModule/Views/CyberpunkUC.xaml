@@ -14,7 +14,29 @@
                 <ImageBrush ImageSource="/CyberpunkReleaseCountdownModule;component/Images/cyberpunk_image.png" TileMode="Tile" Stretch="Fill"/>
             </Border.Background>
             <StackPanel>
-                
+                <TextBlock Text="Cyberpunk 2077 Countdown" FontFamily="True Lies" FontSize="13" Margin="5"/>
+                <Grid Margin="10">
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="5*"/>
+                        <ColumnDefinition Width="10*"/>
+                        <ColumnDefinition Width="10*"/>
+                        <ColumnDefinition Width="10*"/>
+                        <ColumnDefinition Width="10*"/>
+                        <ColumnDefinition Width="5*"/>
+                    </Grid.ColumnDefinitions>
+                    <Grid.RowDefinitions>
+                        <RowDefinition Height="10*"/>
+                        <RowDefinition Height="10*"/>
+                    </Grid.RowDefinitions>
+                    <TextBlock Grid.Column="1" Grid.Row="0" Text="25" HorizontalAlignment="Center" FontFamily="True Lies"/>
+                    <TextBlock Grid.Column="1" Grid.Row="1" Text="Days" HorizontalAlignment="Center" FontFamily="True Lies"/>
+                    <TextBlock Grid.Column="2" Grid.Row="0" Text="18" HorizontalAlignment="Center" FontFamily="True Lies"/>
+                    <TextBlock Grid.Column="2" Grid.Row="1" Text="Hours" HorizontalAlignment="Center" FontFamily="True Lies"/>
+                    <TextBlock Grid.Column="3" Grid.Row="0" Text="31" HorizontalAlignment="Center" FontFamily="True Lies"/>
+                    <TextBlock Grid.Column="3" Grid.Row="1" Text="Minutes" HorizontalAlignment="Center" FontFamily="True Lies"/>
+                    <TextBlock Grid.Column="4" Grid.Row="0" Text="30" HorizontalAlignment="Center" FontFamily="True Lies"/>
+                    <TextBlock Grid.Column="4" Grid.Row="1" Text="Seconds" HorizontalAlignment="Center" FontFamily="True Lies"/>
+                </Grid>
             </StackPanel>
         </Border>
     </Grid>
