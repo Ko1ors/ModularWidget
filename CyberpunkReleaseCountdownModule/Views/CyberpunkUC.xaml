@@ -28,13 +28,13 @@
                         <RowDefinition Height="10*"/>
                         <RowDefinition Height="10*"/>
                     </Grid.RowDefinitions>
-                    <TextBlock x:Name="daysTextBlock" Grid.Column="1" Grid.Row="0" Text="25" HorizontalAlignment="Center" FontFamily="True Lies"/>
+                    <TextBlock Grid.Column="1" Grid.Row="0" Text="{Binding Path=DaysText, ElementName=cyberpunkUC, FallbackValue= 25}" HorizontalAlignment="Center" FontFamily="True Lies"/>
                     <TextBlock Grid.Column="1" Grid.Row="1" Text="Days" HorizontalAlignment="Center" FontFamily="True Lies"/>
-                    <TextBlock x:Name="hoursTextBlock" Grid.Column="2" Grid.Row="0" Text="18" HorizontalAlignment="Center" FontFamily="True Lies"/>
+                    <TextBlock Grid.Column="2" Grid.Row="0" Text="{Binding Path=HoursText, ElementName=cyberpunkUC, FallbackValue= 18}" HorizontalAlignment="Center" FontFamily="True Lies"/>
                     <TextBlock Grid.Column="2" Grid.Row="1" Text="Hours" HorizontalAlignment="Center" FontFamily="True Lies"/>
-                    <TextBlock x:Name="minsTextBlock" Grid.Column="3" Grid.Row="0" Text="31" HorizontalAlignment="Center" FontFamily="True Lies"/>
+                    <TextBlock Grid.Column="3" Grid.Row="0" Text="{Binding Path=MinsText, ElementName=cyberpunkUC, FallbackValue= 31}" HorizontalAlignment="Center" FontFamily="True Lies"/>
                     <TextBlock Grid.Column="3" Grid.Row="1" Text="Minutes" HorizontalAlignment="Center" FontFamily="True Lies"/>
-                    <TextBlock x:Name="secsTextBlock" Grid.Column="4" Grid.Row="0" Text="30" HorizontalAlignment="Center" FontFamily="True Lies"/>
+                    <TextBlock Grid.Column="4" Grid.Row="0" Text="{Binding Path=SecsText, ElementName=cyberpunkUC, FallbackValue= 45}" HorizontalAlignment="Center" FontFamily="True Lies"/>
                     <TextBlock Grid.Column="4" Grid.Row="1" Text="Seconds" HorizontalAlignment="Center" FontFamily="True Lies"/>
                 </Grid>
             </StackPanel>

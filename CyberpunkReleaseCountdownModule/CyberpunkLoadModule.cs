@@ -11,7 +11,7 @@ using CyberpunkReleaseCountdownModule.Views;
 
 namespace CyberpunkReleaseCountdownModule
 {
-    class CyberpunkLoadModule : IModule
+    public class CyberpunkLoadModule : IModule
     {
         IRegionManager regionManager;
         private readonly string regName = "cyberpunkregion";
