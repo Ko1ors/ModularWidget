@@ -1,17 +1,7 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Controls;
-using System.Windows.Data;
-using System.Windows.Documents;
-using System.Windows.Input;
-using System.Windows.Media;
-using System.Windows.Media.Imaging;
-using System.Windows.Navigation;
-using System.Windows.Shapes;
+using System.Windows.Threading;
 
 namespace CyberpunkReleaseCountdownModule.Views
 {
@@ -75,10 +65,34 @@ namespace CyberpunkReleaseCountdownModule.Views
             }
         }
 
+        private DateTime releaseDate = new DateTime(2020,12,10,0,0,0);
 
         public CyberpunkUC()
         {
             InitializeComponent();
+            SetBaseValues();
+            var timer = new DispatcherTimer(DispatcherPriority.Normal);
+            timer.Interval = TimeSpan.FromSeconds(1);
+            timer.Tick += OnTimeEvent;
+            timer.Start();
+        }
+
+        private void OnTimeEvent(object sender, EventArgs e)
+        {
+            var time = releaseDate.Subtract(DateTime.Now);
+            UpdateTime(time);
+        }
+
+        private void UpdateTime(TimeSpan time)
+        {
+            Days = time.Days.ToString();
+            Hours = time.Hours.ToString();
+            Minutes = time.Minutes.ToString();
+            Seconds = time.Seconds.ToString();
+        }
+
+        private void SetBaseValues()
+        {
             Days = "31";
             Hours = "12";
             Minutes = "30";
