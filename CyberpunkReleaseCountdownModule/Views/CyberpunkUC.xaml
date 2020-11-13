@@ -5,8 +5,17 @@
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
              xmlns:local="clr-namespace:CyberpunkReleaseCountdownModule.Views"
              mc:Ignorable="d" 
-             d:DesignHeight="450" d:DesignWidth="800">
+             Height="100" Width="280"
+             x:Name="cyberpunkUC"
+             Margin="0,0,0,15">
     <Grid>
-            
+        <Border BorderThickness="1,1,1,1" BorderBrush="Black" CornerRadius="10" >
+            <Border.Background>
+                <ImageBrush ImageSource="/CyberpunkReleaseCountdownModule;component/Images/cyberpunk_image.png" TileMode="Tile" Stretch="Fill"/>
+            </Border.Background>
+            <StackPanel>
+                
+            </StackPanel>
+        </Border>
     </Grid>
 </UserControl>
