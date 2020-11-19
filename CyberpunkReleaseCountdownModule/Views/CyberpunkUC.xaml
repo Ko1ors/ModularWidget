@@ -14,15 +14,11 @@
                 <ImageBrush ImageSource="/CyberpunkReleaseCountdownModule;component/Images/cyberpunk_image.png" TileMode="Tile" Stretch="Fill"/>
             </Border.Background>
             <StackPanel>
-                <TextBlock Text="Cyberpunk 2077 Countdown" FontFamily="True Lies" FontSize="13" Margin="5">
-                    <TextBlock.LayoutTransform>
-                        <TransformGroup>
-                            <ScaleTransform ScaleX="1.2"/>
-                            <SkewTransform/>
-                            <RotateTransform/>
-                            <TranslateTransform/>
-                        </TransformGroup>
-                    </TextBlock.LayoutTransform>
+                <TextBlock Margin="3">
+                    <Run  Text="Cyberpunk " FontFamily="Cyberpunk" FontSize="15" />
+                    <Run  Text="2077" FontFamily="True Lies" FontSize="10" />
+                    <Run  Text="Countdown" FontFamily="Cyberpunk" FontSize="15" />
+               
                 </TextBlock>
                 <Grid Margin="10" >
                     <Grid.ColumnDefinitions>

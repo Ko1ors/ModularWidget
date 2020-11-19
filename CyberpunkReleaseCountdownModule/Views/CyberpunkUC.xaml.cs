@@ -85,10 +85,20 @@ namespace CyberpunkReleaseCountdownModule.Views
 
         private void UpdateTime(TimeSpan time)
         {
-            Days = time.Days.ToString();
-            Hours = time.Hours.ToString();
-            Minutes = time.Minutes.ToString();
-            Seconds = time.Seconds.ToString();
+            if (time.Ticks > 0)
+            {
+                Days = time.Days.ToString();
+                Hours = time.Hours.ToString();
+                Minutes = time.Minutes.ToString();
+                Seconds = time.Seconds.ToString();
+            }
+            else
+            {
+                Days = "0";
+                Hours = "0";
+                Minutes = "0";
+                Seconds = "0";
+            }
         }
 
         private void SetBaseValues()
