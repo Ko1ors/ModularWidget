@@ -15,10 +15,8 @@
             </Border.Background>
             <StackPanel>
                 <TextBlock Margin="3">
-                    <Run  Text="Cyberpunk " FontFamily="Cyberpunk" FontSize="15" />
-                    <Run  Text="2077" FontFamily="True Lies" FontSize="10" />
-                    <Run  Text="Countdown" FontFamily="Cyberpunk" FontSize="15" />
-               
+                    <Run  Text="Cyberpunk " FontFamily="Cyberpunk" FontSize="17" />
+                    <Run  Text="Countdown" FontFamily="Cyberpunk" FontSize="17" />
                 </TextBlock>
                 <Grid Margin="10" >
                     <Grid.ColumnDefinitions>
