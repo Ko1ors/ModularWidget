@@ -95,7 +95,11 @@ namespace MusicWinModule.Views
             SetVisibility(Visibility.Visible);
             UpdatePlaybackInfo(session);
             TryUpdateTitleAndArtist(session, 5, 50);
-            TryUpdateThumbnail(session, 10, 50);        
+            TryUpdateThumbnail(session, 10, 50);
+            Dispatcher.BeginInvoke(DispatcherPriority.Render, (SendOrPostCallback)delegate
+            {
+                Visibility = Visibility.Visible;
+            }, null).Wait();
         }
 
         private void UpdatePlaybackInfo(GlobalSystemMediaTransportControlsSession session)
@@ -128,7 +132,6 @@ namespace MusicWinModule.Views
              * 
              * 
              */
-
             Thread.Sleep(500);
             Console.WriteLine(DateTimeOffset.Now.ToUnixTimeMilliseconds() - sessionUpdateTime);
             if (sessionManager.GetCurrentSession() == null && DateTimeOffset.Now.ToUnixTimeMilliseconds() - sessionUpdateTime >= 500)
@@ -220,6 +223,7 @@ namespace MusicWinModule.Views
             SetVisibility(Visibility.Collapsed);
             Dispatcher.BeginInvoke(DispatcherPriority.Render, (SendOrPostCallback)delegate
             {
+                Visibility = Visibility.Collapsed;
                 Title = null;
                 Artist = null;
                 thumbnail.ImageSource = null;

@@ -5,8 +5,7 @@
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
              xmlns:local="clr-namespace:ETCModule.Views"
              mc:Ignorable="d" 
-             Height="50" Width="280"
-             Margin="0,0,0,15">
+             Height="50" Width="280" Margin="0,0,0,15">
     <Border BorderThickness="1,1,1,1" BorderBrush="Black" CornerRadius="10">
         <StackPanel  Orientation="Horizontal">
             <Image Margin="20,0,5,0" Source="/ETCModule;component/Images/etcwallet-icon.png" Width="30" Height="50" />
