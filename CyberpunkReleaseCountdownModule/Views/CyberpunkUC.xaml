@@ -1,0 +1,46 @@
+﻿<UserControl x:Class="CyberpunkReleaseCountdownModule.Views.CyberpunkUC"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
+             xmlns:local="clr-namespace:CyberpunkReleaseCountdownModule.Views"
+             mc:Ignorable="d" 
+             Height="100" Width="280"
+             x:Name="cyberpunkUC"
+             Margin="0,0,0,15">
+    <Grid>
+        <Border BorderThickness="1,1,1,1" BorderBrush="Black" CornerRadius="10" >
+            <Border.Background>
+                <ImageBrush ImageSource="/CyberpunkReleaseCountdownModule;component/Images/cyberpunk_image.png" TileMode="Tile" Stretch="Fill"/>
+            </Border.Background>
+            <StackPanel>
+                <TextBlock Margin="3">
+                    <Run  Text="Cyberpunk " FontFamily="Cyberpunk" FontSize="17" />
+                    <Run  Text="Countdown" FontFamily="Cyberpunk" FontSize="17" />
+                </TextBlock>
+                <Grid Margin="10" >
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="1*"/>
+                        <ColumnDefinition Width="10*"/>
+                        <ColumnDefinition Width="10*"/>
+                        <ColumnDefinition Width="10*"/>
+                        <ColumnDefinition Width="10*"/>
+                        <ColumnDefinition Width="1*"/>
+                    </Grid.ColumnDefinitions>
+                    <Grid.RowDefinitions>
+                        <RowDefinition Height="10*"/>
+                        <RowDefinition Height="10*"/>
+                    </Grid.RowDefinitions>
+                    <TextBlock Grid.Column="1" Grid.Row="0" Text="{Binding Path=DaysText, ElementName=cyberpunkUC, FallbackValue= 25}" HorizontalAlignment="Center" FontFamily="True Lies" FontSize="15"/>
+                    <TextBlock Grid.Column="1" Grid.Row="1" Text="Days" HorizontalAlignment="Center" FontFamily="True Lies" FontSize="15"/>
+                    <TextBlock Grid.Column="2" Grid.Row="0" Text="{Binding Path=HoursText, ElementName=cyberpunkUC, FallbackValue= 18}" HorizontalAlignment="Center" FontFamily="True Lies" FontSize="15"/>
+                    <TextBlock Grid.Column="2" Grid.Row="1" Text="Hours" HorizontalAlignment="Center" FontFamily="True Lies" FontSize="15"/>
+                    <TextBlock Grid.Column="3" Grid.Row="0" Text="{Binding Path=MinsText, ElementName=cyberpunkUC, FallbackValue= 31}" HorizontalAlignment="Center" FontFamily="True Lies" FontSize="15"/>
+                    <TextBlock Grid.Column="3" Grid.Row="1" Text="Minutes" HorizontalAlignment="Center" FontFamily="True Lies" FontSize="15"/>
+                    <TextBlock Grid.Column="4" Grid.Row="0" Text="{Binding Path=SecsText, ElementName=cyberpunkUC, FallbackValue= 45}" HorizontalAlignment="Center" FontFamily="True Lies" FontSize="15"/>
+                    <TextBlock Grid.Column="4" Grid.Row="1" Text="Seconds" HorizontalAlignment="Center" FontFamily="True Lies" FontSize="15"/>
+                </Grid>
+            </StackPanel>
+        </Border>
+    </Grid>
+</UserControl>

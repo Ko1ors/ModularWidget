@@ -13,6 +13,8 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ETCModule", "ETCModule\ETCM
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "MusicWinModule", "MusicWinModule\MusicWinModule.csproj", "{BB29BBAF-13B5-4645-8814-F3D18B4AEFF3}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "CyberpunkReleaseCountdownModule", "CyberpunkReleaseCountdownModule\CyberpunkReleaseCountdownModule.csproj", "{668C0055-2C3F-4FCC-865F-E1793EBCACB7}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -39,6 +41,10 @@ Global
 		{BB29BBAF-13B5-4645-8814-F3D18B4AEFF3}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{BB29BBAF-13B5-4645-8814-F3D18B4AEFF3}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{BB29BBAF-13B5-4645-8814-F3D18B4AEFF3}.Release|Any CPU.Build.0 = Release|Any CPU
+		{668C0055-2C3F-4FCC-865F-E1793EBCACB7}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{668C0055-2C3F-4FCC-865F-E1793EBCACB7}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{668C0055-2C3F-4FCC-865F-E1793EBCACB7}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{668C0055-2C3F-4FCC-865F-E1793EBCACB7}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
