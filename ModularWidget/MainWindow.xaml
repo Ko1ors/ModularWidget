@@ -18,10 +18,10 @@
 
             CornerRadius="0,0,0,0"
             
-            GlassFrameThickness="0">
+            GlassFrameThickness="1">
         </shell:WindowChrome>
     </shell:WindowChrome.WindowChrome>
-    <Grid>
+    <Grid >
         <Grid.RowDefinitions>
             <RowDefinition Height="25"/>
             <RowDefinition Height="75*"/>
