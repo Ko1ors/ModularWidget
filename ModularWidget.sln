@@ -15,6 +15,8 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "MusicWinModule", "MusicWinM
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "CyberpunkReleaseCountdownModule", "CyberpunkReleaseCountdownModule\CyberpunkReleaseCountdownModule.csproj", "{668C0055-2C3F-4FCC-865F-E1793EBCACB7}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "CryptoMarketCapModule", "CryptoMarketCapModule\CryptoMarketCapModule.csproj", "{94A9BC0A-022F-42E0-95F0-8B191402B410}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -45,6 +47,10 @@ Global
 		{668C0055-2C3F-4FCC-865F-E1793EBCACB7}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{668C0055-2C3F-4FCC-865F-E1793EBCACB7}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{668C0055-2C3F-4FCC-865F-E1793EBCACB7}.Release|Any CPU.Build.0 = Release|Any CPU
+		{94A9BC0A-022F-42E0-95F0-8B191402B410}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{94A9BC0A-022F-42E0-95F0-8B191402B410}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{94A9BC0A-022F-42E0-95F0-8B191402B410}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{94A9BC0A-022F-42E0-95F0-8B191402B410}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
