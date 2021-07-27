@@ -1,5 +1,4 @@
 ﻿using CryptoMarketCapModule.Services;
-using System;
 using System.Timers;
 using System.Windows;
 using System.Windows.Controls;
@@ -12,7 +11,7 @@ namespace CryptoMarketCapModule.Views
     public partial class CryptoMarketCapUC : UserControl
     {
         private readonly IMarketCapService service;
-        private readonly int timeInterval = 30;
+        private readonly int timeInterval = 1;
         private readonly Timer timer;
 
         public static readonly DependencyProperty MarketCapProperty = DependencyProperty.Register("MarketCap", typeof(long), typeof(CryptoMarketCapUC));
@@ -50,7 +49,14 @@ namespace CryptoMarketCapModule.Views
 
         private async void UpdateMarketCap()
         {
-            MarketCap = await service?.GetMarketCap();
+            var cap = await service?.GetMarketCap();
+            if (Dispatcher.CheckAccess())
+                MarketCap = cap;
+            else
+                Dispatcher.Invoke(() =>
+                {
+                    MarketCap = cap;
+                });
         }
     }
 }
