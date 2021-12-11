@@ -52,8 +52,8 @@ namespace ETCModule.Models
                 if (result.Status == "1" && result.Message == "OK")
                 {
                     lastEtcPrice = result;
-                    lastEtcPrice.Result.Ethbtc = lastEtcPrice.Result.Ethbtc.Replace(".", ",");
-                    lastEtcPrice.Result.Ethusd = lastEtcPrice.Result.Ethusd.Replace(".", ",");
+                    lastEtcPrice.Result.Ethbtc = Convert.ToString(Math.Round(float.Parse(lastEtcPrice.Result.Ethbtc), 8));
+                    lastEtcPrice.Result.Ethusd = lastEtcPrice.Result.Ethusd;
                     return true;
                 }
                 Thread.Sleep(500 * (i + 1));
