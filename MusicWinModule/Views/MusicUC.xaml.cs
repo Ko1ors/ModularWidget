@@ -1,5 +1,5 @@
-﻿using System;
-using System.ComponentModel;
+﻿using Meziantou.WpfFontAwesome;
+using System;
 using System.IO;
 using System.Threading;
 using System.Threading.Tasks;
@@ -23,15 +23,16 @@ namespace MusicWinModule.Views
         public static readonly DependencyProperty TitleProperty = DependencyProperty.Register("Title", typeof(string), typeof(MusicUC), new FrameworkPropertyMetadata("Title"));
         public static readonly DependencyProperty ArtistProperty = DependencyProperty.Register("Artist", typeof(string), typeof(MusicUC), new FrameworkPropertyMetadata("Artist"));
         public static readonly DependencyProperty ButtonLogoProperty = DependencyProperty.Register("ButtonLogo", typeof(string), typeof(MusicUC), new FrameworkPropertyMetadata("ButtonLogo"));
-        private string Title { 
-            get 
+        private string Title
+        {
+            get
             {
                 return (string)this.GetValue(TitleProperty);
-            } 
+            }
             set
             {
                 this.SetValue(TitleProperty, value);
-            } 
+            }
         }
 
         private string Artist
@@ -59,10 +60,8 @@ namespace MusicWinModule.Views
             }
         }
 
-
         public MusicUC()
         {
-            FontAwesome_MSBuildXamlFix();
             InitializeComponent();
             sessionManager = GetGlobalSystemMediaTransportControlsSessionManager();
             if (sessionManager == null)
@@ -84,7 +83,7 @@ namespace MusicWinModule.Views
         private void SessionManager_CurrentSessionChanged(GlobalSystemMediaTransportControlsSessionManager sender, CurrentSessionChangedEventArgs args)
         {
             var session = sender.GetCurrentSession();
-            if (session != null)  
+            if (session != null)
                 TryUpdate(session, 10, 50);
             else
                 SetDefault();
@@ -105,7 +104,7 @@ namespace MusicWinModule.Views
         private void UpdatePlaybackInfo(GlobalSystemMediaTransportControlsSession session)
         {
             UpdateLogoButton(session);
-            if(currentSession != null)
+            if (currentSession != null)
                 currentSession.PlaybackInfoChanged -= Session_PlaybackInfoChanged;
             currentSession = session;
             currentSession.PlaybackInfoChanged += Session_PlaybackInfoChanged;
@@ -166,14 +165,14 @@ namespace MusicWinModule.Views
 
         private void TryUpdateThumbnail(GlobalSystemMediaTransportControlsSession session, int tries, int timeBetween)
         {
-            while(tries > 0)
+            while (tries > 0)
             {
                 try
                 {
                     var mediaProperties = session.TryGetMediaPropertiesAsync().GetAwaiter().GetResult();
                     if (mediaProperties.Thumbnail == null)
                         throw new Exception();
-                    var ras =  mediaProperties.Thumbnail.OpenReadAsync();
+                    var ras = mediaProperties.Thumbnail.OpenReadAsync();
                     ras.AsTask().Wait();
                     using (var stream = ras.GetResults().AsStream())
                     {
@@ -203,12 +202,12 @@ namespace MusicWinModule.Views
                     if (mediaProperties.Title == null && mediaProperties.Artist == null)
                         throw new Exception();
 
-                        Dispatcher.BeginInvoke(DispatcherPriority.Render, (SendOrPostCallback)delegate
-                        {
-                            Title = mediaProperties.Title;
-                            Artist = mediaProperties.Artist;
-                        }, null);
-                        break;
+                    Dispatcher.BeginInvoke(DispatcherPriority.Render, (SendOrPostCallback)delegate
+                    {
+                        Title = mediaProperties.Title;
+                        Artist = mediaProperties.Artist;
+                    }, null);
+                    break;
                 }
                 catch
                 {
@@ -227,8 +226,8 @@ namespace MusicWinModule.Views
                 Title = null;
                 Artist = null;
                 thumbnail.ImageSource = null;
-               
-            },null);
+
+            }, null);
         }
 
         private void SetVisibility(Visibility visibility)
@@ -267,21 +266,10 @@ namespace MusicWinModule.Views
             return GlobalSystemMediaTransportControlsSessionManager.RequestAsync().GetAwaiter().GetResult();
         }
 
-        private static void FontAwesome_MSBuildXamlFix()
-        {
-            /*
-             * WORKAROUND
-             * we need this method so that FontAwesome.WPF.dll gets copied as part of the build process
-             * 
-             */
-
-            var type = typeof(FontAwesome.WPF.FontAwesome);
-            Console.WriteLine(type.FullName);
-        }
 
         private void PlayButton_Click(object sender, RoutedEventArgs e)
         {
-            if(currentSession != null)
+            if (currentSession != null)
             {
                 if (sessionManager.GetCurrentSession().GetPlaybackInfo().Controls.IsPauseEnabled)
                     currentSession.TryPauseAsync();
