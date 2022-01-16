@@ -62,12 +62,15 @@ namespace MusicWinModule.Views
 
         public MusicUC()
         {
-            InitializeComponent();
-            sessionManager = GetGlobalSystemMediaTransportControlsSessionManager();
-            if (sessionManager == null)
-                throw new Exception();
-            sessionManager.CurrentSessionChanged += SessionManager_CurrentSessionChanged;
-            TryUpdateOnStart();
+            if (OperatingSystem.IsWindows() && OperatingSystem.IsWindowsVersionAtLeast(10, 0, 19041, 0))
+            {
+                InitializeComponent();
+                sessionManager = GetGlobalSystemMediaTransportControlsSessionManager();
+                if (sessionManager == null)
+                    throw new Exception();
+                sessionManager.CurrentSessionChanged += SessionManager_CurrentSessionChanged;
+                TryUpdateOnStart();
+            }
         }
 
 
