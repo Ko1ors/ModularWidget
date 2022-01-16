@@ -1,5 +1,4 @@
-﻿using Meziantou.WpfFontAwesome;
-using System;
+﻿using System;
 using System.IO;
 using System.Threading;
 using System.Threading.Tasks;
@@ -65,12 +64,17 @@ namespace MusicWinModule.Views
             if (OperatingSystem.IsWindows() && OperatingSystem.IsWindowsVersionAtLeast(10, 0, 19041, 0))
             {
                 InitializeComponent();
-                sessionManager = GetGlobalSystemMediaTransportControlsSessionManager();
-                if (sessionManager == null)
-                    throw new Exception();
-                sessionManager.CurrentSessionChanged += SessionManager_CurrentSessionChanged;
-                TryUpdateOnStart();
+                Init();
             }
+        }
+
+        public async void Init()
+        {
+            sessionManager = await GetGlobalSystemMediaTransportControlsSessionManagerAsync();
+            if (sessionManager == null)
+                throw new Exception();
+            sessionManager.CurrentSessionChanged += SessionManager_CurrentSessionChanged;
+            TryUpdateOnStart();
         }
 
 
@@ -101,7 +105,7 @@ namespace MusicWinModule.Views
             Dispatcher.BeginInvoke(DispatcherPriority.Render, (SendOrPostCallback)delegate
             {
                 Visibility = Visibility.Visible;
-            }, null).Wait();
+            }, null);
         }
 
         private void UpdatePlaybackInfo(GlobalSystemMediaTransportControlsSession session)
@@ -113,10 +117,10 @@ namespace MusicWinModule.Views
             currentSession.PlaybackInfoChanged += Session_PlaybackInfoChanged;
         }
 
-        private void Session_PlaybackInfoChanged(GlobalSystemMediaTransportControlsSession sender, PlaybackInfoChangedEventArgs args)
+        private async void Session_PlaybackInfoChanged(GlobalSystemMediaTransportControlsSession sender, PlaybackInfoChangedEventArgs args)
         {
             Console.WriteLine(args.ToString());
-            if (currentSession != null && SessionsEquals(sender, currentSession))
+            if (currentSession != null && await SessionsEqualsAsync(sender, currentSession))
             {
                 UpdateLogoButton(currentSession);
                 SetVisibility(Visibility.Visible);
@@ -166,23 +170,23 @@ namespace MusicWinModule.Views
             }
         }
 
-        private void TryUpdateThumbnail(GlobalSystemMediaTransportControlsSession session, int tries, int timeBetween)
+        private async void TryUpdateThumbnail(GlobalSystemMediaTransportControlsSession session, int tries, int timeBetween)
         {
             while (tries > 0)
             {
                 try
                 {
-                    var mediaProperties = session.TryGetMediaPropertiesAsync().GetAwaiter().GetResult();
+                    var mediaProperties = await session.TryGetMediaPropertiesAsync();
                     if (mediaProperties.Thumbnail == null)
                         throw new Exception();
                     var ras = mediaProperties.Thumbnail.OpenReadAsync();
                     ras.AsTask().Wait();
-                    using (var stream = ras.GetResults().AsStream())
+                    using (var stream = (await ras).AsStream())
                     {
-                        Dispatcher.BeginInvoke(DispatcherPriority.Render, (SendOrPostCallback)delegate
+                        await Dispatcher.BeginInvoke(DispatcherPriority.Render, (SendOrPostCallback)delegate
                         {
                             thumbnail.ImageSource = BitmapFrame.Create(stream, BitmapCreateOptions.None, BitmapCacheOption.OnLoad);
-                        }, null).Wait();
+                        }, null);
                         ras.Close();
                         break;
                     }
@@ -195,13 +199,13 @@ namespace MusicWinModule.Views
             }
         }
 
-        private void TryUpdateTitleAndArtist(GlobalSystemMediaTransportControlsSession session, int tries, int timeBetween)
+        private async void TryUpdateTitleAndArtist(GlobalSystemMediaTransportControlsSession session, int tries, int timeBetween)
         {
             while (tries > 0)
             {
                 try
                 {
-                    var mediaProperties = session.TryGetMediaPropertiesAsync().GetAwaiter().GetResult();
+                    var mediaProperties = await session.TryGetMediaPropertiesAsync();
                     if (mediaProperties.Title == null && mediaProperties.Artist == null)
                         throw new Exception();
 
@@ -241,7 +245,7 @@ namespace MusicWinModule.Views
             }, null);
         }
 
-        private bool SessionsEquals(GlobalSystemMediaTransportControlsSession s1, GlobalSystemMediaTransportControlsSession s2)
+        private async Task<bool> SessionsEqualsAsync(GlobalSystemMediaTransportControlsSession s1, GlobalSystemMediaTransportControlsSession s2)
         {
             if (s1 == null && s2 == null)
                 return true;
@@ -249,8 +253,8 @@ namespace MusicWinModule.Views
                 return false;
             if (s1.SourceAppUserModelId != s2.SourceAppUserModelId)
                 return false;
-            var mp1 = s1.TryGetMediaPropertiesAsync().GetAwaiter().GetResult();
-            var mp2 = s2.TryGetMediaPropertiesAsync().GetAwaiter().GetResult();
+            var mp1 = await s1.TryGetMediaPropertiesAsync();
+            var mp2 = await s2.TryGetMediaPropertiesAsync();
             return MediaPropertiesEquals(mp1, mp2);
         }
 
@@ -264,9 +268,9 @@ namespace MusicWinModule.Views
                 && mp1.Artist == mp2.Artist && mp1.Subtitle == mp2.Subtitle && mp1.Title == mp2.Title && mp1.TrackNumber == mp2.TrackNumber;
         }
 
-        private GlobalSystemMediaTransportControlsSessionManager GetGlobalSystemMediaTransportControlsSessionManager()
+        private async Task<GlobalSystemMediaTransportControlsSessionManager> GetGlobalSystemMediaTransportControlsSessionManagerAsync()
         {
-            return GlobalSystemMediaTransportControlsSessionManager.RequestAsync().GetAwaiter().GetResult();
+            return await GlobalSystemMediaTransportControlsSessionManager.RequestAsync();
         }
 
 

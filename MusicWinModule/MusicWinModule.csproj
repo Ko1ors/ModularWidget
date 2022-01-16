@@ -20,6 +20,9 @@
     <LangVersion>8.0</LangVersion>
   </PropertyGroup>
   <ItemGroup>
+    <None Include="..\.editorconfig" Link=".editorconfig" />
+  </ItemGroup>
+  <ItemGroup>
     <PackageReference Include="Meziantou.WpfFontAwesome" Version="5.15.4">
     </PackageReference>
   </ItemGroup>
