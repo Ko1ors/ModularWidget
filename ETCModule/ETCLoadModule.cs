@@ -28,9 +28,9 @@ namespace ETCModule
         {
             etcView.Dispatcher.Invoke(() =>
             {
-                etcView.etcPriceUC.labelEtcPrice.Content = $"${etcInfo.lastEtcPrice.Result.Ethusd.Replace(",", ".")} ❙ {Math.Round(Double.Parse(etcInfo.lastEtcPrice.Result.Ethbtc), 5).ToString().Replace(",", ".")} BTC";
+                etcView.etcPriceUC.labelEtcPrice.Content = $"${etcInfo.lastEtcPrice.Result.CoinUsd.Replace(",", ".")} ❙ {Math.Round(Double.Parse(etcInfo.lastEtcPrice.Result.CoinBtc), 5).ToString().Replace(",", ".")} BTC";
                 if (!String.IsNullOrEmpty(etcInfo.etcWalletAddress))
-                    etcView.etcWalletBalanceUC.labelEtcWalletBalance.Content = $"{etcInfo.lastWalletBalance.Replace(",", ".")} ETC ❙ ${Math.Round(Double.Parse(etcInfo.lastWalletBalance) * Double.Parse(etcInfo.lastEtcPrice.Result.Ethusd), 2).ToString().Replace(",", ".")}";
+                    etcView.etcWalletBalanceUC.labelEtcWalletBalance.Content = $"{etcInfo.lastWalletBalance.Replace(",", ".")} ETC ❙ ${Math.Round(Double.Parse(etcInfo.lastWalletBalance) * Double.Parse(etcInfo.lastEtcPrice.Result.CoinUsd), 2).ToString().Replace(",", ".")}";
             });
         }
 

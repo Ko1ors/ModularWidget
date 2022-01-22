@@ -7,7 +7,7 @@ namespace ETCModule.Models
 {
     class EtcRequest
     {
-        private static readonly string etcPriceRequest = "https://blockscout.com/etc/mainnet/api?module=stats&action=ethprice";
+        private static readonly string etcPriceRequest = "https://blockscout.com/etc/mainnet/api?module=stats&action=coinprice";
 
         private static readonly string etcWalletRequest = "https://blockscout.com/etc/mainnet/api?module=account&action=balance&address={address}";
 
