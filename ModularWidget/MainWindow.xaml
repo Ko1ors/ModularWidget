@@ -21,7 +21,7 @@
             GlassFrameThickness="1">
         </shell:WindowChrome>
     </shell:WindowChrome.WindowChrome>
-    <Grid>
+    <Grid >
         <Grid.RowDefinitions>
             <RowDefinition Height="25"/>
             <RowDefinition Height="75*"/>
