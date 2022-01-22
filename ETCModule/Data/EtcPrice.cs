@@ -12,15 +12,15 @@ namespace ETCModule.Data
     public class EtcPriceResult
     {
         [JsonProperty("coin_btc")]
-        public string Ethbtc { get; set; }
+        public double CoinBtc;
 
         [JsonProperty("coin_btc_timestamp")]
-        public string EthbtcTimestamp { get; set; }
+        public string CoinBtcTimestamp;
 
         [JsonProperty("coin_usd")]
-        public string Ethusd { get; set; }
+        public double CoinUsd;
 
         [JsonProperty("coin_usd_timestamp")]
-        public string EthusdTimestamp { get; set; }
+        public string CoinUsdTimestamp;
     }
 }

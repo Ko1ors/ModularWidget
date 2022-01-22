@@ -4,7 +4,7 @@
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
              xmlns:local="clr-namespace:MusicWinModule.Views" 
-             xmlns:fa="http://schemas.fontawesome.io/icons/"
+             xmlns:fa="clr-namespace:Meziantou.WpfFontAwesome;assembly=Meziantou.WpfFontAwesome"
              mc:Ignorable="d" 
              Height="100" Width="280"
              x:Name="musicUC"
@@ -47,13 +47,13 @@
             <StackPanel Width="188">
                 <Grid VerticalAlignment="Top" Margin="0,10,0,0">
                     <Button Height="40" Width="40" Margin="20,0,0,0" Style="{StaticResource RoundButtonStyle}" HorizontalAlignment="Left" Click="StepBackward_Click">
-                        <fa:ImageAwesome Icon="StepBackward" Foreground="DarkSlateGray" Height="20" Width="14"/>
+                        <fa:FontAwesomeIcon SolidIcon="StepBackward" Foreground="DarkSlateGray" Height="20" Width="14"/>
                     </Button>
                     <Button Height="40" Width="40" Margin="0,0,0,0"  Style="{StaticResource RoundButtonStyle}" HorizontalAlignment="Center" Click="PlayButton_Click">
-                        <fa:ImageAwesome Icon="{Binding Path=ButtonLogo, ElementName=musicUC, FallbackValue=Play }" Foreground="DarkSlateGray" Height="18" Width="18" HorizontalAlignment="Right"/>
+                        <fa:FontAwesomeIcon SolidIcon="{Binding Path=ButtonLogo, ElementName=musicUC, FallbackValue=Play }" Foreground="DarkSlateGray" Height="18" Width="18" HorizontalAlignment="Right"/>
                     </Button>
                     <Button Height="40" Width="40" Margin="0,0,20,0" Style="{StaticResource RoundButtonStyle}" HorizontalAlignment="Right" Click="StepForward_Click">
-                        <fa:ImageAwesome Icon="StepForward" Foreground="DarkSlateGray" Height="20" Width="14"/>
+                        <fa:FontAwesomeIcon SolidIcon="StepForward" Foreground="DarkSlateGray" Height="20" Width="14"/>
                     </Button>
                 </Grid>
                 <TextBlock Text="{Binding Path=Title, ElementName=musicUC, FallbackValue=Music title, TargetNullValue=Music title }" Height="16" FontSize="14" MaxWidth="180" Margin="0,5,0,0" FontFamily="Arial Black" Width="180" TextTrimming="CharacterEllipsis" >

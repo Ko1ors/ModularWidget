@@ -1,21 +1,19 @@
-﻿using Prism.Ioc;
+using FearGreedIndexModule.Views;
+using ModularWidget;
+using Prism.Ioc;
 using Prism.Modularity;
 using Prism.Regions;
-using ModularWidget;
 using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using CyberpunkReleaseCountdownModule.Views;
+using System.Windows.Controls;
 
-namespace CyberpunkReleaseCountdownModule
+
+namespace FearGreedIndexModule
 {
-    public class CyberpunkLoadModule : IModule
+    public class LoadModule : IModule
     {
         IRegionManager regionManager;
-        private readonly string regName = "cyberpunkregion";
-        private CyberpunkUC cpUC = new CyberpunkUC();
+        private readonly string regName = "feargreedindexregion";
+
         public void OnInitialized(IContainerProvider containerProvider)
         {
             regionManager = containerProvider.Resolve<IRegionManager>();
@@ -23,19 +21,18 @@ namespace CyberpunkReleaseCountdownModule
             Manager.RegionRequest(regName);
         }
 
-
         private void Manager_RegionCreated(string regName)
         {
             if (regName == this.regName)
             {
                 Manager.RegionCreated -= Manager_RegionCreated;
-                regionManager.Regions[regName].Add(cpUC);
+                regionManager.Regions[regName].Add(new FearGreedIndexUC());
             }
         }
 
         public void RegisterTypes(IContainerRegistry containerRegistry)
         {
-
+            
         }
     }
 }
