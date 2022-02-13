@@ -6,7 +6,7 @@
         xmlns:shell="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
         xmlns:prism="http://prismlibrary.com/"
         xmlns:svgc1="http://sharpvectors.codeplex.com/svgc/" 
-        xmlns:local="clr-namespace:ModularWidget.UserControls.ETH" xmlns:local1="clr-namespace:ModularWidget"
+        xmlns:local1="clr-namespace:ModularWidget"
         mc:Ignorable="d"
         Title="MainWindow" Height="400" Width="300" ResizeMode="NoResize" SizeToContent="Height" WindowStartupLocation="Manual" BorderThickness="1" ShowInTaskbar="False">
     <shell:WindowChrome.WindowChrome>
@@ -54,10 +54,6 @@
                 </shell:StackPanel.Background>
             </StackPanel>
             <StackPanel Grid.Row="1" x:Name="stackPanelBlock">
-                <local1:EthPriceUC x:Name="ethPriceUC" Margin="0,0,0,15"/>
-                <local:GasTrackerUC x:Name="gasTrackerUC" Margin="0,0,0,15"/>
-                <local:BlockRewardUC x:Name="blockRewardUC" Margin="0,0,0,15" />
-                <local:EthWalletBalanceUC x:Name="ethWalletBalanceUC" Margin="0,0,0,15"/>
             </StackPanel>
         </Grid>
     </Grid>

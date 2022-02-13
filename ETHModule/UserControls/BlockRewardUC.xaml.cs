@@ -1,6 +1,6 @@
 ﻿using System.Windows.Controls;
 
-namespace ModularWidget.UserControls.ETH
+namespace ETHModule.UserControls
 {
     /// <summary>
     /// Логика взаимодействия для BlockRewardUC.xaml

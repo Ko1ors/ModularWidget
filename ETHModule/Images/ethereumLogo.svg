@@ -1,0 +1,81 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<svg
+   xmlns:dc="http://purl.org/dc/elements/1.1/"
+   xmlns:cc="http://creativecommons.org/ns#"
+   xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#"
+   xmlns:svg="http://www.w3.org/2000/svg"
+   xmlns="http://www.w3.org/2000/svg"
+   id="svg13"
+   version="1.1"
+   viewBox="0 0 53.766 89.833">
+  <metadata
+     id="metadata17">
+    <rdf:RDF>
+      <cc:Work
+         rdf:about="">
+        <dc:format>image/svg+xml</dc:format>
+        <dc:type
+           rdf:resource="http://purl.org/dc/dcmitype/StillImage" />
+        <dc:title></dc:title>
+      </cc:Work>
+    </rdf:RDF>
+  </metadata>
+  <defs
+     id="defs4">
+    <style
+       id="style2">
+      .cls-1 {
+        fill: none;
+        stroke: #bdc5d1;
+        stroke-width: 2px;
+      }
+
+      .cls-2 {
+        fill: #c0deff;
+      }
+
+      .cls-3 {
+        fill: #3498db;
+      }
+    </style>
+  </defs>
+  <g
+     transform="translate(1.377 3.597)"
+     id="ethereum-1">
+    <path
+       transform="translate(-100.217)"
+       d="M125.723,0l-.557,1.894V56.841l.557.556L151.229,42.32Z"
+       class="cls-1"
+       data-name="Path 3"
+       id="Path_3" />
+    <path
+       d="M25.506,0,0,42.321,25.506,57.4Z"
+       class="cls-1"
+       data-name="Path 4"
+       id="Path_4" />
+    <path
+       transform="translate(-101.194 -189.429)"
+       d="M126.7,251.656l-.314.383v19.574l.314.917,25.521-35.942Z"
+       class="cls-1"
+       data-name="Path 5"
+       id="Path_5" />
+    <path
+       transform="translate(0 -189.428)"
+       d="M25.506,272.527V251.654L0,236.585Z"
+       class="cls-1"
+       data-name="Path 6"
+       id="Path_6" />
+    <path
+       transform="translate(-102.455 -123.431)"
+       d="M127.961,180.829l25.506-15.076L127.961,154.16Z"
+       class="cls-2"
+       data-name="Path 7"
+       id="Path_7" />
+    <path
+       transform="translate(0 -123.43)"
+       d="M0,165.751l25.506,15.077v-26.67Z"
+       class="cls-3"
+       data-name="Path 8"
+       id="Path_8" />
+  </g>
+</svg>

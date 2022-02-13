@@ -20,23 +20,23 @@ namespace ModularWidget
             Manager.RegionRequested += CreateRegion;
 
             AppSettings.Load();
-            if (String.IsNullOrEmpty(AppSettings.ethWallet))
-                ethWalletBalanceUC.Visibility = Visibility.Collapsed;
-            Manager.Start();
+            //if (String.IsNullOrEmpty(AppSettings.ethWallet))
+            //    ethWalletBalanceUC.Visibility = Visibility.Collapsed;
+            //Manager.Start();
         }
 
         private void UpdateInformation()
         {
-            this.Dispatcher.Invoke(() =>
-            {
-                ethPriceUC.labelEthPrice.Content = $"${Manager.lastEthPrice.Result.Ethusd} ❙ {Manager.lastEthPrice.Result.Ethbtc} BTC";
-                gasTrackerUC.labelGasLow.Content = $"{Manager.lastGasPrice.Result.SafeGasPrice} gwei";
-                gasTrackerUC.labelGasAvg.Content = $"{Manager.lastGasPrice.Result.ProposeGasPrice} gwei";
-                gasTrackerUC.labelGasHigh.Content = $"{Manager.lastGasPrice.Result.FastGasPrice} gwei";
-                blockRewardUC.labelBlockReward.Content = $"{Manager.lastAvgBlockReward.ToString().Replace(",", ".")} ETH";
-                if (!String.IsNullOrEmpty(AppSettings.ethWallet))
-                    ethWalletBalanceUC.labelWalletBalance.Content = $"{Manager.lastWalletBalance.ToString().Replace(",", ".")} ETH ❙ ${Math.Round(Double.Parse(Manager.lastEthPrice.Result.Ethusd.Replace('.', ',')) * Manager.lastWalletBalance, 2).ToString().Replace(',', '.')}";
-            });
+            //this.Dispatcher.Invoke(() =>
+            //{
+            //    ethPriceUC.labelEthPrice.Content = $"${Manager.lastEthPrice.Result.Ethusd} ❙ {Manager.lastEthPrice.Result.Ethbtc} BTC";
+            //    gasTrackerUC.labelGasLow.Content = $"{Manager.lastGasPrice.Result.SafeGasPrice} gwei";
+            //    gasTrackerUC.labelGasAvg.Content = $"{Manager.lastGasPrice.Result.ProposeGasPrice} gwei";
+            //    gasTrackerUC.labelGasHigh.Content = $"{Manager.lastGasPrice.Result.FastGasPrice} gwei";
+            //    blockRewardUC.labelBlockReward.Content = $"{Manager.lastAvgBlockReward.ToString().Replace(",", ".")} ETH";
+            //    if (!String.IsNullOrEmpty(AppSettings.ethWallet))
+            //        ethWalletBalanceUC.labelWalletBalance.Content = $"{Manager.lastWalletBalance.ToString().Replace(",", ".")} ETH ❙ ${Math.Round(Double.Parse(Manager.lastEthPrice.Result.Ethusd.Replace('.', ',')) * Manager.lastWalletBalance, 2).ToString().Replace(',', '.')}";
+            //});
         }
 
         private void ExitButton_Click(object sender, RoutedEventArgs e)
