@@ -4,14 +4,13 @@ using Newtonsoft.Json;
 using System;
 using System.IO;
 using System.Threading;
-using System.Windows;
 
 namespace ETCModule.Models
 {
     public class EtcInformation
     {
         private int maxTries = 5;
-        private readonly Object inProgress = new object();
+        private readonly object inProgress = new object();
 
         public event Notify Completed;
 
@@ -24,18 +23,28 @@ namespace ETCModule.Models
         private readonly string settingsPath = AppDomain.CurrentDomain.BaseDirectory + "etc-settings.json";
         private readonly Double divisor = 1000000000000000000d;
 
+        private System.Timers.Timer timer;
+
         public void Start()
         {
             LoadSettings();
+            SetTimer();
             Update();
-            Manager.UpdateRequested += Update;
+        }
+
+        private void SetTimer()
+        {
+            timer = new System.Timers.Timer(AppSettings.updateTime * 60 * 1000);
+            timer.Elapsed += (s, e) => Update();
+            timer.AutoReset = true;
+            timer.Enabled = true;
         }
 
         private void Update()
         {
             lock (inProgress)
             {
-                if (!String.IsNullOrEmpty(etcWalletAddress))
+                if (!string.IsNullOrEmpty(etcWalletAddress))
                     if (!TryGetEtcWalletBalance())
                         return;
                 if (!TryGetEtcPrice())
@@ -79,9 +88,9 @@ namespace ETCModule.Models
         private string GetNonEmptyEtcWallet()
         {
             string wallet = null;
-            while (String.IsNullOrEmpty(wallet))
+            while (string.IsNullOrEmpty(wallet))
             {
-                wallet = EtcRequest.GetRandomWallets(10).Result.Find(e => !e.Balance.Equals(0) && Convert.ToDouble(e.Balance) / divisor > 1 )?.Address;  
+                wallet = EtcRequest.GetRandomWallets(10).Result.Find(e => !e.Balance.Equals(0) && Convert.ToDouble(e.Balance) / divisor > 1)?.Address;
             }
             return wallet;
         }
