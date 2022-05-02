@@ -11,6 +11,12 @@
   <ItemGroup>
     <ProjectReference Include="..\ModularWidget\ModularWidget.csproj" />
   </ItemGroup>
+
+  <ItemGroup>
+    <Reference Include="RadialGaugeLibrary">
+      <HintPath>RadialGaugeLibrary.dll</HintPath>
+    </Reference>
+  </ItemGroup>
   
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
     <OutputPath>..\ModularWidget\bin\Debug\Modules\</OutputPath>
@@ -18,14 +24,5 @@
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
     <OutputPath>..\ModularWidget\bin\Release\Modules\</OutputPath>
   </PropertyGroup>
-
-
-  <ItemGroup>
-    <Reference Include="RadialGaugeLibrary">
-      <HintPath>C:\Users\Ko1ors\source\repos\Radial Gauge\RadialGaugeLibrary\bin\Release\net6.0-windows\RadialGaugeLibrary.dll</HintPath>
-      <EmbedInteropTypes></EmbedInteropTypes>
-      <CopyLocal>True</CopyLocal>
-    </Reference>
-  </ItemGroup>
 
 </Project>
