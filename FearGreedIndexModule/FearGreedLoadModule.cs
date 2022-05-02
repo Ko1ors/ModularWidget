@@ -9,7 +9,7 @@ using System.Windows.Controls;
 
 namespace FearGreedIndexModule
 {
-    public class LoadModule : IModule
+    public class FearGreedLoadModule : IModule
     {
         IRegionManager regionManager;
         private readonly string regName = "feargreedindexregion";
