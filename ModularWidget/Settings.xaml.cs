@@ -26,12 +26,12 @@ namespace ModularWidget
 
         private void OnTimedEvent(object sender, ElapsedEventArgs e)
         {
-            if (Manager.nextUpdate != DateTime.MinValue)
-                this.Dispatcher.Invoke(() =>
-                {
-                    var time = (Manager.nextUpdate - DateTime.Now);
-                    labelNextUpdate.Content = $"Next update in {time.ToString("mm\\:ss")}";
-                });
+            //if (Manager.nextUpdate != DateTime.MinValue)
+            //    this.Dispatcher.Invoke(() =>
+            //    {
+            //        var time = (Manager.nextUpdate - DateTime.Now);
+            //        labelNextUpdate.Content = $"Next update in {time.ToString("mm\\:ss")}";
+            //    });
         }
 
         private void ExitButton_Click(object sender, RoutedEventArgs e)
