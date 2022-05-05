@@ -1,4 +1,5 @@
 ﻿using ETCModule.Data;
+using ETCModule.Settings;
 using ModularWidget;
 using Newtonsoft.Json;
 using System;
@@ -20,10 +21,16 @@ namespace ETCModule.Models
         public string lastWalletBalance;
         public EtcPrice lastEtcPrice;
 
-        private readonly string settingsPath = AppDomain.CurrentDomain.BaseDirectory + "etc-settings.json";
         private readonly Double divisor = 1000000000000000000d;
 
         private System.Timers.Timer timer;
+
+        private readonly AppSettings _appSettings;
+
+        public EtcInformation(AppSettings settings)
+        {
+            _appSettings = settings;
+        }
 
         public void Start()
         {
@@ -34,7 +41,10 @@ namespace ETCModule.Models
 
         private void SetTimer()
         {
-            timer = new System.Timers.Timer(AppSettings.updateTime * 60 * 1000);
+            var time = _appSettings.Get<int>(Constants.Parameters.UpdateTime);
+            if (time <= 0)
+                time = 5;
+            timer = new System.Timers.Timer(time * 60 * 1000);
             timer.Elapsed += (s, e) => Update();
             timer.AutoReset = true;
             timer.Enabled = true;
@@ -97,24 +107,9 @@ namespace ETCModule.Models
 
         private void LoadSettings()
         {
-            if (File.Exists(settingsPath))
-            {
-                etcWalletAddress = File.ReadAllText(settingsPath);
-                switch (etcWalletAddress)
-                {
-                    case "default":
-                        if (AppSettings.isLoaded)
-                            etcWalletAddress = AppSettings.ethWallet;
-                        else
-                            etcWalletAddress = null;
-                        break;
-                    case "random":
-                        etcWalletAddress = GetNonEmptyEtcWallet();
-                        break;
-                }
-            }
-            else
-                File.WriteAllText(settingsPath, etcWalletAddress);
+            etcWalletAddress = _appSettings.Get<string>(Constants.Parameters.Wallet);
+            if (string.Equals(etcWalletAddress, "random", StringComparison.InvariantCultureIgnoreCase))
+                etcWalletAddress = GetNonEmptyEtcWallet();
         }
 
         private void OnComplete()
