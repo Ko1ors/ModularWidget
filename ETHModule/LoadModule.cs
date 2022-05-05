@@ -1,6 +1,8 @@
 ﻿using ETHModule.Services;
+using ETHModule.Settings;
 using ETHModule.UserControls;
 using ModularWidget;
+using ModularWidget.Models;
 using Prism.Ioc;
 using Prism.Modularity;
 using Prism.Regions;
@@ -21,6 +23,12 @@ namespace ETHModule
         private int regionsRequestedCount;
         private Dictionary<string, UserControl> userControls;
         private Dispatcher dispatcher;
+        private readonly AppSettings _appSettings;
+
+        public LoadModule(AppSettings appSettings)
+        {
+            _appSettings = appSettings;
+        }
 
         public void OnInitialized(IContainerProvider containerProvider)
         {
@@ -29,17 +37,40 @@ namespace ETHModule
             userControls = new Dictionary<string, UserControl>();
             dispatcher = Dispatcher.CurrentDispatcher;
 
+            InitSettings();
+            RequestRegions();
+        }
+
+        private void InitSettings()
+        {
+            var menu = new SettingsMenu(Constants.Menu.MenuKey, "Ethereum Module Settings");
+            menu.Parameters.Add(new SettingsParameter<string>(Constants.Parameters.ApiKey, "Etherscan API Key", string.Empty));
+            menu.Parameters.Add(new SettingsParameter<string>(Constants.Parameters.Wallet, "Ethereum Wallet", string.Empty));
+            menu.Parameters.Add(new SettingsParameter<int>(Constants.Parameters.UpdateTime, "Update time (in minutes)", 5));
+
+            if (!_appSettings.MenuExists(menu.Key))
+                _appSettings.AddOrUpdateMenu(menu);
+            foreach (var parameter in menu.Parameters)
+            {
+                if (!_appSettings.ParameterExists(menu.Key, parameter.Key))
+                    _appSettings.AddOrUpdateParameter(menu.Key, parameter);
+            }
+        }
+
+        private void RequestRegions()
+        {
             Manager.RegionCreated += Manager_RegionCreated;
 
             regionsRequestedCount = 3;
-            Manager.RegionRequest(RegionsName.BlockRewards);
-            Manager.RegionRequest(RegionsName.EthPrice);
-            Manager.RegionRequest(RegionsName.GasTracker);
-            if (!string.IsNullOrEmpty(AppSettings.ethWallet))
+
+            if (!string.IsNullOrEmpty(_appSettings.Get<string>(Constants.Parameters.Wallet)))
             {
                 regionsRequestedCount++;
                 Manager.RegionRequest(RegionsName.EthWallet);
             }
+            Manager.RegionRequest(RegionsName.BlockRewards);
+            Manager.RegionRequest(RegionsName.EthPrice);
+            Manager.RegionRequest(RegionsName.GasTracker);
         }
 
         private void Manager_RegionCreated(string regName)
@@ -75,7 +106,10 @@ namespace ETHModule
 
         private void SetTimer()
         {
-            timer = new Timer(AppSettings.updateTime * 60 * 1000);
+            var time = _appSettings.Get<int>("ethModuleSettings", "ethUpdateTime");
+            if (time <= 0)
+                time = 5;
+            timer = new Timer(time * 60 * 1000);
             timer.Elapsed += OnTimedEvent;
             timer.AutoReset = true;
             timer.Enabled = true;
@@ -83,7 +117,7 @@ namespace ETHModule
 
         private void OnTimedEvent(object sender, ElapsedEventArgs e)
         {
-           _ = UpdateETHData();
+            _ = UpdateETHData();
         }
 
         private async Task UpdateETHData()
@@ -91,7 +125,7 @@ namespace ETHModule
             var result = await _ethService.GetDataAsync();
             await dispatcher.InvokeAsync(() =>
             {
-                if(userControls.ContainsKey(RegionsName.EthPrice))
+                if (userControls.ContainsKey(RegionsName.EthPrice))
                     (userControls[RegionsName.EthPrice] as EthPriceUC).labelEthPrice.Content = $"${result.EthPrice.Result.Ethusd} ❙ {result.EthPrice.Result.Ethbtc} BTC";
                 if (userControls.ContainsKey(RegionsName.GasTracker))
                 {
@@ -101,7 +135,7 @@ namespace ETHModule
                 }
                 if (userControls.ContainsKey(RegionsName.BlockRewards))
                     (userControls[RegionsName.BlockRewards] as BlockRewardUC).labelBlockReward.Content = $"{result.AvgBlockReward.ToString().Replace(",", ".")} ETH";
-                if (!string.IsNullOrEmpty(AppSettings.ethWallet) && userControls.ContainsKey(RegionsName.EthWallet))
+                if (!string.IsNullOrEmpty(_appSettings.Get<string>(Constants.Parameters.Wallet)) && userControls.ContainsKey(RegionsName.EthWallet))
                     (userControls[RegionsName.EthWallet] as EthWalletBalanceUC).labelWalletBalance.Content = $"{result.WalletBalance.ToString().Replace(",", ".")} ETH ❙ ${Math.Round(double.Parse(result.EthPrice.Result.Ethusd.Replace('.', ',')) * result.WalletBalance, 2).ToString().Replace(',', '.')}";
             });
         }
@@ -109,7 +143,7 @@ namespace ETHModule
 
         public void RegisterTypes(IContainerRegistry containerRegistry)
         {
-            containerRegistry.Register<IETHService, ETHService>();
+            containerRegistry.Register<IETHService, EthService>();
         }
 
         public static class RegionsName
