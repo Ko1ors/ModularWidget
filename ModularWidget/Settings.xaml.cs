@@ -1,6 +1,4 @@
-﻿using System;
-using System.Timers;
-using System.Windows;
+﻿using System.Windows;
 
 namespace ModularWidget
 {
@@ -9,45 +7,29 @@ namespace ModularWidget
     /// </summary>
     public partial class Settings : Window
     {
-        public Settings()
+        private readonly AppSettings _appSettings;
+
+        public Settings(AppSettings settings)
         {
             InitializeComponent();
-            this.Left = SystemParameters.PrimaryScreenWidth - this.Width * 1.15;
-            this.Top = SystemParameters.PrimaryScreenHeight * 0.1;
-            textBoxApiKey.Text = AppSettings.ethApiKey;
-            textBoxEthWallet.Text = AppSettings.ethWallet;
-            textBoxUpdateTime.Text = AppSettings.updateTime.ToString();
+            _appSettings = settings;
+            DataContext = _appSettings.Menus;
 
-            Timer timer = new Timer(1000);
-            timer.Elapsed += OnTimedEvent;
-            timer.AutoReset = true;
-            timer.Enabled = true;
-        }
-
-        private void OnTimedEvent(object sender, ElapsedEventArgs e)
-        {
-            //if (Manager.nextUpdate != DateTime.MinValue)
-            //    this.Dispatcher.Invoke(() =>
-            //    {
-            //        var time = (Manager.nextUpdate - DateTime.Now);
-            //        labelNextUpdate.Content = $"Next update in {time.ToString("mm\\:ss")}";
-            //    });
+            Left = SystemParameters.PrimaryScreenWidth - this.Width * 1.15;
+            Top = SystemParameters.PrimaryScreenHeight * 0.1;
         }
 
         private void ExitButton_Click(object sender, RoutedEventArgs e)
         {
+            // Reset unsaved changes
+            _appSettings.Reset();
             Close();
         }
 
         private void OkButton_Click(object sender, RoutedEventArgs e)
         {
-            int.TryParse(textBoxUpdateTime.Text, out int time);
-            if (time == 0)
-                time = 5;
-            AppSettings.Set(textBoxApiKey.Text, textBoxEthWallet.Text, time);
-            AppSettings.Save();
-            System.Diagnostics.Process.Start(Application.ResourceAssembly.Location);
-            Application.Current.Shutdown();
+            _appSettings.Save();
+            Close();
         }
     }
 }

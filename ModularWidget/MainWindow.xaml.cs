@@ -10,14 +10,17 @@ namespace ModularWidget
     /// </summary>
     public partial class MainWindow : Window
     {
-        public MainWindow()
+        private readonly AppSettings _appSettings;
+        
+        public MainWindow(AppSettings settings)
         {
             InitializeComponent();
+            _appSettings = settings;
             this.Left = SystemParameters.PrimaryScreenWidth - this.Width * 1.1;
             this.Top = SystemParameters.PrimaryScreenHeight * 0.05;
 
             Manager.RegionRequested += CreateRegion;
-            AppSettings.Load();
+            _appSettings.Load();
         }
 
         private void ExitButton_Click(object sender, RoutedEventArgs e)
@@ -27,7 +30,7 @@ namespace ModularWidget
 
         private void SettingsButton_Click(object sender, RoutedEventArgs e)
         {
-            var settingsWindow = new Settings();
+            var settingsWindow = new Settings(_appSettings);
             settingsWindow.ShowDialog();
         }
 

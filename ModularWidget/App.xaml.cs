@@ -17,7 +17,7 @@ namespace ModularWidget
 
         protected override void RegisterTypes(IContainerRegistry containerRegistry)
         {
-
+            containerRegistry.RegisterSingleton<AppSettings>();
         }
 
         protected override IModuleCatalog CreateModuleCatalog()
