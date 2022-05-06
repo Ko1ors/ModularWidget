@@ -18,6 +18,9 @@ namespace ETHModule.Settings
             public const string ApiKey = "ethApiKey";
             public const string Wallet = "ethWallet";
             public const string UpdateTime = "ethUpdateTime";
+            public const string hideBlockReward = "HideEthBlockReward";
+            public const string hidePrice = "HideEthPrice";
+            public const string hideGasTracker = "HideEthGasTracker";
         }
     }
 }

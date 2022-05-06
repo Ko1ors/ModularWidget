@@ -5,14 +5,15 @@ namespace ETHModule.Services
 {
     public interface IETHService
     {
-        Task<ETHCompositeModel> GetDataAsync();
+        Task<ETHCompositeModel> GetDataAsync(string apiKey, string wallet = "",
+            bool ignorePrice = false, bool ignoreGas = false, bool ignoreBlockReward = false);
 
-        Task<EthPrice> GetPriceAsync();
+        Task<EthPrice> GetPriceAsync(string apiKey);
 
-        Task<EthGasPrice> GetGasPriceAsync();
+        Task<EthGasPrice> GetGasPriceAsync(string apiKey);
 
-        Task<double> GetAvgBlockRewardAsync(int lastBlock);
+        Task<double> GetAvgBlockRewardAsync(string apiKey, int lastBlock);
 
-        Task<double> GetWalletBalanceAsync();
+        Task<double> GetWalletBalanceAsync(string apiKey, string wallet);
     }
 }

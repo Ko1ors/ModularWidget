@@ -1,6 +1,4 @@
 ﻿using ETHModule.Data;
-using ETHModule.Settings;
-using ModularWidget;
 using System;
 using System.Threading;
 using System.Threading.Tasks;
@@ -11,30 +9,26 @@ namespace ETHModule.Services
     {
         private const int maxTries = 5;
 
-        private readonly AppSettings _appSettings;
-
-        public EthService(AppSettings appSettings)
-        {
-            _appSettings = appSettings;
-        }
-
-        public async Task<ETHCompositeModel> GetDataAsync()
+        public async Task<ETHCompositeModel> GetDataAsync(string apiKey, string wallet = "", 
+            bool ignorePrice = false, bool ignoreGas = false, bool ignoreBlockReward = false)
         {
             var model = new ETHCompositeModel();
-            model.EthPrice = await GetPriceAsync();
-            model.EthGasPrice = await GetGasPriceAsync();
-            model.AvgBlockReward = await GetAvgBlockRewardAsync(int.Parse(model.EthGasPrice.Result.LastBlock));
-            if (!string.IsNullOrEmpty(_appSettings.Get<string>(Constants.Parameters.Wallet)))
-                model.WalletBalance = await GetWalletBalanceAsync();
+            if(!ignorePrice)
+                model.EthPrice = await GetPriceAsync(apiKey);
+            if (!ignoreGas)
+                model.EthGasPrice = await GetGasPriceAsync(apiKey);
+            if (!ignoreBlockReward)
+                model.AvgBlockReward = await GetAvgBlockRewardAsync(apiKey, int.Parse(model.EthGasPrice.Result.LastBlock));
+            if (!string.IsNullOrEmpty(wallet))
+                model.WalletBalance = await GetWalletBalanceAsync(apiKey, wallet);
             return model;
         }
 
-        public Task<EthPrice> GetPriceAsync()
+        public Task<EthPrice> GetPriceAsync(string apiKey)
         {
-            var key = _appSettings.Get<string>(Constants.Parameters.ApiKey);
             for (int i = 0; i < maxTries; i++)
             {
-                var result = EthRequest.GetPrice(key);
+                var result = EthRequest.GetPrice(apiKey);
                 if (result.Status != "0" && result.Message != "NOTOK")
                 {
                     return Task.FromResult(result);
@@ -44,12 +38,11 @@ namespace ETHModule.Services
             return Task.FromResult(default(EthPrice));
         }
 
-        public Task<EthGasPrice> GetGasPriceAsync()
+        public Task<EthGasPrice> GetGasPriceAsync(string apiKey)
         {
-            var key = _appSettings.Get<string>(Constants.Parameters.ApiKey);
             for (int i = 0; i < maxTries; i++)
             {
-                var result = EthRequest.GetGasPrice(key);
+                var result = EthRequest.GetGasPrice(apiKey);
                 if (result.Status != "0" && result.Message != "NOTOK")
                 {
                     return Task.FromResult(result);
@@ -59,18 +52,17 @@ namespace ETHModule.Services
             return Task.FromResult(default(EthGasPrice));
         }
 
-        public Task<double> GetAvgBlockRewardAsync(int lastBlock)
+        public Task<double> GetAvgBlockRewardAsync(string apiKey, int lastBlock)
         {
             double blockreward = 0;
             bool success;
             int i;
-            string key = _appSettings.Get<string>(Constants.Parameters.ApiKey);
             for (i = 0; i < 10; i++)
             {
                 success = false;
                 for (int j = 0; j < maxTries; j++)
                 {
-                    var result = EthRequest.GetBlockReward(key, lastBlock--.ToString());
+                    var result = EthRequest.GetBlockReward(apiKey, lastBlock--.ToString());
                     if (result.Status != "0" && result.Message != "NOTOK")
                     {
                         success = true;
@@ -85,13 +77,11 @@ namespace ETHModule.Services
             return Task.FromResult(Math.Round(blockreward / i, 5));
         }
 
-        public Task<double> GetWalletBalanceAsync()
+        public Task<double> GetWalletBalanceAsync(string apiKey, string wallet)
         {
-            var key = _appSettings.Get<string>(Constants.Parameters.ApiKey);
-            var wallet = _appSettings.Get<string>(Constants.Parameters.Wallet);
             for (int i = 0; i < maxTries; i++)
             {
-                var result = EthRequest.GetWalletBalance(key, wallet);
+                var result = EthRequest.GetWalletBalance(apiKey, wallet);
                 if (result.Status != "0" && result.Message != "NOTOK")
                 {
                     return Task.FromResult(Math.Round(double.Parse(result.Result) / 1000000000000000000, 5));
