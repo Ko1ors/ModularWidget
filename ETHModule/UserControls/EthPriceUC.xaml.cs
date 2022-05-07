@@ -1,6 +1,6 @@
 ﻿using System.Windows.Controls;
 
-namespace ModularWidget
+namespace ETHModule.UserControls
 {
     /// <summary>
     /// Логика взаимодействия для EthPriceUC.xaml
