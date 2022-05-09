@@ -3,7 +3,6 @@ using ETCModule.Settings;
 using ModularWidget;
 using Newtonsoft.Json;
 using System;
-using System.IO;
 using System.Threading;
 
 namespace ETCModule.Models
@@ -12,7 +11,8 @@ namespace ETCModule.Models
     {
         private int maxTries = 5;
         private readonly object inProgress = new object();
-
+        
+        public delegate void Notify();
         public event Notify Completed;
 
         [JsonProperty("etcWallet")]

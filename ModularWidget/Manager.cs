@@ -1,12 +1,5 @@
-﻿using ModularWidget.Data;
-using System;
-using System.Threading;
-using System.Threading.Tasks;
-using System.Timers;
-
-namespace ModularWidget
+﻿namespace ModularWidget
 {
-    public delegate void Notify();
     public static class Manager
     {
         public delegate void RegionHandler(string regName);

@@ -133,11 +133,11 @@ namespace ETHModule
             var hidePrice = _appSettings.Get<bool>(Constants.Parameters.hidePrice) && string.IsNullOrEmpty(wallet);
             var hideGasTracker = _appSettings.Get<bool>(Constants.Parameters.hideGasTracker);
             var hideBlockReward = _appSettings.Get<bool>(Constants.Parameters.hideBlockReward);
-   
+
             var result = await _ethService.GetDataAsync(apiKey, wallet, hidePrice, hideGasTracker, hideBlockReward);
             await dispatcher.InvokeAsync(() =>
             {
-                
+
                 if (userControls.ContainsKey(RegionsName.EthPrice) && result.EthPrice != null)
                     (userControls[RegionsName.EthPrice] as EthPriceUC).labelEthPrice.Content = $"${result.EthPrice.Result.Ethusd} ❙ {result.EthPrice.Result.Ethbtc} BTC";
                 if (userControls.ContainsKey(RegionsName.GasTracker) && result.EthGasPrice != null)

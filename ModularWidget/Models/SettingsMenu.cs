@@ -1,18 +1,14 @@
 ﻿using Newtonsoft.Json;
-using System;
 using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace ModularWidget.Models
 {
     public class SettingsMenu
     {
         public string Key { get; set; }
-        
+
         public string Name { get; set; }
-        
+
         public List<SettingsParameter> Parameters { get; set; }
 
         public SettingsMenu(string key)

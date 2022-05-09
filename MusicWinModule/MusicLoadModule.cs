@@ -3,7 +3,6 @@ using MusicWinModule.Views;
 using Prism.Ioc;
 using Prism.Modularity;
 using Prism.Regions;
-using System;
 using System.Windows.Controls;
 
 namespace MusicWinModule
