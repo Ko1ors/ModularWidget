@@ -3,8 +3,6 @@ using ModularWidget;
 using Prism.Ioc;
 using Prism.Modularity;
 using Prism.Regions;
-using System;
-using System.Windows.Controls;
 
 
 namespace FearGreedIndexModule
@@ -32,7 +30,7 @@ namespace FearGreedIndexModule
 
         public void RegisterTypes(IContainerRegistry containerRegistry)
         {
-            
+
         }
     }
 }

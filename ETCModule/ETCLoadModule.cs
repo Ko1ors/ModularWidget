@@ -18,22 +18,22 @@ namespace ETCModule
         private EtcInformation etcInfo;
 
         private readonly AppSettings _appSettings;
-        
+
         public ETCLoadModule(AppSettings appSettings)
         {
             _appSettings = appSettings;
         }
-        
+
         public void OnInitialized(IContainerProvider containerProvider)
         {
             InitSettings();
-            
+
             regionManager = containerProvider.Resolve<IRegionManager>();
             Manager.RegionCreated += Manager_RegionCreated;
             Manager.RegionRequest(regName);
             etcInfo = new EtcInformation(_appSettings);
             etcInfo.Completed += UpdateView;
-  
+
             etcInfo.Start();
         }
 

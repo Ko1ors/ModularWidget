@@ -9,11 +9,11 @@ namespace ETHModule.Services
     {
         private const int maxTries = 5;
 
-        public async Task<ETHCompositeModel> GetDataAsync(string apiKey, string wallet = "", 
+        public async Task<ETHCompositeModel> GetDataAsync(string apiKey, string wallet = "",
             bool ignorePrice = false, bool ignoreGas = false, bool ignoreBlockReward = false)
         {
             var model = new ETHCompositeModel();
-            if(!ignorePrice)
+            if (!ignorePrice)
                 model.EthPrice = await GetPriceAsync(apiKey);
             if (!ignoreGas)
                 model.EthGasPrice = await GetGasPriceAsync(apiKey);

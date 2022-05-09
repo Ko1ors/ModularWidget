@@ -18,7 +18,7 @@ namespace ModularWidget
         {
             // save changes in parameters 
             Menus.SelectMany(p => p.Parameters).ToList().ForEach(p => p.SaveChanges());
-            
+
             string json = JsonConvert.SerializeObject(Menus, Formatting.Indented);
             File.WriteAllText(@"settings.json", json);
         }
@@ -29,7 +29,7 @@ namespace ModularWidget
             {
                 string json = System.IO.File.ReadAllText(@"settings.json");
                 Menus = JsonConvert.DeserializeObject<List<SettingsMenu>>(json);
-            }                
+            }
             if (Menus is null)
                 Menus = new List<SettingsMenu>();
 
@@ -41,7 +41,7 @@ namespace ModularWidget
         {
             Menus.SelectMany(p => p.Parameters).ToList().ForEach(p => p.ChangedValue = p.Value);
         }
-            
+
         public bool AddOrUpdateMenu(SettingsMenu menu)
         {
             var menuToUpdate = Menus.Find(x => x.Key == menu.Key);
