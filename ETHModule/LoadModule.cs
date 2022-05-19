@@ -3,6 +3,7 @@ using ETHModule.Settings;
 using ETHModule.UserControls;
 using ModularWidget;
 using ModularWidget.Models;
+using ModularWidget.Services;
 using Prism.Ioc;
 using Prism.Modularity;
 using Prism.Regions;
@@ -17,22 +18,26 @@ namespace ETHModule
 {
     public class LoadModule : IModule
     {
-        IRegionManager regionManager;
+        private readonly IRegionManager _regionManager;
+        private readonly AppSettings _appSettings;
+        private readonly IRegionService _regionService;
         private IETHService _ethService;
+
         private Timer timer;
         private int regionsRequestedCount;
         private Dictionary<string, UserControl> userControls;
         private Dispatcher dispatcher;
-        private readonly AppSettings _appSettings;
+    
 
-        public LoadModule(AppSettings appSettings)
+        public LoadModule(AppSettings appSettings, IRegionManager regionManager, IRegionService regionService)
         {
             _appSettings = appSettings;
+            _regionManager = regionManager;
+            _regionService = regionService;
         }
 
         public void OnInitialized(IContainerProvider containerProvider)
         {
-            regionManager = containerProvider.Resolve<IRegionManager>();
             _ethService = containerProvider.Resolve<IETHService>();
             userControls = new Dictionary<string, UserControl>();
             dispatcher = Dispatcher.CurrentDispatcher;
@@ -62,21 +67,21 @@ namespace ETHModule
 
         private void RequestRegions()
         {
-            Manager.RegionCreated += Manager_RegionCreated;
+            _regionService.RegionCreated += Manager_RegionCreated;
 
             regionsRequestedCount = 3;
 
             if (!string.IsNullOrEmpty(_appSettings.Get<string>(Constants.Parameters.Wallet)))
             {
                 regionsRequestedCount++;
-                Manager.RegionRequest(RegionsName.EthWallet);
+                _regionService.RegionRequest(RegionsName.EthWallet);
             }
             if (!_appSettings.Get<bool>(Constants.Parameters.hidePrice))
-                Manager.RegionRequest(RegionsName.EthPrice);
+                _regionService.RegionRequest(RegionsName.EthPrice);
             if (!_appSettings.Get<bool>(Constants.Parameters.hideBlockReward))
-                Manager.RegionRequest(RegionsName.BlockRewards);
+                _regionService.RegionRequest(RegionsName.BlockRewards);
             if (!_appSettings.Get<bool>(Constants.Parameters.hideGasTracker))
-                Manager.RegionRequest(RegionsName.GasTracker);
+                _regionService.RegionRequest(RegionsName.GasTracker);
         }
 
         private void Manager_RegionCreated(string regName)
@@ -101,10 +106,10 @@ namespace ETHModule
         private void AddRegion(string name, UserControl userControl)
         {
             userControls[name] = userControl;
-            regionManager.Regions[name].Add(userControl);
+            _regionManager.Regions[name].Add(userControl);
             if (--regionsRequestedCount <= 0)
             {
-                Manager.RegionCreated -= Manager_RegionCreated;
+                _regionService.RegionCreated -= Manager_RegionCreated;
                 Task.Run(async () => await UpdateETHData());
                 SetTimer();
             }

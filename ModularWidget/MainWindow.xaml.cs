@@ -1,4 +1,5 @@
 ﻿using CommonServiceLocator;
+using ModularWidget.Services;
 using ModularWidget.UserControls;
 using Prism.Regions;
 using System;
@@ -19,22 +20,25 @@ namespace ModularWidget
     public partial class MainWindow : Window
     {
         private readonly AppSettings _appSettings;
+        private readonly IRegionManager _regionManager;
+        private readonly IRegionService _regionService;
 
         private Window _dragdropWindow = null;
         private Effect _regionEffect = null;
 
-        public MainWindow(AppSettings settings)
+        public MainWindow(AppSettings settings, IRegionManager regionManager, IRegionService regionService)
         {
-
             InitializeComponent();
             _appSettings = settings;
-            IRegionManager regionManager = ServiceLocator.Current.GetInstance<IRegionManager>();
-            RegionManager.SetRegionManager(regionListView, regionManager);
+            _regionManager = regionManager;
+            _regionService = regionService;
+
+            RegionManager.SetRegionManager(regionListView, _regionManager);
 
             Left = SystemParameters.PrimaryScreenWidth - Width * 1.1;
             Top = SystemParameters.PrimaryScreenHeight * 0.05;
 
-            Manager.RegionRequested += CreateRegion;
+            _regionService.RegionRequested += CreateRegion;
             _appSettings.Load();
 
             Style itemContainerStyle = regionListView.ItemContainerStyle;
@@ -170,7 +174,7 @@ namespace ModularWidget
             RegionUC reg = new RegionUC();
             reg.RegionName = regName;
             AddRegion(reg);
-            Manager.RegionCreate(reg.RegionName);
+            _regionService.RegionCreate(reg.RegionName);
         }
 
         private void AddRegion(RegionUC reg)

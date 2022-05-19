@@ -3,6 +3,7 @@ using ETCModule.Settings;
 using ETCModule.Views;
 using ModularWidget;
 using ModularWidget.Models;
+using ModularWidget.Services;
 using Prism.Ioc;
 using Prism.Modularity;
 using Prism.Regions;
@@ -12,25 +13,29 @@ namespace ETCModule
 {
     public class ETCLoadModule : IModule
     {
-        IRegionManager regionManager;
+        private readonly AppSettings _appSettings;
+        private readonly IRegionManager _regionManager;
+        private readonly IRegionService _regionService;
+
         private readonly string regName = "etcregion";
         private MainUC etcView = new MainUC();
         private EtcInformation etcInfo;
 
-        private readonly AppSettings _appSettings;
+    
 
-        public ETCLoadModule(AppSettings appSettings)
+        public ETCLoadModule(AppSettings appSettings, IRegionManager regionManager, IRegionService regionService)
         {
             _appSettings = appSettings;
+            _regionManager = regionManager;
+            _regionService = regionService;
         }
 
         public void OnInitialized(IContainerProvider containerProvider)
         {
             InitSettings();
 
-            regionManager = containerProvider.Resolve<IRegionManager>();
-            Manager.RegionCreated += Manager_RegionCreated;
-            Manager.RegionRequest(regName);
+            _regionService.RegionCreated += Manager_RegionCreated;
+            _regionService.RegionRequest(regName);
             etcInfo = new EtcInformation(_appSettings);
             etcInfo.Completed += UpdateView;
 
@@ -66,9 +71,9 @@ namespace ETCModule
         {
             if (regName == this.regName)
             {
-                Manager.RegionCreated -= Manager_RegionCreated;
+                _regionService.RegionCreated -= Manager_RegionCreated;
                 //regionManager.RegisterViewWithRegion(regName, typeof(MainUC));
-                regionManager.Regions[regName].Add(etcView);
+                _regionManager.Regions[regName].Add(etcView);
             }
         }
 

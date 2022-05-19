@@ -1,4 +1,4 @@
-﻿using ModularWidget;
+﻿using ModularWidget.Services;
 using Prism.Ioc;
 using Prism.Modularity;
 using Prism.Regions;
@@ -9,20 +9,27 @@ namespace Test2Module
     public class InitTestModule : IModule
     {
         string regName = "testregion";
-        IRegionManager regionManager;
+        private readonly IRegionManager _regionManager;
+        private readonly IRegionService _regionService;
+
+        public InitTestModule(IRegionManager regionManager, IRegionService regionService)
+        {
+            _regionManager = regionManager;
+            _regionService = regionService;
+        }
+
         public void OnInitialized(IContainerProvider containerProvider)
         {
-            regionManager = containerProvider.Resolve<IRegionManager>();
-            Manager.RegionCreated += Manager_RegionCreated;
-            Manager.RegionRequest(regName);
+            _regionService.RegionCreated += Manager_RegionCreated;
+            _regionService.RegionRequest(regName);
         }
 
         private void Manager_RegionCreated(string regName)
         {
             if (regName == this.regName)
             {
-                Manager.RegionCreated -= Manager_RegionCreated;
-                regionManager.RegisterViewWithRegion(regName, typeof(ViewB));
+                _regionService.RegionCreated -= Manager_RegionCreated;
+                _regionManager.RegisterViewWithRegion(regName, typeof(ViewB));
             }
         }
 
