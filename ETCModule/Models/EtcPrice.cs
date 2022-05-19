@@ -1,9 +1,8 @@
-﻿using ModularWidget.Data;
-using Newtonsoft.Json;
+﻿using Newtonsoft.Json;
 
-namespace ETCModule.Data
+namespace ETCModule.Models
 {
-    public class EtcPrice : Root
+    public class EtcPrice : ResultBase
     {
         [JsonProperty("result")]
         public EtcPriceResult Result;

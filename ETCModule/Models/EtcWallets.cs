@@ -1,10 +1,9 @@
-﻿using ModularWidget.Data;
-using Newtonsoft.Json;
+﻿using Newtonsoft.Json;
 using System.Collections.Generic;
 
-namespace ETCModule.Data
+namespace ETCModule.Models
 {
-    class EtcWallets : Root
+    class EtcWallets : ResultBase
     {
         [JsonProperty("result")]
         public List<EtcWalletsResult> Result;

@@ -165,7 +165,7 @@ namespace ModularWidget
 
         private void SettingsButton_Click(object sender, RoutedEventArgs e)
         {
-            var settingsWindow = new Settings(_appSettings);
+            var settingsWindow = new SettingsWindow(_appSettings);
             settingsWindow.ShowDialog();
         }
 

@@ -1,5 +1,4 @@
-﻿using ETCModule.Data;
-using ETCModule.Settings;
+﻿using ETCModule.Settings;
 using ModularWidget;
 using Newtonsoft.Json;
 using System;

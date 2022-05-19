@@ -1,8 +1,8 @@
 ﻿using Newtonsoft.Json;
 
-namespace ModularWidget.Data
+namespace ETCModule.Models
 {
-    public class WalletBalance : Root
+    public class EtcWalletBalance : ResultBase
     {
         [JsonProperty("result")]
         public string Result;
