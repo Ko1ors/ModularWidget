@@ -53,7 +53,7 @@
                     </shell:LinearGradientBrush>
                 </shell:StackPanel.Background>
             </StackPanel>
-            <ListView x:Name="regionListView" SelectionMode="Single" Background="Transparent" BorderThickness="0" Grid.Row="1" ItemsSource="{Binding RegionItems}" ScrollViewer.HorizontalScrollBarVisibility="Disabled">
+            <ListView x:Name="RegionListView" SelectionMode="Single" Background="Transparent" BorderThickness="0" Grid.Row="1" ScrollViewer.HorizontalScrollBarVisibility="Disabled">
                 
                 <ListView.ItemsPanel>
                     <ItemsPanelTemplate>
