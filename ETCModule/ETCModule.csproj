@@ -16,9 +16,6 @@
     <LangVersion>8.0</LangVersion>
   </PropertyGroup>
   <ItemGroup>
-    <Reference Include="System.Configuration" />
-  </ItemGroup>
-  <ItemGroup>
     <Resource Include="Images\etclogo.svg" />
   </ItemGroup>
   <ItemGroup>
