@@ -1,4 +1,5 @@
 ﻿using ETCModule.Models;
+using ETCModule.Services;
 using ETCModule.Settings;
 using ETCModule.Views;
 using ModularWidget;
@@ -11,19 +12,18 @@ using System;
 
 namespace ETCModule
 {
-    public class ETCLoadModule : IModule
+    public class EtcLoadModule : IModule
     {
         private readonly AppSettings _appSettings;
         private readonly IRegionManager _regionManager;
         private readonly IRegionService _regionService;
+        private IEtcService _etcService;
 
         private readonly string regName = "etcregion";
         private MainUC etcView = new MainUC();
-        private EtcInformation etcInfo;
 
-    
 
-        public ETCLoadModule(AppSettings appSettings, IRegionManager regionManager, IRegionService regionService)
+        public EtcLoadModule(AppSettings appSettings, IRegionManager regionManager, IRegionService regionService)
         {
             _appSettings = appSettings;
             _regionManager = regionManager;
@@ -33,13 +33,23 @@ namespace ETCModule
         public void OnInitialized(IContainerProvider containerProvider)
         {
             InitSettings();
+            _etcService = containerProvider.Resolve<IEtcService>();
 
             _regionService.RegionCreated += Manager_RegionCreated;
-            _regionService.RegionRequest(regName);
-            etcInfo = new EtcInformation(_appSettings);
-            etcInfo.Completed += UpdateView;
+            _etcService.EtcUpdated += EtcService_EtcUpdated;
 
-            etcInfo.Start();
+            _regionService.RegionRequest(regName);
+            _etcService.Start();
+        }
+
+        private void EtcService_EtcUpdated(EtcCompositeResult result)
+        {
+            etcView.Dispatcher.Invoke(() =>
+            {
+                etcView.etcPriceUC.labelEtcPrice.Content = $"${result.EtcPrice.Result.CoinUsd} ❙ {Math.Round(result.EtcPrice.Result.CoinBtc, 5).ToString().Replace(",", ".")} BTC";
+                if (result.WalletBalance >= 0)
+                    etcView.etcWalletBalanceUC.labelEtcWalletBalance.Content = $"{result.WalletBalance.ToString().Replace(",", ".")} ETC ❙ ${Math.Round(result.WalletBalance * result.EtcPrice.Result.CoinUsd, 2).ToString().Replace(",", ".")}";
+            });
         }
 
         private void InitSettings()
@@ -57,29 +67,18 @@ namespace ETCModule
             }
         }
 
-        private void UpdateView()
-        {
-            etcView.Dispatcher.Invoke(() =>
-            {
-                etcView.etcPriceUC.labelEtcPrice.Content = $"${etcInfo.lastEtcPrice.Result.CoinUsd} ❙ {Math.Round(etcInfo.lastEtcPrice.Result.CoinBtc, 5).ToString().Replace(",", ".")} BTC";
-                if (!String.IsNullOrEmpty(etcInfo.etcWalletAddress))
-                    etcView.etcWalletBalanceUC.labelEtcWalletBalance.Content = $"{etcInfo.lastWalletBalance.Replace(",", ".")} ETC ❙ ${Math.Round(Double.Parse(etcInfo.lastWalletBalance) * etcInfo.lastEtcPrice.Result.CoinUsd, 2).ToString().Replace(",", ".")}";
-            });
-        }
-
         private void Manager_RegionCreated(string regName)
         {
             if (regName == this.regName)
             {
                 _regionService.RegionCreated -= Manager_RegionCreated;
-                //regionManager.RegisterViewWithRegion(regName, typeof(MainUC));
                 _regionManager.Regions[regName].Add(etcView);
             }
         }
 
         public void RegisterTypes(IContainerRegistry containerRegistry)
         {
-
+            containerRegistry.RegisterSingleton<IEtcService, EtcService>();
         }
     }
 }

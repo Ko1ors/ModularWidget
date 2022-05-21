@@ -2,7 +2,7 @@
 
 namespace ETCModule.Models
 {
-    public class EtcWalletBalance : ResultBase
+    public class EtcWalletBalanceResult : ResultBase
     {
         [JsonProperty("result")]
         public string Result;

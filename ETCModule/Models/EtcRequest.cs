@@ -35,29 +35,29 @@ namespace ETCModule.Models
             }
         }
 
-        public static EtcWalletBalance GetWalletBalance(string address)
+        public static EtcWalletBalanceResult GetWalletBalance(string address)
         {
             string request = etcWalletRequest.Replace("{address}", address);
             try
             {
-                return JsonConvert.DeserializeObject<EtcWalletBalance>(Send(request));
+                return JsonConvert.DeserializeObject<EtcWalletBalanceResult>(Send(request));
             }
             catch
             {
-                return new EtcWalletBalance() { Result = "0" };
+                return new EtcWalletBalanceResult() { Result = "0" };
             }
         }
 
-        public static EtcWallets GetRandomWallets(int count)
+        public static EtcWalletsResult GetRandomWallets(int count)
         {
             string request = etcRandomWalletsRequest.Replace("{page}", new Random().Next(1, 1000).ToString()).Replace("{offset}", count.ToString());
             try
             {
-                return JsonConvert.DeserializeObject<EtcWallets>(Send(request));
+                return JsonConvert.DeserializeObject<EtcWalletsResult>(Send(request));
             }
             catch
             {
-                return new EtcWallets() { Status = "0" };
+                return new EtcWalletsResult() { Status = "0" };
             }
         }
     }
