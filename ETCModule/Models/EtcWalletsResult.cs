@@ -3,13 +3,13 @@ using System.Collections.Generic;
 
 namespace ETCModule.Models
 {
-    class EtcWalletsResult : ResultBase
+    public class EtcWalletsResult : ResultBase
     {
         [JsonProperty("result")]
-        public List<EtcWalletResult> Result;
+        public List<EtcWallet> EtcWallets;
     }
 
-    public class EtcWalletResult
+    public class EtcWallet
     {
         [JsonProperty("address")]
         public string Address;

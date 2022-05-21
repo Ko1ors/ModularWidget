@@ -39,16 +39,16 @@ namespace ETCModule
             _etcService.EtcUpdated += EtcService_EtcUpdated;
 
             _regionService.RegionRequest(regName);
-            _etcService.Start();
+            _etcService.StartAsync();
         }
 
         private void EtcService_EtcUpdated(EtcCompositeResult result)
         {
             etcView.Dispatcher.Invoke(() =>
             {
-                etcView.etcPriceUC.labelEtcPrice.Content = $"${result.EtcPrice.Result.CoinUsd} ❙ {Math.Round(result.EtcPrice.Result.CoinBtc, 5).ToString().Replace(",", ".")} BTC";
+                etcView.etcPriceUC.labelEtcPrice.Content = $"${result.Price.CoinUsd} ❙ {Math.Round(result.Price.CoinBtc, 5).ToString().Replace(",", ".")} BTC";
                 if (result.WalletBalance >= 0)
-                    etcView.etcWalletBalanceUC.labelEtcWalletBalance.Content = $"{result.WalletBalance.ToString().Replace(",", ".")} ETC ❙ ${Math.Round(result.WalletBalance * result.EtcPrice.Result.CoinUsd, 2).ToString().Replace(",", ".")}";
+                    etcView.etcWalletBalanceUC.labelEtcWalletBalance.Content = $"{result.WalletBalance.ToString().Replace(",", ".")} ETC ❙ ${Math.Round(result.WalletBalance * result.Price.CoinUsd, 2).ToString().Replace(",", ".")}";
             });
         }
 
@@ -78,6 +78,7 @@ namespace ETCModule
 
         public void RegisterTypes(IContainerRegistry containerRegistry)
         {
+            containerRegistry.Register<IEtcClientService, EtcClientService>();
             containerRegistry.RegisterSingleton<IEtcService, EtcService>();
         }
     }

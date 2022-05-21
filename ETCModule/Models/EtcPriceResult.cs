@@ -2,13 +2,13 @@
 
 namespace ETCModule.Models
 {
-    public class EtcPrice : ResultBase
+    public class EtcPriceResult : ResultBase
     {
         [JsonProperty("result")]
-        public EtcPriceResult Result;
+        public EtcPrice Price;
     }
 
-    public class EtcPriceResult
+    public class EtcPrice
     {
         [JsonProperty("coin_btc")]
         public double CoinBtc;

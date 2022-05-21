@@ -1,4 +1,5 @@
 ﻿using ETCModule.Models;
+using System.Threading.Tasks;
 
 namespace ETCModule.Services
 {
@@ -6,16 +7,16 @@ namespace ETCModule.Services
 
     public interface IEtcService
     {
-        event Updated<EtcPrice> EtcPriceUpdated;
+        event Updated<EtcPriceResult> EtcPriceUpdated;
 
         event Updated<double> WalletBalanceUpdated;
 
         event Updated<EtcCompositeResult> EtcUpdated;
 
-        void Start();
+        Task StartAsync();
 
-        EtcPrice GetEtcPrice();
+        Task<EtcPriceResult> GetEtcPriceAsync();
 
-        double GetEtcWalletBalance(string wallet);
+        Task<double> GetEtcWalletBalanceAsync(string wallet);
     }
 }
