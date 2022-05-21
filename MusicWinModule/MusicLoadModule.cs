@@ -1,4 +1,4 @@
-﻿using ModularWidget;
+﻿using ModularWidget.Services;
 using MusicWinModule.Views;
 using Prism.Ioc;
 using Prism.Modularity;
@@ -9,24 +9,30 @@ namespace MusicWinModule
 {
     public class MusicLoadModule : IModule
     {
-        IRegionManager regionManager;
+        private readonly IRegionManager _regionManager;
+        private readonly IRegionService _regionService;
+
         private readonly string regName = "musicregion";
         private UserControl musicView = new MusicUC();
-        public void OnInitialized(IContainerProvider containerProvider)
+
+        public MusicLoadModule(IRegionManager regionManager, IRegionService regionService)
         {
-            regionManager = containerProvider.Resolve<IRegionManager>();
-            Manager.RegionCreated += Manager_RegionCreated;
-            Manager.RegionRequest(regName);
+            _regionManager = regionManager;
+            _regionService = regionService;
         }
 
+        public void OnInitialized(IContainerProvider containerProvider)
+        {
+            _regionService.RegionCreated += Manager_RegionCreated;
+            _regionService.RegionRequest(regName);
+        }
 
         private void Manager_RegionCreated(string regName)
         {
             if (regName == this.regName)
             {
-                Manager.RegionCreated -= Manager_RegionCreated;
-                //regionManager.RegisterViewWithRegion(regName, typeof(MainUC));
-                regionManager.Regions[regName].Add(musicView);
+                _regionService.RegionCreated -= Manager_RegionCreated;
+                _regionManager.Regions[regName].Add(musicView);
             }
         }
 

@@ -1,8 +1,8 @@
 ﻿using Newtonsoft.Json;
 
-namespace ModularWidget.Data
+namespace ETCModule.Models
 {
-    public abstract class Root
+    public abstract class ResultBase
     {
         [JsonProperty("status")]
         public string Status;

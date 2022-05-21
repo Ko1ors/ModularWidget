@@ -1,4 +1,5 @@
-﻿using System.Windows.Controls;
+﻿using ETCModule.ViewModels;
+using System.Windows.Controls;
 
 namespace ETCModule.Views
 {
@@ -7,9 +8,10 @@ namespace ETCModule.Views
     /// </summary>
     public partial class EtcPriceUC : UserControl
     {
-        public EtcPriceUC()
+        public EtcPriceUC(EtcPriceViewModel viewModel)
         {
             InitializeComponent();
+            DataContext = viewModel;
         }
     }
 }

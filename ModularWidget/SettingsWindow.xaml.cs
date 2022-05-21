@@ -5,11 +5,11 @@ namespace ModularWidget
     /// <summary>
     /// Логика взаимодействия для Settings.xaml
     /// </summary>
-    public partial class Settings : Window
+    public partial class SettingsWindow : Window
     {
         private readonly AppSettings _appSettings;
 
-        public Settings(AppSettings settings)
+        public SettingsWindow(AppSettings settings)
         {
             InitializeComponent();
             _appSettings = settings;

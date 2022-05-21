@@ -1,15 +1,14 @@
-﻿using ModularWidget.Data;
-using Newtonsoft.Json;
+﻿using Newtonsoft.Json;
 
-namespace ETCModule.Data
+namespace ETCModule.Models
 {
-    public class EtcPrice : Root
+    public class EtcPriceResult : ResultBase
     {
         [JsonProperty("result")]
-        public EtcPriceResult Result;
+        public EtcPrice Price;
     }
 
-    public class EtcPriceResult
+    public class EtcPrice
     {
         [JsonProperty("coin_btc")]
         public double CoinBtc;
