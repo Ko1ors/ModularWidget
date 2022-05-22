@@ -1,8 +1,6 @@
-﻿using CommonServiceLocator;
-using ModularWidget.Services;
+﻿using ModularWidget.Services;
 using ModularWidget.UserControls;
 using Prism.Regions;
-using System;
 using System.Runtime.InteropServices;
 using System.Windows;
 using System.Windows.Controls;
@@ -19,29 +17,43 @@ namespace ModularWidget
     /// </summary>
     public partial class MainWindow : Window
     {
-        private readonly AppSettings _appSettings;
-        private readonly IRegionManager _regionManager;
-        private readonly IRegionService _regionService;
+        private AppSettings _appSettings;
+        private IRegionManager _regionManager;
+        private IRegionService _regionService;
+        private IWindowService _windowService;
 
         private Window _dragdropWindow = null;
         private Effect _regionEffect = null;
 
-        public MainWindow(AppSettings settings, IRegionManager regionManager, IRegionService regionService)
+
+        public MainWindow(AppSettings settings, IRegionManager regionManager, IRegionService regionService, IWindowService windowService, RegionUC region)
+        {
+            Init(settings, regionManager, regionService, windowService);
+            if (!string.IsNullOrEmpty(region.RegionName))
+                AddRegion(region);
+        }
+
+        public void Init(AppSettings settings, IRegionManager regionManager, IRegionService regionService, IWindowService windowService)
         {
             InitializeComponent();
             _appSettings = settings;
             _regionManager = regionManager;
             _regionService = regionService;
+            _windowService = windowService;
 
-            RegionManager.SetRegionManager(regionListView, _regionManager);
+            _windowService.AddWindow(this);
+
+            if (!_appSettings.IsLoaded)
+            {
+                _appSettings.Load();
+                RegionManager.SetRegionManager(RegionListView, _regionManager);
+                _regionService.RegionRequested += CreateRegion;
+            }
 
             Left = SystemParameters.PrimaryScreenWidth - Width * 1.1;
             Top = SystemParameters.PrimaryScreenHeight * 0.05;
 
-            _regionService.RegionRequested += CreateRegion;
-            _appSettings.Load();
-
-            Style itemContainerStyle = regionListView.ItemContainerStyle;
+            Style itemContainerStyle = RegionListView.ItemContainerStyle;
             itemContainerStyle.Setters.Add(new Setter(AllowDropProperty, true));
             itemContainerStyle.Setters.Add(new EventSetter(MouseMoveEvent, new MouseEventHandler(RegionListView_MouseMoveEvent)));
             itemContainerStyle.Setters.Add(new EventSetter(DropEvent, new DragEventHandler(RegionListView_Drop)));
@@ -67,7 +79,7 @@ namespace ModularWidget
                     };
                     CreateDragDropWindow(region);
 
-                    DragDrop.AddQueryContinueDragHandler(draggedItem, DragContrinueHandler);
+                    DragDrop.AddQueryContinueDragHandler(draggedItem, DragContinueHandler);
                     DragDrop.DoDragDrop(draggedItem, draggedItem.DataContext, DragDropEffects.Move);
                     draggedItem.IsSelected = true;
                 }
@@ -75,11 +87,27 @@ namespace ModularWidget
 
         }
 
-        private void DragContrinueHandler(object sender, QueryContinueDragEventArgs e)
+        private void DragContinueHandler(object sender, QueryContinueDragEventArgs e)
         {
             if (e.Action == DragAction.Continue && e.KeyStates != DragDropKeyStates.LeftMouseButton)
             {
-                DragDropReset((e.OriginalSource as ListViewItem).Content as RegionUC);
+                if (!((e.OriginalSource as ListViewItem).Content is RegionUC region))
+                    return;
+                Win32Point w32Mouse = new Win32Point();
+                GetCursorPos(ref w32Mouse);
+                if (!_windowService.CursorInsideWindow(w32Mouse))
+                {
+                    RegionListView.Items.Remove(region);
+                    if (RegionListView.Items.IsEmpty)
+                        _windowService.RemoveAndCloseWindow(this);
+                    var window = new MainWindow(_appSettings, _regionManager, _regionService, _windowService, region)
+                    {
+                        Left = w32Mouse.X,
+                        Top = w32Mouse.Y
+                    };
+                    window.Show();
+                }
+                DragDropReset(region);
             }
         }
 
@@ -97,14 +125,33 @@ namespace ModularWidget
         {
             var droppedRegion = e.Data.GetData(typeof(RegionUC)) as RegionUC;
             var target = ((ListViewItem)(sender)).DataContext as RegionUC;
+            MainWindow window = this;
+            var removeFrom = RegionListView.Items;
+            var insertTo = RegionListView.Items;
 
-            int removedIdx = regionListView.Items.IndexOf(droppedRegion);
-            int targetIdx = regionListView.Items.IndexOf(target);
-            if (removedIdx != targetIdx)
+            int removedIdx = RegionListView.Items.IndexOf(droppedRegion);
+            if (removedIdx == -1)
             {
-                regionListView.Items.RemoveAt(removedIdx);
-                regionListView.Items.Insert(targetIdx, droppedRegion);
+                window = _windowService.FindWindowByRegion(droppedRegion);
+                removeFrom = window.RegionListView.Items;
+                removedIdx = removeFrom.IndexOf(droppedRegion);
             }
+
+            int targetIdx = RegionListView.Items.IndexOf(target);
+            if (targetIdx == -1)
+            {
+                insertTo = _windowService.FindWindowByRegion(target).RegionListView.Items;
+                targetIdx = removeFrom.IndexOf(target);
+            }
+
+            if ((removeFrom != insertTo) || (removedIdx != targetIdx))
+            {
+                removeFrom.RemoveAt(removedIdx);
+                insertTo.Insert(targetIdx, droppedRegion);
+            }
+            if (removeFrom.IsEmpty)
+                _windowService.RemoveAndCloseWindow(window);
+
             DragDropReset(droppedRegion);
         }
 
@@ -112,14 +159,21 @@ namespace ModularWidget
         {
             Win32Point w32Mouse = new Win32Point();
             GetCursorPos(ref w32Mouse);
-
+            if (e.Effects != DragDropEffects.Move)
+            {
+                if (!_windowService.CursorInsideWindow(w32Mouse))
+                {
+                    e.UseDefaultCursors = false;
+                    Mouse.SetCursor(Cursors.Cross);
+                    e.Handled = true;
+                }
+            }
             if (_dragdropWindow != null)
             {
                 _dragdropWindow.Left = w32Mouse.X;
                 _dragdropWindow.Top = w32Mouse.Y;
             }
         }
-
 
         private void CreateDragDropWindow(Visual dragElement)
         {
@@ -151,16 +205,9 @@ namespace ModularWidget
         [return: MarshalAs(UnmanagedType.Bool)]
         internal static extern bool GetCursorPos(ref Win32Point pt);
 
-        [StructLayout(LayoutKind.Sequential)]
-        internal struct Win32Point
-        {
-            public Int32 X;
-            public Int32 Y;
-        };
-
         private void ExitButton_Click(object sender, RoutedEventArgs e)
         {
-            Close();
+            _windowService.RemoveAndCloseWindow(this);
         }
 
         private void SettingsButton_Click(object sender, RoutedEventArgs e)
@@ -179,7 +226,7 @@ namespace ModularWidget
 
         private void AddRegion(RegionUC reg)
         {
-            regionListView.Items.Add(reg);
+            RegionListView.Items.Add(reg);
         }
     }
 }

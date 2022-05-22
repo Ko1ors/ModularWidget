@@ -20,6 +20,7 @@ namespace ModularWidget
         {
             containerRegistry.RegisterSingleton<AppSettings>();
             containerRegistry.RegisterSingleton<IRegionService, RegionService>();
+            containerRegistry.RegisterSingleton<IWindowService, WindowService>();
         }
 
         protected override IModuleCatalog CreateModuleCatalog()
