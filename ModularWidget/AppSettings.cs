@@ -1,7 +1,9 @@
-﻿using ModularWidget.Models;
+﻿using Microsoft.Extensions.Logging;
+using ModularWidget.Models;
 using Newtonsoft.Json;
 using System;
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.Globalization;
 using System.IO;
 using System.Linq;
@@ -10,77 +12,147 @@ namespace ModularWidget
 {
     public partial class AppSettings
     {
+        private readonly ILogger<AppSettings> _logger;
+
         public bool IsLoaded { get; private set; }
 
         internal List<SettingsMenu> Menus { get; set; }
 
+        public AppSettings(ILogger<AppSettings> logger)
+        {
+            _logger = logger;
+        }
+
         public void Save()
         {
-            // save changes in parameters 
-            Menus.SelectMany(p => p.Parameters).ToList().ForEach(p => p.SaveChanges());
+            try
+            {
+                // log
+                _logger.LogInformation("Saving settings");
+                // measure elapsed time
+                var stopwatch = new Stopwatch();
+                stopwatch.Start();
 
-            string json = JsonConvert.SerializeObject(Menus, Formatting.Indented);
-            File.WriteAllText(@"settings.json", json);
+                // save changes in parameters 
+                Menus.SelectMany(p => p.Parameters).ToList().ForEach(p => p.SaveChanges());
+
+                string json = JsonConvert.SerializeObject(Menus, Formatting.Indented);
+                File.WriteAllText(@"settings.json", json);
+                stopwatch.Stop();
+                _logger.LogInformation($"Settings saved. Elapsed time: {stopwatch.ElapsedMilliseconds} ms. Model: {JsonConvert.SerializeObject(Menus)}");
+            }
+            catch (Exception e)
+            {
+                _logger.LogError(e, "Error saving settings");
+            }
         }
 
         public void Load()
         {
-            if (File.Exists(@"settings.json"))
+            try
             {
-                string json = System.IO.File.ReadAllText(@"settings.json");
-                Menus = JsonConvert.DeserializeObject<List<SettingsMenu>>(json);
+                // log
+                _logger.LogInformation("Loading settings");
+                // measure elapsed time
+                var stopwatch = new Stopwatch();
+                stopwatch.Start();
+
+                if (File.Exists(@"settings.json"))
+                {
+                    string json = File.ReadAllText(@"settings.json");
+                    Menus = JsonConvert.DeserializeObject<List<SettingsMenu>>(json);
+                }
+                if (Menus is null)
+                    Menus = new List<SettingsMenu>();
+
+                IsLoaded = true;
+
+                stopwatch.Stop();
+                _logger.LogInformation($"Settings loaded. Elapsed time: {stopwatch.ElapsedMilliseconds} ms. Model: {JsonConvert.SerializeObject(Menus)}");
             }
-            if (Menus is null)
-                Menus = new List<SettingsMenu>();
-
-            IsLoaded = true;
-
+            catch (Exception e)
+            {
+                _logger.LogError(e, "Error loading settings");
+            }
         }
 
         public void Reset()
         {
+            _logger.LogInformation("Resetting settings");
             Menus.SelectMany(p => p.Parameters).ToList().ForEach(p => p.ChangedValue = p.Value);
         }
 
         public bool AddOrUpdateMenu(SettingsMenu menu)
         {
-            var menuToUpdate = Menus.Find(x => x.Key == menu.Key);
-            if (menuToUpdate is null)
+            try
             {
-                Menus.Add(menu);
+                // log
+                _logger.LogInformation($"Adding or updating {menu?.Name} menu. Menu model: {JsonConvert.SerializeObject(menu)}");
+                var stopwatch = new Stopwatch();
+                stopwatch.Start();
+
+                var menuToUpdate = Menus.Find(x => x.Key == menu.Key);
+                if (menuToUpdate is null)
+                {
+                    Menus.Add(menu);
+                }
+                else
+                {
+                    menuToUpdate.Name = menu.Name;
+                    menuToUpdate.Parameters = menu.Parameters;
+                }
+                stopwatch.Stop();
+                _logger.LogInformation($"{menu?.Name} menu added or updated. Elapsed time: {stopwatch.ElapsedMilliseconds} ms.");
+
+                Save();
+                return true;
             }
-            else
+            catch (Exception e)
             {
-                menuToUpdate.Name = menu.Name;
-                menuToUpdate.Parameters = menu.Parameters;
+                _logger.LogError(e, $"Error adding or updating {menu?.Name} menu.");
+                return false;
             }
-            Save();
-            return true;
         }
 
         public bool AddOrUpdateParameter(string menuKey, SettingsParameter parameter)
         {
-            var menu = Menus.Find(x => x.Key == menuKey);
-            if (menu is null)
-                return false;
-            var parameterToUpdate = menu.Parameters.Find(x => x.Key == parameter.Key);
-            if (parameterToUpdate is null)
+            try
             {
-                menu.Parameters.Add(parameter);
-            }
-            else
-            {
-                if (parameter.DataTypeName == parameterToUpdate.DataTypeName)
+                // log
+                _logger.LogInformation($"Adding or updating {parameter?.Name} parameter. Parameter model: {JsonConvert.SerializeObject(parameter)}");
+                var stopwatch = new Stopwatch();
+                stopwatch.Start();
+
+                var menu = Menus.Find(x => x.Key == menuKey);
+                if (menu is null)
+                    return false;
+                var parameterToUpdate = menu.Parameters.Find(x => x.Key == parameter.Key);
+                if (parameterToUpdate is null)
                 {
-                    menu.Parameters.Remove(parameterToUpdate);
-                    parameterToUpdate = new SettingsParameter(parameter.DataTypeName);
-                    menu.Parameters.Add(parameterToUpdate);
+                    menu.Parameters.Add(parameter);
                 }
-                parameterToUpdate.Name = parameter.Name;
-                parameterToUpdate.Value = parameter.Value;
+                else
+                {
+                    if (parameter.DataTypeName == parameterToUpdate.DataTypeName)
+                    {
+                        menu.Parameters.Remove(parameterToUpdate);
+                        parameterToUpdate = new SettingsParameter(parameter.DataTypeName);
+                        menu.Parameters.Add(parameterToUpdate);
+                    }
+                    parameterToUpdate.Name = parameter.Name;
+                    parameterToUpdate.Value = parameter.Value;
+                }
+                stopwatch.Stop();
+                _logger.LogInformation($"{parameter?.Name} parameter added or updated. Elapsed time: {stopwatch.ElapsedMilliseconds} ms.");
+
+                Save();
+                return true;
             }
-            Save();
-            return true;
+            catch (Exception e)
+            {
+                _logger.LogError(e, $"Error adding or updating {parameter?.Name} parameter.");
+                return false;
+            }
         }
 
         public bool MenuExists(string key)
