@@ -83,11 +83,11 @@ namespace ETCModule.Services
                 var priceModel = await _clientService.GetPriceAsync();
                 if (priceModel.Status == "1" && priceModel.Message == "OK")
                 {
-                    priceModel.Price.CoinBtc = Math.Round(priceModel.Price.CoinBtc, 8);
-                    priceModel.Price.CoinUsd = Math.Round(priceModel.Price.CoinUsd, 2);
+                    priceModel.Price.CoinBtc = Math.Round(priceModel.Price.CoinBtc ?? -1, 8);
+                    priceModel.Price.CoinUsd = Math.Round(priceModel.Price.CoinUsd ?? -1, 2);
                     return priceModel;
                 }
-                Thread.Sleep(500 * (i + 1));
+                await Task.Delay(500 * (i + 1));
             }
             return null;
         }
@@ -101,7 +101,7 @@ namespace ETCModule.Services
                 {
                     return Math.Round(float.Parse(walletBalanceModel.Result) / _divisor, 4);
                 }
-                Thread.Sleep(500 * (i + 1));
+                await Task.Delay(500 * (i + 1));
             }
             return -1;
         }

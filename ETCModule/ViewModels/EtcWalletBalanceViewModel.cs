@@ -19,8 +19,22 @@ namespace ETCModule.ViewModels
             }
         }
 
-        public string WalletBalanceText => Result is null ?
-            "ーー ETC ❙ $ーー" : $"{Result.WalletBalance.ToString().Replace(",", ".")} ETC ❙ ${Math.Round(Result.WalletBalance * Result.Price.CoinUsd, 2).ToString().Replace(",", ".")}";
+        public string WalletBalanceText
+        {
+            get
+            {
+                if (Result is null || Result.WalletBalance < 0)
+                    return "ーー ETC ❙ $ーー";
+
+                string priceText = $"{Result.WalletBalance.ToString().Replace(",", ".")} ETC ❙";
+
+                if (Result.Price.CoinUsd.HasValue && Result.Price.CoinUsd.Value >= 0)
+                    priceText += $" ${Math.Round(Result.WalletBalance * Result.Price.CoinUsd.Value, 2).ToString().Replace(",", ".")}";
+                else
+                    priceText += " $ーー";
+                return priceText;
+            }
+        }
 
         public EtcWalletBalanceViewModel(IEtcService etcService)
         {

@@ -1,6 +1,5 @@
 ﻿using ETHModule.Data;
 using System;
-using System.Threading;
 using System.Threading.Tasks;
 
 namespace ETHModule.Services
@@ -24,35 +23,35 @@ namespace ETHModule.Services
             return model;
         }
 
-        public Task<EthPrice> GetPriceAsync(string apiKey)
+        public async Task<EthPrice> GetPriceAsync(string apiKey)
         {
             for (int i = 0; i < maxTries; i++)
             {
                 var result = EthRequest.GetPrice(apiKey);
                 if (result.Status != "0" && result.Message != "NOTOK")
                 {
-                    return Task.FromResult(result);
+                    return result;
                 }
-                Thread.Sleep(500 * (i + 1));
+                await Task.Delay(500 * (i + 1));
             }
-            return Task.FromResult(default(EthPrice));
+            return default;
         }
 
-        public Task<EthGasPrice> GetGasPriceAsync(string apiKey)
+        public async Task<EthGasPrice> GetGasPriceAsync(string apiKey)
         {
             for (int i = 0; i < maxTries; i++)
             {
                 var result = EthRequest.GetGasPrice(apiKey);
                 if (result.Status != "0" && result.Message != "NOTOK")
                 {
-                    return Task.FromResult(result);
+                    return result;
                 }
-                Thread.Sleep(500 * (i + 1));
+                await Task.Delay(500 * (i + 1));
             }
-            return Task.FromResult(default(EthGasPrice));
+            return default;
         }
 
-        public Task<double> GetAvgBlockRewardAsync(string apiKey, int lastBlock)
+        public async Task<double> GetAvgBlockRewardAsync(string apiKey, int lastBlock)
         {
             double blockreward = 0;
             bool success;
@@ -69,26 +68,26 @@ namespace ETHModule.Services
                         blockreward += double.Parse(result.Result.BlockReward) / 1000000000000000000;
                         break;
                     }
-                    Thread.Sleep(500 * (j + 1));
+                    await Task.Delay(500 * (j + 1));
                 }
                 if (!success)
-                    return Task.FromResult(default(double));
+                    return default;
             }
-            return Task.FromResult(Math.Round(blockreward / i, 5));
+            return Math.Round(blockreward / i, 5);
         }
 
-        public Task<double> GetWalletBalanceAsync(string apiKey, string wallet)
+        public async Task<double> GetWalletBalanceAsync(string apiKey, string wallet)
         {
             for (int i = 0; i < maxTries; i++)
             {
                 var result = EthRequest.GetWalletBalance(apiKey, wallet);
                 if (result.Status != "0" && result.Message != "NOTOK")
                 {
-                    return Task.FromResult(Math.Round(double.Parse(result.Result) / 1000000000000000000, 5));
+                    return Math.Round(double.Parse(result.Result) / 1000000000000000000, 5);
                 }
-                Thread.Sleep(500 * (i + 1));
+                await Task.Delay(500 * (i + 1));
             }
-            return Task.FromResult(default(double));
+            return default;
         }
     }
 }
