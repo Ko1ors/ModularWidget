@@ -1,9 +1,11 @@
 ﻿using ETHModule.Services;
 using ETHModule.Settings;
 using ETHModule.UserControls;
+using Microsoft.Extensions.Logging;
 using ModularWidget;
 using ModularWidget.Models;
 using ModularWidget.Services;
+using Newtonsoft.Json;
 using Prism.Ioc;
 using Prism.Modularity;
 using Prism.Regions;
@@ -22,6 +24,7 @@ namespace ETHModule
         private readonly AppSettings _appSettings;
         private readonly IRegionService _regionService;
         private IETHService _ethService;
+        private readonly ILogger<LoadModule> _logger;
 
         private Timer timer;
         private int regionsRequestedCount;
@@ -29,11 +32,12 @@ namespace ETHModule
         private Dispatcher dispatcher;
     
 
-        public LoadModule(AppSettings appSettings, IRegionManager regionManager, IRegionService regionService)
+        public LoadModule(AppSettings appSettings, IRegionManager regionManager, IRegionService regionService, ILogger<LoadModule> logger)
         {
             _appSettings = appSettings;
             _regionManager = regionManager;
             _regionService = regionService;
+            _logger = logger;
         }
 
         public void OnInitialized(IContainerProvider containerProvider)
@@ -109,6 +113,7 @@ namespace ETHModule
             _regionManager.Regions[name].Add(userControl);
             if (--regionsRequestedCount <= 0)
             {
+                _logger.LogInformation("All requested regions were created.");
                 _regionService.RegionCreated -= Manager_RegionCreated;
                 Task.Run(async () => await UpdateETHData());
                 SetTimer();
@@ -133,32 +138,41 @@ namespace ETHModule
 
         private async Task UpdateETHData()
         {
-            var apiKey = _appSettings.Get<string>(Constants.Parameters.ApiKey);
-            var wallet = _appSettings.Get<string>(Constants.Parameters.Wallet);
-            var hidePrice = _appSettings.Get<bool>(Constants.Parameters.hidePrice) && string.IsNullOrEmpty(wallet);
-            var hideGasTracker = _appSettings.Get<bool>(Constants.Parameters.hideGasTracker);
-            var hideBlockReward = _appSettings.Get<bool>(Constants.Parameters.hideBlockReward);
-
-            var result = await _ethService.GetDataAsync(apiKey, wallet, hidePrice, hideGasTracker, hideBlockReward);
-            await dispatcher.InvokeAsync(() =>
+            try
             {
+                var apiKey = _appSettings.Get<string>(Constants.Parameters.ApiKey);
+                var wallet = _appSettings.Get<string>(Constants.Parameters.Wallet);
+                var hidePrice = _appSettings.Get<bool>(Constants.Parameters.hidePrice) && string.IsNullOrEmpty(wallet);
+                var hideGasTracker = _appSettings.Get<bool>(Constants.Parameters.hideGasTracker);
+                var hideBlockReward = _appSettings.Get<bool>(Constants.Parameters.hideBlockReward);
 
-                if (userControls.ContainsKey(RegionsName.EthPrice) && result.EthPrice != null)
-                    (userControls[RegionsName.EthPrice] as EthPriceUC).labelEthPrice.Content = $"${result.EthPrice.Result.Ethusd} ❙ {result.EthPrice.Result.Ethbtc} BTC";
-                if (userControls.ContainsKey(RegionsName.GasTracker) && result.EthGasPrice != null)
+                _logger.LogInformation($"Updating ETH data. API Key: {apiKey}, Wallet: {wallet}, Hide price: {hidePrice}, Hide gas tracker: {hideGasTracker}, Hide block reward: {hideBlockReward}");
+                var result = await _ethService.GetDataAsync(apiKey, wallet, hidePrice, hideGasTracker, hideBlockReward);
+                _logger.LogInformation($"ETH data updated. Result model: {JsonConvert.SerializeObject(result)}");
+                await dispatcher.InvokeAsync(() =>
                 {
-                    (userControls[RegionsName.GasTracker] as GasTrackerUC).labelGasLow.Content = $"{result.EthGasPrice.Result.SafeGasPrice} gwei";
-                    (userControls[RegionsName.GasTracker] as GasTrackerUC).labelGasAvg.Content = $"{result.EthGasPrice.Result.ProposeGasPrice} gwei";
-                    (userControls[RegionsName.GasTracker] as GasTrackerUC).labelGasHigh.Content = $"{result.EthGasPrice.Result.FastGasPrice} gwei";
-                }
-                if (userControls.ContainsKey(RegionsName.BlockRewards))
-                    (userControls[RegionsName.BlockRewards] as BlockRewardUC).labelBlockReward.Content = $"{result.AvgBlockReward.ToString().Replace(",", ".")} ETH";
-                if (!string.IsNullOrEmpty(wallet) && userControls.ContainsKey(RegionsName.EthWallet))
-                {
-                    var priceString = result.EthPrice != null ? $"❙ ${Math.Round(double.Parse(result.EthPrice.Result.Ethusd.Replace('.', ',')) * result.WalletBalance, 2).ToString().Replace(',', '.')}" : "";
-                    (userControls[RegionsName.EthWallet] as EthWalletBalanceUC).labelWalletBalance.Content = $"{result.WalletBalance.ToString().Replace(",", ".")} ETH " + priceString;
-                }
-            });
+
+                    if (userControls.ContainsKey(RegionsName.EthPrice) && result.EthPrice != null)
+                        (userControls[RegionsName.EthPrice] as EthPriceUC).labelEthPrice.Content = $"${result.EthPrice.Result.Ethusd} ❙ {result.EthPrice.Result.Ethbtc} BTC";
+                    if (userControls.ContainsKey(RegionsName.GasTracker) && result.EthGasPrice != null)
+                    {
+                        (userControls[RegionsName.GasTracker] as GasTrackerUC).labelGasLow.Content = $"{result.EthGasPrice.Result.SafeGasPrice} gwei";
+                        (userControls[RegionsName.GasTracker] as GasTrackerUC).labelGasAvg.Content = $"{result.EthGasPrice.Result.ProposeGasPrice} gwei";
+                        (userControls[RegionsName.GasTracker] as GasTrackerUC).labelGasHigh.Content = $"{result.EthGasPrice.Result.FastGasPrice} gwei";
+                    }
+                    if (userControls.ContainsKey(RegionsName.BlockRewards))
+                        (userControls[RegionsName.BlockRewards] as BlockRewardUC).labelBlockReward.Content = $"{result.AvgBlockReward.ToString().Replace(",", ".")} ETH";
+                    if (!string.IsNullOrEmpty(wallet) && userControls.ContainsKey(RegionsName.EthWallet))
+                    {
+                        var priceString = result.EthPrice != null ? $"❙ ${Math.Round(double.Parse(result.EthPrice.Result.Ethusd.Replace('.', ',')) * result.WalletBalance, 2).ToString().Replace(',', '.')}" : "";
+                        (userControls[RegionsName.EthWallet] as EthWalletBalanceUC).labelWalletBalance.Content = $"{result.WalletBalance.ToString().Replace(",", ".")} ETH " + priceString;
+                    }
+                });
+            }
+            catch(Exception e)
+            {
+                _logger.LogError(e, "Error while updating ETH data.");
+            }
         }
 
 
