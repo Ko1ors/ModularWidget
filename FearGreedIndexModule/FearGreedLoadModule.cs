@@ -1,3 +1,4 @@
+using FearGreedIndexModule.ViewModels;
 using FearGreedIndexModule.Views;
 using ModularWidget.Services;
 using Prism.Ioc;
@@ -11,8 +12,9 @@ namespace FearGreedIndexModule
     {
         private readonly IRegionManager _regionManager;
         private readonly IRegionService _regionService;
+        private FearGreedIndexUC _fearGreedIndexUC;
 
-        private readonly string regName = "feargreedindexregion";
+        private const string RegionName = "feargreedindexregion";
 
         public FearGreedLoadModule(IRegionManager regionManager, IRegionService regionService)
         {
@@ -22,22 +24,24 @@ namespace FearGreedIndexModule
 
         public void OnInitialized(IContainerProvider containerProvider)
         {
+            _fearGreedIndexUC = containerProvider.Resolve<FearGreedIndexUC>();
             _regionService.RegionCreated += Manager_RegionCreated;
-            _regionService.RegionRequest(regName);
+            _regionService.RegionRequest(RegionName);
         }
 
         private void Manager_RegionCreated(string regName)
         {
-            if (regName == this.regName)
+            if (regName == RegionName)
             {
                 _regionService.RegionCreated -= Manager_RegionCreated;
-                _regionManager.Regions[regName].Add(new FearGreedIndexUC());
+                _regionManager.Regions[regName].Add(_fearGreedIndexUC);
             }
         }
 
         public void RegisterTypes(IContainerRegistry containerRegistry)
         {
-
+            containerRegistry.Register<FearGreedIndexViewModel>();
+            containerRegistry.Register<FearGreedIndexUC>();
         }
     }
 }
