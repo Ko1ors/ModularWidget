@@ -12,6 +12,7 @@ using System.Windows.Media;
 using System.Windows.Media.Imaging;
 using System.Windows.Navigation;
 using System.Windows.Shapes;
+using CoinMarketCapPortfolioModule.ViewModels;
 
 namespace CoinMarketCapPortfolioModule.Views
 {
@@ -20,9 +21,10 @@ namespace CoinMarketCapPortfolioModule.Views
     /// </summary>
     public partial class CoinMarketCapPortfolioUC : UserControl
     {
-        public CoinMarketCapPortfolioUC()
+        public CoinMarketCapPortfolioUC(CoinMarketCapPortfolioViewModel viewModel)
         {
             InitializeComponent();
+            this.DataContext = viewModel;
         }
     }
 }
