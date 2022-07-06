@@ -34,7 +34,7 @@ namespace CoinMarketCapPortfolioModule.Models
             }
         }
 
-        public string PriceString => $"$ {Price}";
+        public string PriceString => $"$ {Price:F2}";
 
         public decimal ChangePercent
         {
@@ -49,7 +49,7 @@ namespace CoinMarketCapPortfolioModule.Models
             }
         }
 
-        public string ChangePercentString => $"{Math.Abs(ChangePercent)}%";
+        public string ChangePercentString => $"{Math.Abs(ChangePercent):P}";
 
         public bool ChangePercentPositive => ChangePercent > 0;
 
