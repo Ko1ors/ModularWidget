@@ -1,9 +1,5 @@
 ﻿using System;
-using System.Collections.Generic;
 using System.Windows.Media;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace CoinMarketCapPortfolioModule.Models
 {
@@ -12,6 +8,7 @@ namespace CoinMarketCapPortfolioModule.Models
         private string _name;
         private decimal _price;
         private decimal _changePercent;
+        private decimal _changeBalance;
 
         public string Name
         {
@@ -34,7 +31,7 @@ namespace CoinMarketCapPortfolioModule.Models
             }
         }
 
-        public string PriceString => $"$ {Price:F2}";
+        public string PriceString => $"${Price:F2}";
 
         public decimal ChangePercent
         {
@@ -50,6 +47,20 @@ namespace CoinMarketCapPortfolioModule.Models
         }
 
         public string ChangePercentString => $"{Math.Abs(ChangePercent):P}";
+
+        public decimal ChangeBalance
+        {
+            get { return _changeBalance; }
+            set
+            {
+                _changeBalance = value;
+                OnPropertyChanged("ChangeBalance");
+            }
+        }
+
+        public string ChangeBalanceString => $"{ChangeBalanceSymbol} ${Math.Abs(ChangeBalance):F2}";
+
+        public string ChangeBalanceSymbol => ChangeBalance >= 0 ? "+" : "-";
 
         public bool ChangePercentPositive => ChangePercent > 0;
 

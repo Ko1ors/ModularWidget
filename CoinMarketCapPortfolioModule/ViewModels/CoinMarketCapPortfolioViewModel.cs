@@ -182,6 +182,7 @@ namespace CoinMarketCapPortfolioModule.ViewModels
                 }
 
                 resultPortfolio.ChangePercent = (decimal)mainPortfolioStatistics.Data.YesterdayBalancePercent;
+                resultPortfolio.ChangeBalance = (decimal)mainPortfolioStatistics.Data.YesterdayChangeBalance;
                 Portfolio = resultPortfolio;
             }
             catch (Exception ex)
