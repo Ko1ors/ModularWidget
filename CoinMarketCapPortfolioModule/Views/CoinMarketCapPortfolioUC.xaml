@@ -6,17 +6,17 @@
              xmlns:local="clr-namespace:CoinMarketCapPortfolioModule.Views"
              xmlns:fa="http://schemas.fontawesome.io/icons/" xmlns:viewmodels="clr-namespace:CoinMarketCapPortfolioModule.ViewModels" d:DataContext="{d:DesignInstance Type=viewmodels:CoinMarketCapPortfolioViewModel}"
              mc:Ignorable="d" 
-              Height="100" Width="280" Margin="0,0,0,15">
+              Height="Auto" Width="280" Margin="0,0,0,15">
     <Border BorderThickness="1,1,1,1" BorderBrush="Black" CornerRadius="10">
-        <StackPanel>
+        <StackPanel HorizontalAlignment="Center">
             <Label HorizontalAlignment="Center" Content="CoinMarketCap Portfolio" Foreground="#FF8E8A8F" FontSize="12" FontFamily="Arial Black"/>
-            <Label HorizontalAlignment="Left" Content="{Binding Portfolio.Name}" d:Content="Portfolio name balance" Margin="20 0 0 0" Foreground="#FF8E8A8F" FontSize="11" FontFamily="Arial Black"/>
+            <Label HorizontalAlignment="Left" Content="{Binding Portfolio.Name, FallbackValue= — — — — —}" d:Content="Portfolio name balance" Margin="0 0 0 0" Foreground="#FF8E8A8F" FontSize="12" FontFamily="Arial Black"/>
             <StackPanel Orientation="Horizontal" HorizontalAlignment="Center">
-                <Label HorizontalAlignment="Left" Content="{Binding Portfolio.PriceString}" d:Content="$ 1000.20" FontSize="28" VerticalAlignment="Bottom" FontFamily="Arial Black"/>
-                <Border Background="{Binding Portfolio.ChangePercentColor}" d:Background="#16c784" Height="28" VerticalAlignment="Top" CornerRadius="8">
+                <Label HorizontalAlignment="Left" Content="{Binding Portfolio.PriceString, FallbackValue=$ --}" d:Content="$ 1000.20" FontSize="28" VerticalAlignment="Bottom" FontFamily="Arial Black"/>
+                <Border Background="{Binding Portfolio.ChangePercentColor, FallbackValue=#16c784}" d:Background="#16c784" Height="28" VerticalAlignment="Top" CornerRadius="8">
                     <StackPanel Orientation="Horizontal" Margin="5 0">
                         <fa:ImageAwesome Icon="{Binding Portfolio.ChangePercentIcon}" d:Icon="CaretUp" Foreground="White" Width="12" Height="12" VerticalAlignment="Center" HorizontalAlignment="Left" />
-                        <Label Content="{Binding Portfolio.ChangePercentString}" d:Content="10.5%" VerticalAlignment="Center" Foreground="White" Margin="0 0 -5 0" FontSize="12" FontFamily="Arial Black"/>
+                        <Label Content="{Binding Portfolio.ChangePercentString, FallbackValue=- -%}" d:Content="10.5%" VerticalAlignment="Center" Foreground="White" Margin="0 0 -5 0" FontSize="12" FontFamily="Arial Black"/>
                     </StackPanel>
                 </Border>
             </StackPanel>
