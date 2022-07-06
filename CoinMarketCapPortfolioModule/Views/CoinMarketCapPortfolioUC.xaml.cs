@@ -25,6 +25,7 @@ namespace CoinMarketCapPortfolioModule.Views
         {
             InitializeComponent();
             this.DataContext = viewModel;
+            viewModel.Start();
         }
     }
 }
