@@ -1,4 +1,5 @@
-﻿using CoinMarketCapPortfolioModule.Models;
+﻿using CoinMarketCapPortfolioModule.Commands;
+using CoinMarketCapPortfolioModule.Models;
 using CoinMarketCapPortfolioModule.Models.API;
 using Microsoft.Extensions.Logging;
 using ModularWidget;
@@ -51,10 +52,17 @@ namespace CoinMarketCapPortfolioModule.ViewModels
             }
         }
 
+        public RelayCommand PrivacyModeToggleCommand { get; private set; }
+
         public CoinMarketCapPortfolioViewModel(AppSettings settings)
         {
             _appSettings = settings;
+            PrivacyModeToggleCommand = new RelayCommand((obj) => PrivacyModeToggle());
+        }
 
+        public void PrivacyModeToggle()
+        {
+            Portfolio.PrivacyMode = !Portfolio.PrivacyMode;
         }
 
         public async Task Start()

@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Windows;
 using System.Windows.Media;
 
 namespace CoinMarketCapPortfolioModule.Models
@@ -9,6 +10,7 @@ namespace CoinMarketCapPortfolioModule.Models
         private decimal _price;
         private decimal _changePercent;
         private decimal _changeBalance;
+        private bool _privacyMode;
 
         public string Name
         {
@@ -58,6 +60,19 @@ namespace CoinMarketCapPortfolioModule.Models
             }
         }
 
+        public bool PrivacyMode
+        {
+            get { return _privacyMode; }
+            set
+            {
+                _privacyMode = value;
+                OnPropertyChanged("PrivacyMode");
+                OnPropertyChanged("BalanceVisibility");
+                OnPropertyChanged("PrivacyBlocksVisibility");;
+                OnPropertyChanged("PrivacyModeIcon");
+            }
+        }
+
         public string ChangeBalanceString => $"{ChangeBalanceSymbol} ${Math.Abs(ChangeBalance):F2}";
 
         public string ChangeBalanceSymbol => ChangeBalance >= 0 ? "+" : "-";
@@ -67,5 +82,11 @@ namespace CoinMarketCapPortfolioModule.Models
         public Brush ChangePercentColor => ChangePercentPositive ? (SolidColorBrush)new BrushConverter().ConvertFrom("#16c784") : (SolidColorBrush)new BrushConverter().ConvertFrom("#ea3943");
 
         public string ChangePercentIcon => ChangePercentPositive ? "CaretUp" : "CaretDown";
+
+        public string PrivacyModeIcon => PrivacyMode ? "EyeSlash" : "Eye";
+
+        public Visibility BalanceVisibility => PrivacyMode ? Visibility.Collapsed : Visibility.Visible;
+
+        public Visibility PrivacyBlocksVisibility => PrivacyMode ? Visibility.Visible : Visibility.Collapsed;
     }
 }
