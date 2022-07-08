@@ -10,19 +10,16 @@ namespace FearGreedIndexModule.Views
     {
         public FearGreedIndexViewModel ViewModel { get; set; }
 
-        public int Test { get; set; }
-
-        public FearGreedIndexUC()
+        public FearGreedIndexUC(FearGreedIndexViewModel viewModel)
         {
             InitializeComponent();
-            Init();
+            Init(viewModel);
         }
 
-        private async void Init()
+        private async void Init(FearGreedIndexViewModel viewModel)
         {
-            ViewModel = new FearGreedIndexViewModel();
-            await ViewModel.Start();
-            DataContext = ViewModel;
+            await viewModel.Start();
+            DataContext = viewModel;
         }
     }
 }
