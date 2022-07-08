@@ -42,7 +42,7 @@ namespace CoinMarketCapPortfolioModule.ViewModels
             }
         }
 
-        public PortfolioModel Portfolio 
+        public PortfolioModel Portfolio
         {
             get { return _portfolio; }
             set
@@ -86,8 +86,11 @@ namespace CoinMarketCapPortfolioModule.ViewModels
         {
             try
             {
-                if (File.Exists(filePath))
-                    Portfolio = JsonConvert.DeserializeObject<PortfolioModel>(File.ReadAllText(filePath));
+                if (!File.Exists(filePath))
+                    return;
+                
+                Portfolio = JsonConvert.DeserializeObject<PortfolioModel>(File.ReadAllText(filePath));
+                _logger.LogInformation("Portfolio loaded from file");
             }
             catch (Exception ex)
             {
@@ -99,8 +102,16 @@ namespace CoinMarketCapPortfolioModule.ViewModels
         {
             try
             {
-                File.WriteAllText(fileTempPath, JsonConvert.SerializeObject(Portfolio));
-                File.Replace(fileTempPath, filePath, null);
+                if (File.Exists(filePath))
+                {
+                    File.WriteAllText(fileTempPath, JsonConvert.SerializeObject(Portfolio));
+                    File.Replace(fileTempPath, filePath, null);
+                }
+                else
+                {
+                    File.WriteAllText(filePath, JsonConvert.SerializeObject(Portfolio));
+                }
+                _logger.LogInformation("Portfolio saved");
             }
             catch (Exception ex)
             {
@@ -149,7 +160,8 @@ namespace CoinMarketCapPortfolioModule.ViewModels
                 var resultPortfolio = new PortfolioModel()
                 {
                     Name = mainPortfolio.PortfolioName,
-                    Price = (decimal)mainPortfolio.TotalAmount
+                    Price = (decimal)mainPortfolio.TotalAmount,
+                    PrivacyMode = Portfolio?.PrivacyMode ?? false,
                 };
 
                 // get main portfolio details
