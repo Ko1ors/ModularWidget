@@ -1,4 +1,5 @@
-﻿using CryptoMarketCapModule.Views;
+﻿using CryptoMarketCapModule.Services;
+using CryptoMarketCapModule.Views;
 using ModularWidget.Services;
 using Prism.Ioc;
 using Prism.Modularity;
@@ -12,7 +13,7 @@ namespace CryptoMarketCapModule
         private readonly IRegionService _regionService;
 
         private readonly string regName = "cryptomarketcapregion";
-        private CryptoMarketCapUC cmcUC = new CryptoMarketCapUC();
+        private CryptoMarketCapUC _userControl;
 
         public MarketCapLoadModule(IRegionManager regionManager, IRegionService regionService)
         {
@@ -22,6 +23,7 @@ namespace CryptoMarketCapModule
 
         public void OnInitialized(IContainerProvider containerProvider)
         {
+            _userControl = containerProvider.Resolve<CryptoMarketCapUC>();
             _regionService.RegionCreated += Manager_RegionCreated;
             _regionService.RegionRequest(regName);
         }
@@ -32,13 +34,14 @@ namespace CryptoMarketCapModule
             if (regName == this.regName)
             {
                 _regionService.RegionCreated -= Manager_RegionCreated;
-                _regionManager.Regions[regName].Add(cmcUC);
+                _regionManager.Regions[regName].Add(_userControl);
             }
         }
 
         public void RegisterTypes(IContainerRegistry containerRegistry)
         {
-
+            containerRegistry.Register<IMarketCapService, CoinGeckoMarketCapService>();
+            containerRegistry.Register<CryptoMarketCapUC>();
         }
     }
 }
