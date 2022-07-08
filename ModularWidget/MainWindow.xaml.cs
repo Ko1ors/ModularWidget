@@ -1,4 +1,5 @@
-﻿using ModularWidget.Services;
+﻿using Microsoft.Extensions.Logging;
+using ModularWidget.Services;
 using ModularWidget.UserControls;
 using Prism.Regions;
 using System.Runtime.InteropServices;
@@ -21,25 +22,27 @@ namespace ModularWidget
         private IRegionManager _regionManager;
         private IRegionService _regionService;
         private IWindowService _windowService;
+        private ILogger<MainWindow> _logger;
 
         private Window _dragdropWindow = null;
         private Effect _regionEffect = null;
 
 
-        public MainWindow(AppSettings settings, IRegionManager regionManager, IRegionService regionService, IWindowService windowService, RegionUC region)
+        public MainWindow(AppSettings settings, IRegionManager regionManager, IRegionService regionService, IWindowService windowService, RegionUC region, ILogger<MainWindow> logger)
         {
-            Init(settings, regionManager, regionService, windowService);
+            Init(settings, regionManager, regionService, windowService, logger);
             if (!string.IsNullOrEmpty(region.RegionName))
                 AddRegion(region);
         }
 
-        public void Init(AppSettings settings, IRegionManager regionManager, IRegionService regionService, IWindowService windowService)
+        public void Init(AppSettings settings, IRegionManager regionManager, IRegionService regionService, IWindowService windowService, ILogger<MainWindow> logger)
         {
             InitializeComponent();
             _appSettings = settings;
             _regionManager = regionManager;
             _regionService = regionService;
             _windowService = windowService;
+            _logger = logger;
 
             _windowService.AddWindow(this);
 
@@ -50,6 +53,8 @@ namespace ModularWidget
                 _regionService.RegionRequested += CreateRegion;
             }
 
+            _logger.LogInformation($"Primary screen width: {SystemParameters.PrimaryScreenWidth}. Primary screen height: {SystemParameters.PrimaryScreenHeight}.");
+
             Left = SystemParameters.PrimaryScreenWidth - Width * 1.1;
             Top = SystemParameters.PrimaryScreenHeight * 0.05;
 
@@ -58,6 +63,8 @@ namespace ModularWidget
             itemContainerStyle.Setters.Add(new EventSetter(MouseMoveEvent, new MouseEventHandler(RegionListView_MouseMoveEvent)));
             itemContainerStyle.Setters.Add(new EventSetter(DropEvent, new DragEventHandler(RegionListView_Drop)));
             itemContainerStyle.Setters.Add(new EventSetter(GiveFeedbackEvent, new GiveFeedbackEventHandler(RegionListView_GiveFeedback)));
+
+            _logger.LogInformation($"Main Window initialized.");
         }
 
 
@@ -100,7 +107,7 @@ namespace ModularWidget
                     RegionListView.Items.Remove(region);
                     if (RegionListView.Items.IsEmpty)
                         _windowService.RemoveAndCloseWindow(this);
-                    var window = new MainWindow(_appSettings, _regionManager, _regionService, _windowService, region)
+                    var window = new MainWindow(_appSettings, _regionManager, _regionService, _windowService, region, _logger)
                     {
                         Left = w32Mouse.X,
                         Top = w32Mouse.Y
@@ -222,6 +229,7 @@ namespace ModularWidget
             reg.RegionName = regName;
             AddRegion(reg);
             _regionService.RegionCreate(reg.RegionName);
+            _logger.LogInformation($"Region {reg.RegionName} created.");
         }
 
         private void AddRegion(RegionUC reg)

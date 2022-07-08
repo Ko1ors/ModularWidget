@@ -1,4 +1,5 @@
 ﻿using ETCModule.Models;
+using Microsoft.Extensions.Logging;
 using Newtonsoft.Json;
 using System;
 using System.Net.Http;
@@ -12,12 +13,20 @@ namespace ETCModule.Services
         private const string etcWalletRequest = "https://blockscout.com/etc/mainnet/api?module=account&action=balance&address={address}";
         private const string etcRandomWalletsRequest = "https://blockscout.com/etc/mainnet/api?module=account&action=listaccounts&page={page}&offset={offset}";
 
+        private readonly ILogger<EtcClientService> _logger;
+
+        public EtcClientService(ILogger<EtcClientService> logger)
+        {
+            _logger = logger;
+        }
+
         private async Task<string> SendAsync(string request)
         {
             string result;
             using (var client = new HttpClient())
             {
                 result = await client.GetStringAsync(request);
+                _logger.LogInformation($"Request: {request}. Response: {result}");
             }
             return result;
         }
@@ -29,8 +38,9 @@ namespace ETCModule.Services
             {
                 return JsonConvert.DeserializeObject<EtcPriceResult>(await SendAsync(request));
             }
-            catch
+            catch (Exception e)
             {
+                _logger.LogError(e, $"Error getting price: {request}.");
                 return new EtcPriceResult() { Status = "0" };
             }
         }
@@ -42,8 +52,9 @@ namespace ETCModule.Services
             {
                 return JsonConvert.DeserializeObject<EtcWalletsResult>(await SendAsync(request));
             }
-            catch
+            catch (Exception e)
             {
+                _logger.LogError(e, $"Error getting random wallets: {request}.");
                 return new EtcWalletsResult() { Status = "0" };
             }
         }
@@ -55,8 +66,9 @@ namespace ETCModule.Services
             {
                 return JsonConvert.DeserializeObject<EtcWalletBalanceResult>(await SendAsync(request));
             }
-            catch
+            catch (Exception e)
             {
+                _logger.LogError(e, $"Error getting wallet balance: {request}.");
                 return new EtcWalletBalanceResult() { Status = "0" };
             }
         }
