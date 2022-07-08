@@ -54,9 +54,10 @@ namespace CoinMarketCapPortfolioModule.ViewModels
 
         public RelayCommand PrivacyModeToggleCommand { get; private set; }
 
-        public CoinMarketCapPortfolioViewModel(AppSettings settings)
+        public CoinMarketCapPortfolioViewModel(AppSettings settings, ILogger<CoinMarketCapPortfolioViewModel> logger)
         {
             _appSettings = settings;
+            _logger = logger;
             PrivacyModeToggleCommand = new RelayCommand((obj) => PrivacyModeToggle());
         }
 
@@ -67,8 +68,7 @@ namespace CoinMarketCapPortfolioModule.ViewModels
 
         public async Task Start()
         {
-            // TODO: uncomment logger calls when it's ready
-            //_logger.LogInformation("Starting CoinMarketCapPortfolioViewModel");
+            _logger.LogInformation("Starting CoinMarketCapPortfolioViewModel");
             LoadPortfolio();
             SetTimer();
             await UpdatePortfolioAsync();
@@ -88,7 +88,7 @@ namespace CoinMarketCapPortfolioModule.ViewModels
             {
                 if (!File.Exists(filePath))
                     return;
-                
+
                 Portfolio = JsonConvert.DeserializeObject<PortfolioModel>(File.ReadAllText(filePath));
                 _logger.LogInformation("Portfolio loaded from file");
             }
@@ -127,7 +127,7 @@ namespace CoinMarketCapPortfolioModule.ViewModels
                 var bearerToken = _appSettings.Get<string>(Constants.Menu.MenuKey, Constants.Parameters.AuthTokern);
                 if (string.IsNullOrEmpty(bearerToken))
                 {
-                    //_logger.LogWarning("Bearer token is empty");
+                    _logger.LogWarning("Bearer token is empty");
                     return;
                 }
 
@@ -135,17 +135,17 @@ namespace CoinMarketCapPortfolioModule.ViewModels
                 var groupPortfolio = await GetGroupPortfolioAsync(bearerToken);
                 if (groupPortfolio == null)
                 {
-                    //_logger.LogWarning("Group portfolio result is null");
+                    _logger.LogWarning("Group portfolio result is null");
                     return;
                 }
                 if (groupPortfolio.Status.ErrorCode != "0")
                 {
-                    //_logger.LogWarning($"Group portfolio error: {groupPortfolio.Status.ErrorMessage}. Response model: {JsonConvert.SerializeObject(groupPortfolio)}");
+                    _logger.LogWarning($"Group portfolio error: {groupPortfolio.Status.ErrorMessage}. Response model: {JsonConvert.SerializeObject(groupPortfolio)}");
                     return;
                 }
                 if (groupPortfolio.Data == null || !groupPortfolio.Data.Any())
                 {
-                    //_logger.LogWarning($"Group portfolios are empty or null. Response model: {JsonConvert.SerializeObject(groupPortfolio)}");
+                    _logger.LogWarning($"Group portfolios are empty or null. Response model: {JsonConvert.SerializeObject(groupPortfolio)}");
                     return;
                 }
 
@@ -153,7 +153,7 @@ namespace CoinMarketCapPortfolioModule.ViewModels
                 var mainPortfolio = groupPortfolio.Data.FirstOrDefault(p => p.IsMain);
                 if (mainPortfolio == null)
                 {
-                    //_logger.LogWarning($"Main portfolio is null. Response model: {JsonConvert.SerializeObject(groupPortfolio)}");
+                    _logger.LogWarning($"Main portfolio is null. Response model: {JsonConvert.SerializeObject(groupPortfolio)}");
                     return;
                 }
 
@@ -187,17 +187,17 @@ namespace CoinMarketCapPortfolioModule.ViewModels
                 var mainPortfolioStatistics = await GetPortfolioStatisticsAsync(bearerToken, mainPortfolio.PortfolioSourceId);
                 if (mainPortfolioStatistics == null)
                 {
-                    //_logger.LogWarning($"Main portfolio statistics result is null");
+                    _logger.LogWarning($"Main portfolio statistics result is null");
                     return;
                 }
                 if (mainPortfolioStatistics.Status.ErrorCode != "0")
                 {
-                    //_logger.LogWarning($"Main portfolio statistics error: {mainPortfolioStatistics.Status.ErrorMessage}. Response model: {JsonConvert.SerializeObject(mainPortfolioStatistics)}");
+                    _logger.LogWarning($"Main portfolio statistics error: {mainPortfolioStatistics.Status.ErrorMessage}. Response model: {JsonConvert.SerializeObject(mainPortfolioStatistics)}");
                     return;
                 }
                 if (mainPortfolioStatistics.Data == null)
                 {
-                    //_logger.LogWarning($"Main portfolio statistics is empty or null. Response model: {JsonConvert.SerializeObject(mainPortfolioStatistics)}");
+                    _logger.LogWarning($"Main portfolio statistics is empty or null. Response model: {JsonConvert.SerializeObject(mainPortfolioStatistics)}");
                     return;
                 }
 
@@ -207,7 +207,7 @@ namespace CoinMarketCapPortfolioModule.ViewModels
             }
             catch (Exception ex)
             {
-                //_logger.LogError(ex, "Error updating portfolio");
+                _logger.LogError(ex, "Error updating portfolio");
             }
 
             SavePortfolio();
