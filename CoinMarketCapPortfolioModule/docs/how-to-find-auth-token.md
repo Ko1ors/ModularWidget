@@ -7,5 +7,5 @@
 #### 5. Find pair where key is "u" and copy "token" field from value
 
 <p align="center">
-   <img src="CoinMarketCapPortfolioModule/Images/auth-token-location.png"> 
+   <img src="../Images/auth-token-location.png"> 
 </p>
