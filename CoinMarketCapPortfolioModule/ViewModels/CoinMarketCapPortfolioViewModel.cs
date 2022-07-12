@@ -201,7 +201,7 @@ namespace CoinMarketCapPortfolioModule.ViewModels
                     return;
                 }
 
-                resultPortfolio.ChangePercent = (decimal)mainPortfolioStatistics.Data.YesterdayBalancePercent;
+                resultPortfolio.ChangePercent = (decimal)(mainPortfolioStatistics.Data.YesterdayBalancePercent ?? 0);
                 resultPortfolio.ChangeBalance = (decimal)mainPortfolioStatistics.Data.YesterdayChangeBalance;
                 Portfolio = resultPortfolio;
             }

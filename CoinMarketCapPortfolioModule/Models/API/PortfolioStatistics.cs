@@ -54,7 +54,7 @@ namespace CoinMarketCapPortfolioModule.Models.API
         public double FiatUnitPrice { get; set; }
 
         [JsonProperty("yesterdayBalancePercent")]
-        public double YesterdayBalancePercent { get; set; }
+        public double? YesterdayBalancePercent { get; set; }
 
         [JsonProperty("yesterdayChangeBalance")]
         public double YesterdayChangeBalance { get; set; }

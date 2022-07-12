@@ -77,7 +77,7 @@ namespace CoinMarketCapPortfolioModule.Models
 
         public string ChangeBalanceSymbol => ChangeBalance >= 0 ? "+" : "-";
 
-        public bool ChangePercentPositive => ChangePercent > 0;
+        public bool ChangePercentPositive => ChangePercent >= 0;
 
         public Brush ChangePercentColor => ChangePercentPositive ? (SolidColorBrush)new BrushConverter().ConvertFrom("#16c784") : (SolidColorBrush)new BrushConverter().ConvertFrom("#ea3943");
 
