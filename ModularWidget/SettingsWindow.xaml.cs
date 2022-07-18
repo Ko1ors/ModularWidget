@@ -1,4 +1,5 @@
-﻿using System.Windows;
+﻿using System.Diagnostics;
+using System.Windows;
 
 namespace ModularWidget
 {
@@ -30,6 +31,13 @@ namespace ModularWidget
         {
             _appSettings.Save();
             Close();
+        }
+
+        private void SaveRestart_Click(object sender, RoutedEventArgs e)
+        {
+            _appSettings.Save();
+            Process.Start(System.Environment.ProcessPath);
+            Application.Current.Shutdown();
         }
     }
 }
