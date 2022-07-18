@@ -39,7 +39,7 @@ namespace CryptoMarketCapModule.Views
             InitializeComponent();
             DataContext = this;
             UpdateMarketCap();
-            timer = new Timer(timeInterval * 1000);
+            timer = new Timer(timeInterval * 60 * 1000);
             timer.Elapsed += Timer_Elapsed;
             timer.AutoReset = true;
             timer.Enabled = true;

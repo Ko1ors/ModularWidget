@@ -12,6 +12,7 @@ Modular Widget is a windows application that combines different modular solution
 * [Crypto Market Cap Module](#crypto-market-cap-module)
 * [Fear & Greed Index Module](#fear--greed-index-module)
 * [Media Player Module](#media-player-module)
+* [CoinMarketCap Portfolio Module](#coin-market-cap-portfolio-module)
 
 ## Ethereum Module
 This module is based on [Ethereum Widget](https://github.com/Ko1ors/Ethereum-Widget) application. It gives you access to most of the features of Ethereum blockchain such as price, gas tracking, block reward and wallet balance.
@@ -66,12 +67,23 @@ This module provide Media Player that consumes windows playback sessions and all
     <img src="ModularWidget/Images/media-player-module.png" width="300"> 
   </p>
   
-  ## Acknowledgements
-  API of the following services were used:
-  * [etherscan.io](https://etherscan.io/)
-  * [blockscout.com](https://blockscout.com/)
-  * [coingecko.com](https://coingecko.com/)
-  * [alternative.me](https://alternative.me/)
+## CoinMarketCap Portfolio Module
+This module displays current value of your main CoinMarketCap portfolio and its performance compared to yesterday.
+
+  <p align="center">
+    <img src="ModularWidget/Images/coin-market-cap-portfolio-module.png" width="300"> 
+  </p>
+  
+### Module settings:
+* CoinMarketCap Auth Token - used to receive information about your portfolio. [How to find the auth token.](./CoinMarketCapPortfolioModule/docs/how-to-find-auth-token.md)
+
+## Acknowledgements
+API of the following services were used:
+* [etherscan.io](https://etherscan.io/)
+* [blockscout.com](https://blockscout.com/)
+* [coingecko.com](https://coingecko.com/)
+* [alternative.me](https://alternative.me/)
+* [coinmarketcap.com](https://coinmarketcap.com/)
 
 
 
