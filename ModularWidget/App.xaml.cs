@@ -28,7 +28,7 @@ namespace ModularWidget
         {
             var serviceCollection = new ServiceCollection();
 
-            Log.Logger = new LoggerConfiguration().WriteTo.File("logs/log-.txt", rollingInterval: RollingInterval.Day,
+            Log.Logger = new LoggerConfiguration().WriteTo.File("logs/log-.log", rollingInterval: RollingInterval.Day,
                 outputTemplate: "{Timestamp:yyyy-MM-dd HH:mm:ss.fff zzz} [{Level}] {SourceContext} {Method} | {Message} {Exception}{NewLine}").CreateLogger();
             serviceCollection.AddLogging(loggingBuilder => loggingBuilder.AddSerilog(dispose: true));
 
