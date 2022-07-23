@@ -5,7 +5,6 @@ using Microsoft.Extensions.Logging;
 using ModularWidget;
 using ModularWidget.Models;
 using ModularWidget.Services;
-using Newtonsoft.Json;
 using Prism.Ioc;
 using Prism.Modularity;
 using Prism.Regions;
@@ -18,21 +17,21 @@ using System.Windows.Threading;
 
 namespace ETHModule
 {
-    public class LoadModule : IModule
+    public class EthLoadModule : IModule
     {
         private readonly IRegionManager _regionManager;
         private readonly AppSettings _appSettings;
         private readonly IRegionService _regionService;
         private IETHService _ethService;
-        private readonly ILogger<LoadModule> _logger;
+        private readonly ILogger<EthLoadModule> _logger;
 
         private Timer timer;
         private int regionsRequestedCount;
         private Dictionary<string, UserControl> userControls;
         private Dispatcher dispatcher;
-    
 
-        public LoadModule(AppSettings appSettings, IRegionManager regionManager, IRegionService regionService, ILogger<LoadModule> logger)
+
+        public EthLoadModule(AppSettings appSettings, IRegionManager regionManager, IRegionService regionService, ILogger<EthLoadModule> logger)
         {
             _appSettings = appSettings;
             _regionManager = regionManager;
@@ -115,66 +114,78 @@ namespace ETHModule
             {
                 _logger.LogInformation("All requested regions were created.");
                 _regionService.RegionCreated -= Manager_RegionCreated;
-                Task.Run(async () => await UpdateETHData());
-                SetTimer();
+                Task.Run(async () => await UpdateETHDataAsync());
             }
         }
 
-        private void SetTimer()
-        {
-            var time = _appSettings.Get<int>("ethModuleSettings", "ethUpdateTime");
-            if (time <= 0)
-                time = 5;
-            timer = new Timer(time * 60 * 1000);
-            timer.Elapsed += OnTimedEvent;
-            timer.AutoReset = true;
-            timer.Enabled = true;
-        }
-
-        private void OnTimedEvent(object sender, ElapsedEventArgs e)
-        {
-            _ = UpdateETHData();
-        }
-
-        private async Task UpdateETHData()
+        private async Task UpdateETHDataAsync()
         {
             try
             {
                 var apiKey = _appSettings.Get<string>(Constants.Parameters.ApiKey);
+                var updateTime = TimeSpan.FromMinutes(5);
                 var wallet = _appSettings.Get<string>(Constants.Parameters.Wallet);
                 var hidePrice = _appSettings.Get<bool>(Constants.Parameters.hidePrice) && string.IsNullOrEmpty(wallet);
                 var hideGasTracker = _appSettings.Get<bool>(Constants.Parameters.hideGasTracker);
                 var hideBlockReward = _appSettings.Get<bool>(Constants.Parameters.hideBlockReward);
 
-                _logger.LogInformation($"Updating ETH data. API Key: {apiKey}, Wallet: {wallet}, Hide price: {hidePrice}, Hide gas tracker: {hideGasTracker}, Hide block reward: {hideBlockReward}");
-                var result = await _ethService.GetDataAsync(apiKey, wallet, hidePrice, hideGasTracker, hideBlockReward);
-                _logger.LogInformation($"ETH data updated. Result model: {JsonConvert.SerializeObject(result)}");
-                await dispatcher.InvokeAsync(() =>
-                {
+                _ethService.EthPriceUpdated += EthServicePriceUpdated;
+                _ethService.GasPriceUpdated += EthServiceGasTrackerUpdated;
+                _ethService.AvgBlockRewardUpdated += EthServiceBlockRewardUpdated;
+                _ethService.EthUpdated += EthServiceEthUpdated;
 
-                    if (userControls.ContainsKey(RegionsName.EthPrice) && result.EthPrice != null)
-                        (userControls[RegionsName.EthPrice] as EthPriceUC).labelEthPrice.Content = $"${result.EthPrice.Result.Ethusd} ❙ {result.EthPrice.Result.Ethbtc} BTC";
-                    if (userControls.ContainsKey(RegionsName.GasTracker) && result.EthGasPrice != null)
-                    {
-                        (userControls[RegionsName.GasTracker] as GasTrackerUC).labelGasLow.Content = $"{result.EthGasPrice.Result.SafeGasPrice} gwei";
-                        (userControls[RegionsName.GasTracker] as GasTrackerUC).labelGasAvg.Content = $"{result.EthGasPrice.Result.ProposeGasPrice} gwei";
-                        (userControls[RegionsName.GasTracker] as GasTrackerUC).labelGasHigh.Content = $"{result.EthGasPrice.Result.FastGasPrice} gwei";
-                    }
-                    if (userControls.ContainsKey(RegionsName.BlockRewards))
-                        (userControls[RegionsName.BlockRewards] as BlockRewardUC).labelBlockReward.Content = $"{result.AvgBlockReward.ToString().Replace(",", ".")} ETH";
-                    if (!string.IsNullOrEmpty(wallet) && userControls.ContainsKey(RegionsName.EthWallet))
-                    {
-                        var priceString = result.EthPrice != null ? $"❙ ${Math.Round(double.Parse(result.EthPrice.Result.Ethusd.Replace('.', ',')) * result.WalletBalance, 2).ToString().Replace(',', '.')}" : "";
-                        (userControls[RegionsName.EthWallet] as EthWalletBalanceUC).labelWalletBalance.Content = $"{result.WalletBalance.ToString().Replace(",", ".")} ETH " + priceString;
-                    }
-                });
+                await _ethService.StartAsync(apiKey, updateTime, wallet, hidePrice, hideGasTracker, hideBlockReward);
+
+                _logger.LogInformation($"Starting ETH Service. API Key: {apiKey}, UpdateTime: {updateTime.TotalMinutes} minutes, Wallet: {wallet}, Hide price: {hidePrice}, Hide gas tracker: {hideGasTracker}, Hide block reward: {hideBlockReward}");
             }
-            catch(Exception e)
+            catch (Exception e)
             {
                 _logger.LogError(e, "Error while updating ETH data.");
             }
         }
 
+        private void EthServiceEthUpdated(Data.ETHCompositeModel value)
+        {
+            dispatcher.InvokeAsync(() =>
+            {
+                if (userControls.ContainsKey(RegionsName.EthWallet))
+                {
+                    var priceString = value.EthPrice != null ? $"❙ ${Math.Round(double.Parse(value.EthPrice.Result.Ethusd.Replace('.', ',')) * value.WalletBalance, 2).ToString().Replace(',', '.')}" : "";
+                    (userControls[RegionsName.EthWallet] as EthWalletBalanceUC).labelWalletBalance.Content = $"{value.WalletBalance.ToString().Replace(",", ".")} ETH " + priceString;
+                }
+            });
+        }
+
+        private void EthServiceBlockRewardUpdated(double value)
+        {
+            dispatcher.InvokeAsync(() =>
+            {
+                if (userControls.ContainsKey(RegionsName.BlockRewards))
+                    (userControls[RegionsName.BlockRewards] as BlockRewardUC).labelBlockReward.Content = $"{value.ToString().Replace(",", ".")} ETH";
+            });
+        }
+
+        private void EthServiceGasTrackerUpdated(Data.EthGasPrice value)
+        {
+            dispatcher.InvokeAsync(() =>
+            {
+                if (userControls.ContainsKey(RegionsName.GasTracker) && value != null)
+                {
+                    (userControls[RegionsName.GasTracker] as GasTrackerUC).labelGasLow.Content = $"{value.Result.SafeGasPrice} gwei";
+                    (userControls[RegionsName.GasTracker] as GasTrackerUC).labelGasAvg.Content = $"{value.Result.ProposeGasPrice} gwei";
+                    (userControls[RegionsName.GasTracker] as GasTrackerUC).labelGasHigh.Content = $"{value.Result.FastGasPrice} gwei";
+                }
+            });
+        }
+
+        private void EthServicePriceUpdated(Data.EthPrice value)
+        {
+            dispatcher.InvokeAsync(() =>
+            {
+                if (userControls.ContainsKey(RegionsName.EthPrice) && value != null)
+                    (userControls[RegionsName.EthPrice] as EthPriceUC).labelEthPrice.Content = $"${value.Result.Ethusd} ❙ {value.Result.Ethbtc} BTC";
+            });
+        }
 
         public void RegisterTypes(IContainerRegistry containerRegistry)
         {

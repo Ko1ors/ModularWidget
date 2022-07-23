@@ -2,6 +2,7 @@
 using Microsoft.Extensions.Logging;
 using Newtonsoft.Json;
 using System;
+using System.Threading;
 using System.Threading.Tasks;
 
 namespace ETHModule.Services
@@ -10,11 +11,44 @@ namespace ETHModule.Services
     {
         private const int maxTries = 5;
 
+        private readonly TimeSpan _defaultUpdateTime = TimeSpan.FromMinutes(5);
         private readonly ILogger<EthService> _logger;
+        private PeriodicTimer _timer;
+        private Task _timerTask;
+        private CancellationTokenSource _cts = new CancellationTokenSource();
+
+        public event Updated<EthPrice> EthPriceUpdated;
+        public event Updated<EthGasPrice> GasPriceUpdated;
+        public event Updated<double> WalletBalanceUpdated;
+        public event Updated<double> AvgBlockRewardUpdated;
+        public event Updated<ETHCompositeModel> EthUpdated;
 
         public EthService(ILogger<EthService> logger)
         {
             _logger = logger;
+        }
+
+        public async Task StartAsync(string apiKey, TimeSpan? updateTime = null, string wallet = "", bool ignorePrice = false, bool ignoreGas = false, bool ignoreBlockReward = false)
+        {
+            if(_timerTask is not null)
+            {
+                _cts.Cancel();
+                await _timerTask;
+                _cts.Dispose();
+                _cts = new CancellationTokenSource();
+            }
+                
+            _timer = new PeriodicTimer(updateTime ?? _defaultUpdateTime);
+            await GetDataAsync(apiKey, wallet, ignorePrice, ignoreGas, ignoreBlockReward);
+            _timerTask = RunPeriodicDataUpdatesAsync(apiKey, wallet, ignorePrice, ignoreGas, ignoreBlockReward);
+        }
+
+        private async Task RunPeriodicDataUpdatesAsync(string apiKey, string wallet = "", bool ignorePrice = false, bool ignoreGas = false, bool ignoreBlockReward = false)
+        {
+            while (await _timer.WaitForNextTickAsync(_cts.Token))
+            {
+                await GetDataAsync(apiKey, wallet, ignorePrice, ignoreGas, ignoreBlockReward);
+            }
         }
 
         public async Task<ETHCompositeModel> GetDataAsync(string apiKey, string wallet = "",
@@ -32,6 +66,7 @@ namespace ETHModule.Services
                 model.WalletBalance = await GetWalletBalanceAsync(apiKey, wallet);
 
             _logger.LogInformation($"GetDataAsync. Result model: {JsonConvert.SerializeObject(model)}");
+            EthUpdated?.Invoke(model);
             return model;
         }
 
@@ -47,6 +82,7 @@ namespace ETHModule.Services
                     if (result.Status != "0" && result.Message != "NOTOK")
                     {
                         _logger.LogInformation($"ETH price received. Result model: {JsonConvert.SerializeObject(result)}");
+                        EthPriceUpdated?.Invoke(result);
                         return result;
                     }
                     _logger.LogInformation($"ETH price not received. Result model: {JsonConvert.SerializeObject(result)}");
@@ -73,6 +109,7 @@ namespace ETHModule.Services
                     if (result.Status != "0" && result.Message != "NOTOK")
                     {
                         _logger.LogInformation($"ETH gas price received. Result model: {JsonConvert.SerializeObject(result)}");
+                        GasPriceUpdated?.Invoke(result);
                         return result;
                     }
                     _logger.LogInformation($"ETH gas price not received. Result model: {JsonConvert.SerializeObject(result)}");
@@ -118,7 +155,9 @@ namespace ETHModule.Services
                     return default;
                 }
                 _logger.LogInformation($"ETH avg block reward received. Result: {blockreward}");
-                return Math.Round(blockreward / i, 5);
+                double avgBlockReward = Math.Round(blockreward / i, 5);
+                AvgBlockRewardUpdated?.Invoke(avgBlockReward);
+                return avgBlockReward;
             }
             catch (Exception e)
             {
@@ -137,7 +176,9 @@ namespace ETHModule.Services
                     var result = EthRequest.GetWalletBalance(apiKey, wallet);
                     if (result.Status != "0" && result.Message != "NOTOK")
                     {
-                        return Math.Round(double.Parse(result.Result) / 1000000000000000000, 5);
+                        double walletBalance = Math.Round(double.Parse(result.Result) / 1000000000000000000, 5);
+                        _logger.LogInformation($"ETH wallet balance received. Result: {walletBalance}");
+                        return walletBalance;
                     }
                     await Task.Delay(500 * (i + 1));
                 }
