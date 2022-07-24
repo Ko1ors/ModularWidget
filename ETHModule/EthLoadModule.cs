@@ -110,7 +110,7 @@ namespace ETHModule
             {
                 _logger.LogInformation("All requested regions were created.");
                 _regionService.RegionCreated -= Manager_RegionCreated;
-                _ = StartEthUpdate();
+                StartEthUpdate();
             }
         }
 
