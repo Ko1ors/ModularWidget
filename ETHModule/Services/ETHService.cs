@@ -37,9 +37,10 @@ namespace ETHModule.Services
                 _cts.Dispose();
                 _cts = new CancellationTokenSource();
             }
+            
+            await GetDataAsync(apiKey, wallet, ignorePrice, ignoreGas, ignoreBlockReward);
 
             _timer = new PeriodicTimer(updateTime ?? _defaultUpdateTime);
-            await GetDataAsync(apiKey, wallet, ignorePrice, ignoreGas, ignoreBlockReward);
             _timerTask = RunPeriodicDataUpdatesAsync(apiKey, wallet, ignorePrice, ignoreGas, ignoreBlockReward);
         }
 

@@ -110,11 +110,11 @@ namespace ETHModule
             {
                 _logger.LogInformation("All requested regions were created.");
                 _regionService.RegionCreated -= Manager_RegionCreated;
-                _ = StartEthUpdateAsync();
+                _ = StartEthUpdate();
             }
         }
 
-        private async Task StartEthUpdateAsync()
+        private void StartEthUpdate()
         {
             try
             {
@@ -125,7 +125,7 @@ namespace ETHModule
                 var hideGasTracker = _settingsMenu.Get<bool>(Constants.Parameters.hideGasTracker);
                 var hideBlockReward = _settingsMenu.Get<bool>(Constants.Parameters.hideBlockReward);
 
-                await _ethService.StartAsync(apiKey, updateTime, wallet, hidePrice, hideGasTracker, hideBlockReward);
+                _ = Task.Run(() => _ethService.StartAsync(apiKey, updateTime, wallet, hidePrice, hideGasTracker, hideBlockReward));
 
                 _logger.LogInformation($"Starting ETH Service. API Key: {apiKey}, UpdateTime: {updateTime.TotalMinutes} minutes, Wallet: {wallet}, Hide price: {hidePrice}, Hide gas tracker: {hideGasTracker}, Hide block reward: {hideBlockReward}");
             }
