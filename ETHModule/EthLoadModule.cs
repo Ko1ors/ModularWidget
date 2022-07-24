@@ -1,6 +1,7 @@
 ﻿using ETHModule.Services;
 using ETHModule.Settings;
 using ETHModule.UserControls;
+using ETHModule.ViewModels;
 using Microsoft.Extensions.Logging;
 using ModularWidget;
 using ModularWidget.Models;
@@ -22,6 +23,7 @@ namespace ETHModule
         private readonly IRegionManager _regionManager;
         private readonly AppSettings _appSettings;
         private readonly IRegionService _regionService;
+        private IContainerProvider _containerProvider;
         private IETHService _ethService;
         private readonly ILogger<EthLoadModule> _logger;
 
@@ -41,7 +43,8 @@ namespace ETHModule
 
         public void OnInitialized(IContainerProvider containerProvider)
         {
-            _ethService = containerProvider.Resolve<IETHService>();
+            _containerProvider = containerProvider;
+            _ethService = _containerProvider.Resolve<IETHService>();
             userControls = new Dictionary<string, UserControl>();
             dispatcher = Dispatcher.CurrentDispatcher;
 
@@ -72,19 +75,20 @@ namespace ETHModule
         {
             _regionService.RegionCreated += Manager_RegionCreated;
 
-            regionsRequestedCount = 3;
+            var regionToRequest = new List<string>();
 
             if (!string.IsNullOrEmpty(_appSettings.Get<string>(Constants.Parameters.Wallet)))
-            {
-                regionsRequestedCount++;
-                _regionService.RegionRequest(RegionsName.EthWallet);
-            }
+                regionToRequest.Add(RegionsName.EthWallet);
             if (!_appSettings.Get<bool>(Constants.Parameters.hidePrice))
-                _regionService.RegionRequest(RegionsName.EthPrice);
+                regionToRequest.Add(RegionsName.EthPrice);
             if (!_appSettings.Get<bool>(Constants.Parameters.hideBlockReward))
-                _regionService.RegionRequest(RegionsName.BlockRewards);
+                regionToRequest.Add(RegionsName.BlockRewards);
             if (!_appSettings.Get<bool>(Constants.Parameters.hideGasTracker))
-                _regionService.RegionRequest(RegionsName.GasTracker);
+                regionToRequest.Add(RegionsName.GasTracker);
+
+            regionsRequestedCount = regionToRequest.Count;
+
+            regionToRequest.ForEach(r => _regionService.RegionRequest(r));
         }
 
         private void Manager_RegionCreated(string regName)
@@ -92,16 +96,16 @@ namespace ETHModule
             switch (regName)
             {
                 case RegionsName.BlockRewards:
-                    AddRegion(regName, new BlockRewardUC());
+                    AddRegion(regName, _containerProvider.Resolve<BlockRewardUC>());
                     break;
                 case RegionsName.EthPrice:
-                    AddRegion(regName, new EthPriceUC());
+                    AddRegion(regName, _containerProvider.Resolve<EthPriceUC>());
                     break;
                 case RegionsName.EthWallet:
-                    AddRegion(regName, new EthWalletBalanceUC());
+                    AddRegion(regName, _containerProvider.Resolve<EthWalletBalanceUC>());
                     break;
                 case RegionsName.GasTracker:
-                    AddRegion(regName, new GasTrackerUC());
+                    AddRegion(regName, _containerProvider.Resolve<GasTrackerUC>());
                     break;
             }
         }
@@ -114,25 +118,20 @@ namespace ETHModule
             {
                 _logger.LogInformation("All requested regions were created.");
                 _regionService.RegionCreated -= Manager_RegionCreated;
-                Task.Run(async () => await UpdateETHDataAsync());
+                _ = StartEthUpdateAsync();
             }
         }
 
-        private async Task UpdateETHDataAsync()
+        private async Task StartEthUpdateAsync()
         {
             try
             {
                 var apiKey = _appSettings.Get<string>(Constants.Parameters.ApiKey);
-                var updateTime = TimeSpan.FromMinutes(5);
+                var updateTime = TimeSpan.FromMinutes(_appSettings.Get<int>(Constants.Parameters.UpdateTime));
                 var wallet = _appSettings.Get<string>(Constants.Parameters.Wallet);
                 var hidePrice = _appSettings.Get<bool>(Constants.Parameters.hidePrice) && string.IsNullOrEmpty(wallet);
                 var hideGasTracker = _appSettings.Get<bool>(Constants.Parameters.hideGasTracker);
                 var hideBlockReward = _appSettings.Get<bool>(Constants.Parameters.hideBlockReward);
-
-                _ethService.EthPriceUpdated += EthServicePriceUpdated;
-                _ethService.GasPriceUpdated += EthServiceGasTrackerUpdated;
-                _ethService.AvgBlockRewardUpdated += EthServiceBlockRewardUpdated;
-                _ethService.EthUpdated += EthServiceEthUpdated;
 
                 await _ethService.StartAsync(apiKey, updateTime, wallet, hidePrice, hideGasTracker, hideBlockReward);
 
@@ -144,52 +143,19 @@ namespace ETHModule
             }
         }
 
-        private void EthServiceEthUpdated(Data.ETHCompositeModel value)
-        {
-            dispatcher.InvokeAsync(() =>
-            {
-                if (userControls.ContainsKey(RegionsName.EthWallet))
-                {
-                    var priceString = value.EthPrice != null ? $"❙ ${Math.Round(double.Parse(value.EthPrice.Result.Ethusd.Replace('.', ',')) * value.WalletBalance, 2).ToString().Replace(',', '.')}" : "";
-                    (userControls[RegionsName.EthWallet] as EthWalletBalanceUC).labelWalletBalance.Content = $"{value.WalletBalance.ToString().Replace(",", ".")} ETH " + priceString;
-                }
-            });
-        }
-
-        private void EthServiceBlockRewardUpdated(double value)
-        {
-            dispatcher.InvokeAsync(() =>
-            {
-                if (userControls.ContainsKey(RegionsName.BlockRewards))
-                    (userControls[RegionsName.BlockRewards] as BlockRewardUC).labelBlockReward.Content = $"{value.ToString().Replace(",", ".")} ETH";
-            });
-        }
-
-        private void EthServiceGasTrackerUpdated(Data.EthGasPrice value)
-        {
-            dispatcher.InvokeAsync(() =>
-            {
-                if (userControls.ContainsKey(RegionsName.GasTracker) && value != null)
-                {
-                    (userControls[RegionsName.GasTracker] as GasTrackerUC).labelGasLow.Content = $"{value.Result.SafeGasPrice} gwei";
-                    (userControls[RegionsName.GasTracker] as GasTrackerUC).labelGasAvg.Content = $"{value.Result.ProposeGasPrice} gwei";
-                    (userControls[RegionsName.GasTracker] as GasTrackerUC).labelGasHigh.Content = $"{value.Result.FastGasPrice} gwei";
-                }
-            });
-        }
-
-        private void EthServicePriceUpdated(Data.EthPrice value)
-        {
-            dispatcher.InvokeAsync(() =>
-            {
-                if (userControls.ContainsKey(RegionsName.EthPrice) && value != null)
-                    (userControls[RegionsName.EthPrice] as EthPriceUC).labelEthPrice.Content = $"${value.Result.Ethusd} ❙ {value.Result.Ethbtc} BTC";
-            });
-        }
-
         public void RegisterTypes(IContainerRegistry containerRegistry)
         {
-            containerRegistry.Register<IETHService, EthService>();
+            containerRegistry.RegisterSingleton<IETHService, EthService>();
+            
+            containerRegistry.Register<EthPriceViewModel>();
+            containerRegistry.Register<EthWalletBalanceViewModel>();
+            containerRegistry.Register<GasTrackerViewModel>();
+            containerRegistry.Register<BlockRewardViewModel>();
+            
+            containerRegistry.Register<EthPriceUC>();
+            containerRegistry.Register<EthWalletBalanceUC>();
+            containerRegistry.Register<GasTrackerUC>();
+            containerRegistry.Register<BlockRewardUC>();
         }
 
         public static class RegionsName

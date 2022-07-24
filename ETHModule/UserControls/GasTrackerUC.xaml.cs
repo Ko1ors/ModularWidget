@@ -1,4 +1,5 @@
-﻿using System.Windows.Controls;
+﻿using ETHModule.ViewModels;
+using System.Windows.Controls;
 
 namespace ETHModule.UserControls
 {
@@ -7,9 +8,10 @@ namespace ETHModule.UserControls
     /// </summary>
     public partial class GasTrackerUC : UserControl
     {
-        public GasTrackerUC()
+        public GasTrackerUC(GasTrackerViewModel viewModel)
         {
             InitializeComponent();
+            DataContext = viewModel;
         }
     }
 }

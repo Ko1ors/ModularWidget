@@ -27,6 +27,7 @@
   </ItemGroup>
 
   <ItemGroup>
+    <ProjectReference Include="..\ModularWidget.Common\ModularWidget.Common.csproj" />
     <ProjectReference Include="..\ModularWidget\ModularWidget.csproj" />
   </ItemGroup>
 

@@ -1,4 +1,5 @@
-﻿using System.Windows.Controls;
+﻿using ETHModule.ViewModels;
+using System.Windows.Controls;
 
 namespace ETHModule.UserControls
 {
@@ -7,9 +8,11 @@ namespace ETHModule.UserControls
     /// </summary>
     public partial class EthPriceUC : UserControl
     {
-        public EthPriceUC()
+        public EthPriceUC(EthPriceViewModel viewModel)
         {
             InitializeComponent();
+            DataContext = viewModel;
         }
+
     }
 }

@@ -45,9 +45,16 @@ namespace ETHModule.Services
 
         private async Task RunPeriodicDataUpdatesAsync(string apiKey, string wallet = "", bool ignorePrice = false, bool ignoreGas = false, bool ignoreBlockReward = false)
         {
-            while (await _timer.WaitForNextTickAsync(_cts.Token))
+            try
             {
-                await GetDataAsync(apiKey, wallet, ignorePrice, ignoreGas, ignoreBlockReward);
+                while (await _timer.WaitForNextTickAsync(_cts.Token))
+                {
+                    await GetDataAsync(apiKey, wallet, ignorePrice, ignoreGas, ignoreBlockReward);
+                }
+            }
+            catch (OperationCanceledException)
+            {
+                _logger.LogInformation("Periodic data updates canceled");
             }
         }
 
