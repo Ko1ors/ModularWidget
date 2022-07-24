@@ -12,9 +12,7 @@ using Prism.Regions;
 using System;
 using System.Collections.Generic;
 using System.Threading.Tasks;
-using System.Timers;
 using System.Windows.Controls;
-using System.Windows.Threading;
 
 namespace ETHModule
 {
@@ -27,10 +25,8 @@ namespace ETHModule
         private IETHService _ethService;
         private readonly ILogger<EthLoadModule> _logger;
 
-        private Timer timer;
-        private int regionsRequestedCount;
-        private Dictionary<string, UserControl> userControls;
-        private Dispatcher dispatcher;
+        private int _regionsRequestedCount;
+        private Dictionary<string, Func<UserControl>> _userControls;
 
 
         public EthLoadModule(AppSettings appSettings, IRegionManager regionManager, IRegionService regionService, ILogger<EthLoadModule> logger)
@@ -45,8 +41,14 @@ namespace ETHModule
         {
             _containerProvider = containerProvider;
             _ethService = _containerProvider.Resolve<IETHService>();
-            userControls = new Dictionary<string, UserControl>();
-            dispatcher = Dispatcher.CurrentDispatcher;
+
+            _userControls = new Dictionary<string, Func<UserControl>>()
+            {
+                { RegionsName.BlockRewards, () => _containerProvider.Resolve<BlockRewardUC>() },
+                { RegionsName.EthPrice, () => _containerProvider.Resolve<EthPriceUC>() },
+                { RegionsName.EthWallet, () => _containerProvider.Resolve<EthWalletBalanceUC>() },
+                { RegionsName.GasTracker, () => _containerProvider.Resolve<GasTrackerUC>() }
+            };
 
             InitSettings();
             RequestRegions();
@@ -86,35 +88,21 @@ namespace ETHModule
             if (!_appSettings.Get<bool>(Constants.Parameters.hideGasTracker))
                 regionToRequest.Add(RegionsName.GasTracker);
 
-            regionsRequestedCount = regionToRequest.Count;
+            _regionsRequestedCount = regionToRequest.Count;
 
             regionToRequest.ForEach(r => _regionService.RegionRequest(r));
         }
 
         private void Manager_RegionCreated(string regName)
         {
-            switch (regName)
-            {
-                case RegionsName.BlockRewards:
-                    AddRegion(regName, _containerProvider.Resolve<BlockRewardUC>());
-                    break;
-                case RegionsName.EthPrice:
-                    AddRegion(regName, _containerProvider.Resolve<EthPriceUC>());
-                    break;
-                case RegionsName.EthWallet:
-                    AddRegion(regName, _containerProvider.Resolve<EthWalletBalanceUC>());
-                    break;
-                case RegionsName.GasTracker:
-                    AddRegion(regName, _containerProvider.Resolve<GasTrackerUC>());
-                    break;
-            }
+            if (_userControls.ContainsKey(regName))
+                AddRegion(regName, _userControls[regName].Invoke());
         }
 
         private void AddRegion(string name, UserControl userControl)
         {
-            userControls[name] = userControl;
             _regionManager.Regions[name].Add(userControl);
-            if (--regionsRequestedCount <= 0)
+            if (--_regionsRequestedCount <= 0)
             {
                 _logger.LogInformation("All requested regions were created.");
                 _regionService.RegionCreated -= Manager_RegionCreated;
@@ -146,12 +134,12 @@ namespace ETHModule
         public void RegisterTypes(IContainerRegistry containerRegistry)
         {
             containerRegistry.RegisterSingleton<IETHService, EthService>();
-            
+
             containerRegistry.Register<EthPriceViewModel>();
             containerRegistry.Register<EthWalletBalanceViewModel>();
             containerRegistry.Register<GasTrackerViewModel>();
             containerRegistry.Register<BlockRewardViewModel>();
-            
+
             containerRegistry.Register<EthPriceUC>();
             containerRegistry.Register<EthWalletBalanceUC>();
             containerRegistry.Register<GasTrackerUC>();
