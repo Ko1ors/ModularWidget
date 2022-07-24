@@ -3,6 +3,7 @@ using CoinMarketCapPortfolioModule.Models;
 using CoinMarketCapPortfolioModule.Models.API;
 using Microsoft.Extensions.Logging;
 using ModularWidget;
+using ModularWidget.Models;
 using Newtonsoft.Json;
 using System;
 using System.Collections.Generic;
@@ -25,7 +26,7 @@ namespace CoinMarketCapPortfolioModule.ViewModels
         private const string filePath = "CoinMarketCapPortfolio.json";
         private const string fileTempPath = "CoinMarketCapPortfolioTemp.json";
 
-        private readonly AppSettings _appSettings;
+        private readonly SettingsMenu _settingsMenu;
         private readonly ILogger<CoinMarketCapPortfolioViewModel> _logger;
 
         private Timer _timer;
@@ -56,7 +57,7 @@ namespace CoinMarketCapPortfolioModule.ViewModels
 
         public CoinMarketCapPortfolioViewModel(AppSettings settings, ILogger<CoinMarketCapPortfolioViewModel> logger)
         {
-            _appSettings = settings;
+            _settingsMenu = settings.GetMenu(Constants.Menu.MenuKey);
             _logger = logger;
             PrivacyModeToggleCommand = new RelayCommand((obj) => PrivacyModeToggle());
         }
@@ -124,7 +125,7 @@ namespace CoinMarketCapPortfolioModule.ViewModels
             try
             {
                 // get bearer token from settings
-                var bearerToken = _appSettings.Get<string>(Constants.Menu.MenuKey, Constants.Parameters.AuthTokern);
+                var bearerToken = _settingsMenu.Get<string>(Constants.Parameters.AuthTokern);
                 if (string.IsNullOrEmpty(bearerToken))
                 {
                     _logger.LogWarning("Bearer token is empty");

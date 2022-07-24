@@ -1,5 +1,7 @@
 ﻿using Newtonsoft.Json;
+using System;
 using System.Collections.Generic;
+using System.Globalization;
 
 namespace ModularWidget.Models
 {
@@ -26,5 +28,17 @@ namespace ModularWidget.Models
             Parameters = new List<SettingsParameter>();
         }
 
+        public T Get<T>(string parameterKey)
+        {
+            var parameter = Get(parameterKey);
+            if (parameter is null)
+                return default;
+            return (T)Convert.ChangeType(parameter.Value, typeof(T), CultureInfo.InvariantCulture);
+        }
+        
+        public SettingsParameter Get(string parameterKey)
+        {
+            return Parameters?.Find(x => x.Key == parameterKey);
+        }
     }
 }

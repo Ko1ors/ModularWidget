@@ -2,6 +2,7 @@
 using ETCModule.Settings;
 using Microsoft.Extensions.Logging;
 using ModularWidget;
+using ModularWidget.Models;
 using Newtonsoft.Json;
 using System;
 using System.Threading;
@@ -11,7 +12,7 @@ namespace ETCModule.Services
 {
     public class EtcService : IEtcService
     {
-        private readonly AppSettings _appSettings;
+        private readonly SettingsMenu _settingsMenu;
         private readonly IEtcClientService _clientService;
         private readonly ILogger<EtcService> _logger;
 
@@ -26,7 +27,7 @@ namespace ETCModule.Services
 
         public EtcService(AppSettings settings, IEtcClientService etcClientService, ILogger<EtcService> logger)
         {
-            _appSettings = settings;
+            _settingsMenu = settings.GetMenu(Constants.Menu.MenuKey);
             _clientService = etcClientService;
             _logger = logger;
         }
@@ -41,7 +42,7 @@ namespace ETCModule.Services
 
         private void SetTimer()
         {
-            var time = _appSettings.Get<int>(Constants.Parameters.UpdateTime);
+            var time = _settingsMenu.Get<int>(Constants.Parameters.UpdateTime);
             if (time <= 0)
                 time = 5;
             _logger.LogInformation($"Setting timer to {time} minutes.");
@@ -54,7 +55,7 @@ namespace ETCModule.Services
         private async Task LoadWalletSettingsAsync()
         {
             _logger.LogInformation("Loading wallet settings.");
-            _etcWalletAddress = _appSettings.Get<string>(Constants.Parameters.Wallet);
+            _etcWalletAddress = _settingsMenu.Get<string>(Constants.Parameters.Wallet);
             if (string.Equals(_etcWalletAddress, "random", StringComparison.InvariantCultureIgnoreCase))
                 _etcWalletAddress = await GetNonEmptyEtcWalletAsync();
             _logger.LogInformation($"Wallet address: {_etcWalletAddress}");

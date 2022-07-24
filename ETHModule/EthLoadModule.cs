@@ -20,6 +20,7 @@ namespace ETHModule
     {
         private readonly IRegionManager _regionManager;
         private readonly AppSettings _appSettings;
+        private SettingsMenu _settingsMenu;
         private readonly IRegionService _regionService;
         private IContainerProvider _containerProvider;
         private IETHService _ethService;
@@ -66,11 +67,14 @@ namespace ETHModule
 
             if (!_appSettings.MenuExists(menu.Key))
                 _appSettings.AddOrUpdateMenu(menu);
+            
             foreach (var parameter in menu.Parameters)
             {
                 if (!_appSettings.ParameterExists(menu.Key, parameter.Key))
                     _appSettings.AddOrUpdateParameter(menu.Key, parameter);
             }
+
+            _settingsMenu = _appSettings.GetMenu(Constants.Menu.MenuKey);
         }
 
         private void RequestRegions()
@@ -79,13 +83,13 @@ namespace ETHModule
 
             var regionToRequest = new List<string>();
 
-            if (!string.IsNullOrEmpty(_appSettings.Get<string>(Constants.Parameters.Wallet)))
+            if (!string.IsNullOrEmpty(_settingsMenu.Get<string>(Constants.Parameters.Wallet)))
                 regionToRequest.Add(RegionsName.EthWallet);
-            if (!_appSettings.Get<bool>(Constants.Parameters.hidePrice))
+            if (!_settingsMenu.Get<bool>(Constants.Parameters.hidePrice))
                 regionToRequest.Add(RegionsName.EthPrice);
-            if (!_appSettings.Get<bool>(Constants.Parameters.hideBlockReward))
+            if (!_settingsMenu.Get<bool>(Constants.Parameters.hideBlockReward))
                 regionToRequest.Add(RegionsName.BlockRewards);
-            if (!_appSettings.Get<bool>(Constants.Parameters.hideGasTracker))
+            if (!_settingsMenu.Get<bool>(Constants.Parameters.hideGasTracker))
                 regionToRequest.Add(RegionsName.GasTracker);
 
             _regionsRequestedCount = regionToRequest.Count;
@@ -114,12 +118,12 @@ namespace ETHModule
         {
             try
             {
-                var apiKey = _appSettings.Get<string>(Constants.Parameters.ApiKey);
-                var updateTime = TimeSpan.FromMinutes(_appSettings.Get<int>(Constants.Parameters.UpdateTime));
-                var wallet = _appSettings.Get<string>(Constants.Parameters.Wallet);
-                var hidePrice = _appSettings.Get<bool>(Constants.Parameters.hidePrice) && string.IsNullOrEmpty(wallet);
-                var hideGasTracker = _appSettings.Get<bool>(Constants.Parameters.hideGasTracker);
-                var hideBlockReward = _appSettings.Get<bool>(Constants.Parameters.hideBlockReward);
+                var apiKey = _settingsMenu.Get<string>(Constants.Parameters.ApiKey);
+                var updateTime = TimeSpan.FromMinutes(_settingsMenu.Get<int>(Constants.Parameters.UpdateTime));
+                var wallet = _settingsMenu.Get<string>(Constants.Parameters.Wallet);
+                var hidePrice = _settingsMenu.Get<bool>(Constants.Parameters.hidePrice) && string.IsNullOrEmpty(wallet);
+                var hideGasTracker = _settingsMenu.Get<bool>(Constants.Parameters.hideGasTracker);
+                var hideBlockReward = _settingsMenu.Get<bool>(Constants.Parameters.hideBlockReward);
 
                 await _ethService.StartAsync(apiKey, updateTime, wallet, hidePrice, hideGasTracker, hideBlockReward);
 
