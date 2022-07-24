@@ -1,4 +1,5 @@
-﻿using System;
+﻿using ModularWidget.Common.Models;
+using System;
 using System.Windows;
 using System.Windows.Media;
 
@@ -68,7 +69,7 @@ namespace CoinMarketCapPortfolioModule.Models
                 _privacyMode = value;
                 OnPropertyChanged("PrivacyMode");
                 OnPropertyChanged("BalanceVisibility");
-                OnPropertyChanged("PrivacyBlocksVisibility");;
+                OnPropertyChanged("PrivacyBlocksVisibility"); ;
                 OnPropertyChanged("PrivacyModeIcon");
             }
         }

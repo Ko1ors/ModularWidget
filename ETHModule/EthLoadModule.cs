@@ -67,7 +67,7 @@ namespace ETHModule
 
             if (!_appSettings.MenuExists(menu.Key))
                 _appSettings.AddOrUpdateMenu(menu);
-            
+
             foreach (var parameter in menu.Parameters)
             {
                 if (!_appSettings.ParameterExists(menu.Key, parameter.Key))

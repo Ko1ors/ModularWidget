@@ -1,9 +1,10 @@
-﻿using Newtonsoft.Json;
+﻿using ModularWidget.Common.Models;
+using Newtonsoft.Json;
 using System;
 
 namespace FearGreedIndexModule.Models
 {
-    public class IndexData : BaseModel
+    public class IndexData : ModelBase
     {
         private int value;
         private string valueClassification;

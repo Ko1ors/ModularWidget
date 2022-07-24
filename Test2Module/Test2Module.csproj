@@ -15,9 +15,6 @@
     <LangVersion>8.0</LangVersion>
   </PropertyGroup>
   <ItemGroup>
-    <Reference Include="System.Configuration" />
-  </ItemGroup>
-  <ItemGroup>
     <ProjectReference Include="..\ModularWidget\ModularWidget.csproj" />
   </ItemGroup>
   <ItemGroup>

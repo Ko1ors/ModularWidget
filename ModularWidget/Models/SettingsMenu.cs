@@ -35,7 +35,7 @@ namespace ModularWidget.Models
                 return default;
             return (T)Convert.ChangeType(parameter.Value, typeof(T), CultureInfo.InvariantCulture);
         }
-        
+
         public SettingsParameter Get(string parameterKey)
         {
             return Parameters?.Find(x => x.Key == parameterKey);

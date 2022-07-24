@@ -1,5 +1,6 @@
 ﻿using ETCModule.Models;
 using ETCModule.Services;
+using ModularWidget.Common.ViewModels;
 using System;
 
 namespace ETCModule.ViewModels
@@ -31,7 +32,7 @@ namespace ETCModule.ViewModels
                     priceText = $"${Price.CoinUsd} ❙";
                 else
                     priceText = "$ーー ❙";
-                
+
                 if (Price.CoinBtc.HasValue && Price.CoinBtc.Value >= 0)
                     priceText += $" {Math.Round(Price.CoinBtc.Value, 5).ToString().Replace(",", ".")} BTC";
                 else

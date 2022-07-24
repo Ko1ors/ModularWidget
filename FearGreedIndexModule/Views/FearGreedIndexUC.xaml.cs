@@ -8,7 +8,6 @@ namespace FearGreedIndexModule.Views
     /// </summary>
     public partial class FearGreedIndexUC : UserControl
     {
-        public FearGreedIndexViewModel ViewModel { get; set; }
 
         public FearGreedIndexUC(FearGreedIndexViewModel viewModel)
         {
@@ -18,7 +17,7 @@ namespace FearGreedIndexModule.Views
 
         private async void Init(FearGreedIndexViewModel viewModel)
         {
-            await viewModel.Start();
+            await viewModel.StartAsync();
             DataContext = viewModel;
         }
     }

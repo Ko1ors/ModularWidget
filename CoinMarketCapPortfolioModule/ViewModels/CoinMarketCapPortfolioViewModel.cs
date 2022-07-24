@@ -3,6 +3,7 @@ using CoinMarketCapPortfolioModule.Models;
 using CoinMarketCapPortfolioModule.Models.API;
 using Microsoft.Extensions.Logging;
 using ModularWidget;
+using ModularWidget.Common.ViewModels;
 using ModularWidget.Models;
 using Newtonsoft.Json;
 using System;
@@ -16,7 +17,7 @@ using System.Timers;
 
 namespace CoinMarketCapPortfolioModule.ViewModels
 {
-    public class CoinMarketCapPortfolioViewModel : ModelBase
+    public class CoinMarketCapPortfolioViewModel : ViewModelBase
     {
         // TODO: Move UpdateTime settings
         private const int UpdateTime = 5; // in minutes
@@ -67,7 +68,7 @@ namespace CoinMarketCapPortfolioModule.ViewModels
             Portfolio.PrivacyMode = !Portfolio.PrivacyMode;
         }
 
-        public async Task Start()
+        public async Task StartAsync()
         {
             _logger.LogInformation("Starting CoinMarketCapPortfolioViewModel");
             LoadPortfolio();

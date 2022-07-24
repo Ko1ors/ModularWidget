@@ -19,6 +19,7 @@
     <Resource Include="Images\etclogo.svg" />
   </ItemGroup>
   <ItemGroup>
+    <ProjectReference Include="..\ModularWidget.Common\ModularWidget.Common.csproj" />
     <ProjectReference Include="..\ModularWidget\ModularWidget.csproj" />
   </ItemGroup>
   <ItemGroup>

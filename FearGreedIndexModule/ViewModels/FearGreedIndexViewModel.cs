@@ -1,5 +1,6 @@
 ﻿using FearGreedIndexModule.Models;
 using Microsoft.Extensions.Logging;
+using ModularWidget.Common.ViewModels;
 using System;
 using System.Linq;
 using System.Threading.Tasks;
@@ -7,31 +8,31 @@ using System.Timers;
 
 namespace FearGreedIndexModule.ViewModels
 {
-    public class FearGreedIndexViewModel : BaseModel
+    public class FearGreedIndexViewModel : ViewModelBase
     {
         private const int updateInterval = 5;
         private const string url = "https://api.alternative.me/";
         private const string endpoint = "fng/";
 
         private readonly ILogger<FearGreedIndexViewModel> _logger;
-        
-        private Timer timer;
+        private readonly Timer _timer;
 
-        public FearGreedIndex Index { get; set; }
+        public FearGreedIndex? Index { get; set; }
 
         public int Value => Index?.Data?.FirstOrDefault()?.Value ?? 0;
 
         public FearGreedIndexViewModel(ILogger<FearGreedIndexViewModel> logger)
         {
             _logger = logger;
+            _timer = new Timer();
         }
 
-        public async Task Start()
+        public async Task StartAsync()
         {
             _logger.LogInformation("Starting FearGreedIndexViewModel.");
-            timer = new Timer();
-            timer.Elapsed += Timer_Elapsed;
-            timer.AutoReset = false;
+
+            _timer.Elapsed += Timer_Elapsed;
+            _timer.AutoReset = false;
             await StartUpdate();
         }
 
@@ -42,13 +43,13 @@ namespace FearGreedIndexModule.ViewModels
             OnPropertyChanged(nameof(Index));
             var timeUntilUpdate = Index?.Data?.FirstOrDefault()?.TimeUntilUpdate ?? -1;
             if (timeUntilUpdate > 0)
-                timer.Interval = timeUntilUpdate * 1000;
+                _timer.Interval = timeUntilUpdate * 1000;
             else
-                timer.Interval = updateInterval * 1000 * 60;
+                _timer.Interval = updateInterval * 1000 * 60;
 
-            _logger.LogInformation($"Next FearGreedIndex update in {timer.Interval / 1000} seconds.");
+            _logger.LogInformation($"Next FearGreedIndex update in {_timer.Interval / 1000} seconds.");
 
-            timer.Start();
+            _timer.Start();
 
             await Task.CompletedTask;
         }
@@ -58,7 +59,7 @@ namespace FearGreedIndexModule.ViewModels
             await StartUpdate();
         }
 
-        private async Task<FearGreedIndex> GetFearGreedIndexAsync()
+        private async Task<FearGreedIndex?> GetFearGreedIndexAsync()
         {
             try
             {

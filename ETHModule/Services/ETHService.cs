@@ -30,14 +30,14 @@ namespace ETHModule.Services
 
         public async Task StartAsync(string apiKey, TimeSpan? updateTime = null, string wallet = "", bool ignorePrice = false, bool ignoreGas = false, bool ignoreBlockReward = false)
         {
-            if(_timerTask is not null)
+            if (_timerTask is not null)
             {
                 _cts.Cancel();
                 await _timerTask;
                 _cts.Dispose();
                 _cts = new CancellationTokenSource();
             }
-                
+
             _timer = new PeriodicTimer(updateTime ?? _defaultUpdateTime);
             await GetDataAsync(apiKey, wallet, ignorePrice, ignoreGas, ignoreBlockReward);
             _timerTask = RunPeriodicDataUpdatesAsync(apiKey, wallet, ignorePrice, ignoreGas, ignoreBlockReward);
@@ -185,6 +185,7 @@ namespace ETHModule.Services
                     {
                         double walletBalance = Math.Round(double.Parse(result.Result) / 1000000000000000000, 5);
                         _logger.LogInformation($"ETH wallet balance received. Result: {walletBalance}");
+                        WalletBalanceUpdated?.Invoke(walletBalance);
                         return walletBalance;
                     }
                     await Task.Delay(500 * (i + 1));

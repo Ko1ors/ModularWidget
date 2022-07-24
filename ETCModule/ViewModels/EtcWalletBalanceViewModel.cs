@@ -1,5 +1,6 @@
 ﻿using ETCModule.Models;
 using ETCModule.Services;
+using ModularWidget.Common.ViewModels;
 using System;
 
 namespace ETCModule.ViewModels

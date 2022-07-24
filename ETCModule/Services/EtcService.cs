@@ -5,7 +5,6 @@ using ModularWidget;
 using ModularWidget.Models;
 using Newtonsoft.Json;
 using System;
-using System.Threading;
 using System.Threading.Tasks;
 
 namespace ETCModule.Services

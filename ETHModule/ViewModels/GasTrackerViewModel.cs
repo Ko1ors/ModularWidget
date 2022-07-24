@@ -25,7 +25,7 @@ namespace ETHModule.ViewModels
         public string AverageGasPrice => $"{GasPrice?.Result?.ProposeGasPrice ?? "--"} gwei";
 
         public string HighGasPrice => $"{GasPrice?.Result?.FastGasPrice ?? "--"} gwei";
-       
+
 
         public GasTrackerViewModel(IETHService ethService)
         {

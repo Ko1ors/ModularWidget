@@ -1,10 +1,10 @@
 ﻿using System.ComponentModel;
 
-namespace FearGreedIndexModule.Models
+namespace ModularWidget.Common.Models
 {
-    public abstract class BaseModel : INotifyPropertyChanged
+    public abstract class ModelBase : INotifyPropertyChanged
     {
-        public event PropertyChangedEventHandler PropertyChanged;
+        public event PropertyChangedEventHandler? PropertyChanged;
 
         protected void OnPropertyChanged(string propertyName)
         {

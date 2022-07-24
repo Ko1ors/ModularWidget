@@ -1,9 +1,10 @@
-﻿using Newtonsoft.Json;
+﻿using ModularWidget.Common.Models;
+using Newtonsoft.Json;
 using System.Collections.ObjectModel;
 
 namespace FearGreedIndexModule.Models
 {
-    public class FearGreedIndex : BaseModel
+    public class FearGreedIndex : ModelBase
     {
         private string name;
 

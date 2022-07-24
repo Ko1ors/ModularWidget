@@ -1,5 +1,4 @@
-﻿using ETHModule.Data;
-using ETHModule.Services;
+﻿using ETHModule.Services;
 using ModularWidget.Common.ViewModels;
 
 namespace ETHModule.ViewModels
