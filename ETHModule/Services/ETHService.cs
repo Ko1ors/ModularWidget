@@ -1,5 +1,7 @@
 ﻿using ETHModule.Data;
+using ETHModule.Settings;
 using Microsoft.Extensions.Logging;
+using ModularWidget.Common.Clients;
 using Newtonsoft.Json;
 using System;
 using System.Threading;
@@ -12,6 +14,7 @@ namespace ETHModule.Services
         private const int maxTries = 5;
 
         private readonly TimeSpan _defaultUpdateTime = TimeSpan.FromMinutes(5);
+        private readonly ModularHttpClient _httpClient;
         private readonly ILogger<EthService> _logger;
         private PeriodicTimer _timer;
         private Task _timerTask;
@@ -23,8 +26,9 @@ namespace ETHModule.Services
         public event Updated<double> AvgBlockRewardUpdated;
         public event Updated<ETHCompositeModel> EthUpdated;
 
-        public EthService(ILogger<EthService> logger)
+        public EthService(ModularHttpClient httpClient, ILogger<EthService> logger)
         {
+            _httpClient = httpClient;
             _logger = logger;
         }
 
@@ -37,7 +41,7 @@ namespace ETHModule.Services
                 _cts.Dispose();
                 _cts = new CancellationTokenSource();
             }
-            
+
             await GetDataAsync(apiKey, wallet, ignorePrice, ignoreGas, ignoreBlockReward);
 
             _timer = new PeriodicTimer(updateTime ?? _defaultUpdateTime);
@@ -86,7 +90,7 @@ namespace ETHModule.Services
                 for (int i = 0; i < maxTries; i++)
                 {
                     _logger.LogInformation($"Getting ETH price. Try {i + 1} of {maxTries}");
-                    var result = EthRequest.GetPrice(apiKey);
+                    var result = await RequestPriceAsync(apiKey);
                     if (result.Status != "0" && result.Message != "NOTOK")
                     {
                         _logger.LogInformation($"ETH price received. Result model: {JsonConvert.SerializeObject(result)}");
@@ -113,7 +117,7 @@ namespace ETHModule.Services
                 for (int i = 0; i < maxTries; i++)
                 {
                     _logger.LogInformation($"Getting ETH gas price. Try {i + 1} of {maxTries}");
-                    var result = EthRequest.GetGasPrice(apiKey);
+                    var result = await RequestGasPriceAsync(apiKey);
                     if (result.Status != "0" && result.Message != "NOTOK")
                     {
                         _logger.LogInformation($"ETH gas price received. Result model: {JsonConvert.SerializeObject(result)}");
@@ -146,7 +150,7 @@ namespace ETHModule.Services
                     for (int j = 0; j < maxTries; j++)
                     {
                         _logger.LogInformation($"Getting ETH avg block reward. Block {i + 1} of 10; Try {j + 1} of {maxTries}");
-                        var result = EthRequest.GetBlockReward(apiKey, lastBlock--.ToString());
+                        var result = await RequestBlockRewardAsync(apiKey, lastBlock--.ToString());
                         if (result.Status != "0" && result.Message != "NOTOK")
                         {
                             success = true;
@@ -181,7 +185,7 @@ namespace ETHModule.Services
                 _logger.LogInformation($"Getting ETH wallet balance. Apikey: {apiKey}. Wallet: {wallet}");
                 for (int i = 0; i < maxTries; i++)
                 {
-                    var result = EthRequest.GetWalletBalance(apiKey, wallet);
+                    var result = await RequestWalletBalanceAsync(apiKey, wallet);
                     if (result.Status != "0" && result.Message != "NOTOK")
                     {
                         double walletBalance = Math.Round(double.Parse(result.Result) / 1000000000000000000, 5);
@@ -197,6 +201,58 @@ namespace ETHModule.Services
             {
                 _logger.LogError(e, "ETH wallet balance not received.");
                 return default;
+            }
+        }
+
+        private async Task<EthPrice> RequestPriceAsync(string apiKey)
+        {
+            try
+            {
+                string request = Constants.Endpoints.EthPriceRequest.Replace("{apikey}", apiKey);
+                return JsonConvert.DeserializeObject<EthPrice>(await _httpClient.GetAsync(request));
+            }
+            catch
+            {
+                return new EthPrice() { Status = "0" };
+            }
+        }
+
+        private async Task<EthGasPrice> RequestGasPriceAsync(string apiKey)
+        {
+            try
+            {
+                string request = Constants.Endpoints.EthGasRequest.Replace("{apikey}", apiKey);
+                return JsonConvert.DeserializeObject<EthGasPrice>(await _httpClient.GetAsync(request));
+            }
+            catch
+            {
+                return new EthGasPrice() { Status = "0" };
+            }
+        }
+
+        private async Task<BlockReward> RequestBlockRewardAsync(string apiKey, string blockNum)
+        {
+            try
+            {
+                string request = Constants.Endpoints.EthBlockRequest.Replace("{blocknum}", blockNum).Replace("{apikey}", apiKey);
+                return JsonConvert.DeserializeObject<BlockReward>(await _httpClient.GetAsync(request));
+            }
+            catch
+            {
+                return new BlockReward() { Status = "0" };
+            }
+        }
+
+        private async Task<WalletBalance> RequestWalletBalanceAsync(string apiKey, string address)
+        {
+            try
+            {
+                string request = Constants.Endpoints.EthWalletRequest.Replace("{address}", address).Replace("{apikey}", apiKey);
+                return JsonConvert.DeserializeObject<WalletBalance>(await _httpClient.GetAsync(request));
+            }
+            catch
+            {
+                return new WalletBalance() { Status = "0" };
             }
         }
     }
