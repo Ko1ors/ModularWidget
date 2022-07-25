@@ -4,7 +4,6 @@ using ModularWidget.Services;
 using Prism.Ioc;
 using Prism.Modularity;
 using Prism.Unity;
-using Prism.Unity.Ioc;
 using Serilog;
 using System;
 using System.Windows;
@@ -39,10 +38,10 @@ namespace ModularWidget
             return new UnityContainerExtension(container);
         }
 
-        public override void Initialize()
+        protected override void InitializeModules()
         {
             Log.Logger.ForContext<App>().Information("Application started", GetType());
-            base.Initialize();
+            base.InitializeModules();
         }
 
         private void CurrentDomain_UnhandledException(object sender, UnhandledExceptionEventArgs e)
