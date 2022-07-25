@@ -1,4 +1,5 @@
 ﻿using Microsoft.Extensions.DependencyInjection;
+using ModularWidget.Common.Clients;
 using ModularWidget.Services;
 using Prism.Ioc;
 using Prism.Modularity;
@@ -66,6 +67,8 @@ namespace ModularWidget
             containerRegistry.RegisterSingleton<AppSettings>();
             containerRegistry.RegisterSingleton<IRegionService, RegionService>();
             containerRegistry.RegisterSingleton<IWindowService, WindowService>();
+
+            containerRegistry.RegisterSingleton<ModularHttpClient>();
         }
 
         protected override IModuleCatalog CreateModuleCatalog()

@@ -72,6 +72,9 @@
     <PackageReference Include="Unity.Microsoft.DependencyInjection" Version="5.11.5" />
   </ItemGroup>
   <ItemGroup>
+    <ProjectReference Include="..\ModularWidget.Common\ModularWidget.Common.csproj" />
+  </ItemGroup>
+  <ItemGroup>
     <Compile Update="Properties\Settings.Designer.cs">
       <DesignTimeSharedInput>True</DesignTimeSharedInput>
       <AutoGen>True</AutoGen>

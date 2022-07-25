@@ -1,5 +1,6 @@
 ﻿using ETCModule.Models;
 using Microsoft.Extensions.Logging;
+using ModularWidget.Common.Clients;
 using Newtonsoft.Json;
 using System;
 using System.Net.Http;
@@ -13,30 +14,22 @@ namespace ETCModule.Services
         private const string etcWalletRequest = "https://blockscout.com/etc/mainnet/api?module=account&action=balance&address={address}";
         private const string etcRandomWalletsRequest = "https://blockscout.com/etc/mainnet/api?module=account&action=listaccounts&page={page}&offset={offset}";
 
+        private readonly ModularHttpClient _httpClient;
         private readonly ILogger<EtcClientService> _logger;
 
-        public EtcClientService(ILogger<EtcClientService> logger)
+
+        public EtcClientService(ModularHttpClient httpClient, ILogger<EtcClientService> logger)
         {
+            _httpClient = httpClient;
             _logger = logger;
         }
-
-        private async Task<string> SendAsync(string request)
-        {
-            string result;
-            using (var client = new HttpClient())
-            {
-                result = await client.GetStringAsync(request);
-                _logger.LogInformation($"Request: {request}. Response: {result}");
-            }
-            return result;
-        }
-
+        
         public async Task<EtcPriceResult> GetPriceAsync()
         {
             string request = etcPriceRequest;
             try
             {
-                return JsonConvert.DeserializeObject<EtcPriceResult>(await SendAsync(request));
+                return JsonConvert.DeserializeObject<EtcPriceResult>(await _httpClient.GetAsync(request));
             }
             catch (Exception e)
             {
@@ -50,7 +43,7 @@ namespace ETCModule.Services
             string request = etcRandomWalletsRequest.Replace("{page}", new Random().Next(1, 1000).ToString()).Replace("{offset}", count.ToString());
             try
             {
-                return JsonConvert.DeserializeObject<EtcWalletsResult>(await SendAsync(request));
+                return JsonConvert.DeserializeObject<EtcWalletsResult>(await _httpClient.GetAsync(request));
             }
             catch (Exception e)
             {
@@ -64,7 +57,7 @@ namespace ETCModule.Services
             string request = etcWalletRequest.Replace("{address}", address);
             try
             {
-                return JsonConvert.DeserializeObject<EtcWalletBalanceResult>(await SendAsync(request));
+                return JsonConvert.DeserializeObject<EtcWalletBalanceResult>(await _httpClient.GetAsync(request));
             }
             catch (Exception e)
             {

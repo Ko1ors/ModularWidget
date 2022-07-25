@@ -1,5 +1,6 @@
 ﻿using FearGreedIndexModule.Models;
 using Microsoft.Extensions.Logging;
+using ModularWidget.Common.Clients;
 using ModularWidget.Common.ViewModels;
 using System;
 using System.Linq;
@@ -16,13 +17,15 @@ namespace FearGreedIndexModule.ViewModels
 
         private readonly ILogger<FearGreedIndexViewModel> _logger;
         private readonly Timer _timer;
+        private readonly ModularHttpClient _httpClient;
 
         public FearGreedIndex? Index { get; set; }
 
         public int Value => Index?.Data?.FirstOrDefault()?.Value ?? 0;
 
-        public FearGreedIndexViewModel(ILogger<FearGreedIndexViewModel> logger)
+        public FearGreedIndexViewModel(ModularHttpClient httpClient, ILogger<FearGreedIndexViewModel> logger)
         {
+            _httpClient = httpClient;
             _logger = logger;
             _timer = new Timer();
         }
@@ -65,8 +68,7 @@ namespace FearGreedIndexModule.ViewModels
             {
                 _logger.LogInformation($"Getting FearGreedIndex. Url: {url}{endpoint}");
                 var client = new System.Net.Http.HttpClient();
-                var response = await client.GetAsync(url + endpoint);
-                var result = await response.Content.ReadAsStringAsync();
+                var result = await _httpClient.GetAsync(url + endpoint);
                 _logger.LogInformation($"FearGreedIndex response: {result.Replace("\n", "")}");
                 return Newtonsoft.Json.JsonConvert.DeserializeObject<FearGreedIndex>(result);
             }
