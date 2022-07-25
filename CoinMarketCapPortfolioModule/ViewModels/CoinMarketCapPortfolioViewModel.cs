@@ -1,8 +1,8 @@
-﻿using CoinMarketCapPortfolioModule.Commands;
-using CoinMarketCapPortfolioModule.Models;
+﻿using CoinMarketCapPortfolioModule.Models;
 using CoinMarketCapPortfolioModule.Models.API;
 using Microsoft.Extensions.Logging;
 using ModularWidget;
+using ModularWidget.Commands;
 using ModularWidget.Common.ViewModels;
 using ModularWidget.Models;
 using Newtonsoft.Json;

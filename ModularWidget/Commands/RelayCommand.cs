@@ -1,7 +1,7 @@
 ﻿using System;
 using System.Windows.Input;
 
-namespace CoinMarketCapPortfolioModule.Commands
+namespace ModularWidget.Commands
 {
     public class RelayCommand : ICommand
     {

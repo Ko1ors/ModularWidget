@@ -4,11 +4,11 @@
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
              xmlns:local="clr-namespace:MusicWinModule.Views" 
-             xmlns:fa="clr-namespace:Meziantou.WpfFontAwesome;assembly=Meziantou.WpfFontAwesome"
+             xmlns:fa="clr-namespace:Meziantou.WpfFontAwesome;assembly=Meziantou.WpfFontAwesome" 
+             xmlns:viewmodels="clr-namespace:MusicWinModule.ViewModels" 
+             d:DataContext="{d:DesignInstance Type=viewmodels:MediaPlayerViewModel}"
              mc:Ignorable="d" 
-             Height="100" Width="280"
-             x:Name="musicUC"
-             Margin="0,0,0,15">
+             Height="100" Width="280" Margin="0,0,0,15">
     <UserControl.Resources>
         <Style TargetType="Button" x:Key="RoundButtonStyle">
             <Setter Property="Background" Value="#14141f"/>
@@ -41,29 +41,29 @@
         <StackPanel  Orientation="Horizontal" >
             <Border BorderThickness="1,1,1,1" BorderBrush="Black" Width="80" Height="80" CornerRadius="10" Margin="10,0,0,0">
                 <Border.Background>
-                    <ImageBrush x:Name="thumbnail"/>
+                    <ImageBrush ImageSource="{Binding ThumbnailSource}"/>
                 </Border.Background>
             </Border>
             <StackPanel Width="188">
                 <Grid VerticalAlignment="Top" Margin="0,10,0,0">
-                    <Button Height="40" Width="40" Margin="20,0,0,0" Style="{StaticResource RoundButtonStyle}" HorizontalAlignment="Left" Click="StepBackward_Click">
+                    <Button Height="40" Width="40" Margin="20,0,0,0" Style="{StaticResource RoundButtonStyle}" HorizontalAlignment="Left" Cursor="Hand" Command="{Binding StepBackwardCommand}">
                         <fa:FontAwesomeIcon SolidIcon="StepBackward" Foreground="DarkSlateGray" Height="20" Width="14"/>
                     </Button>
-                    <Button Height="40" Width="40" Margin="0,0,0,0"  Style="{StaticResource RoundButtonStyle}" HorizontalAlignment="Center" Click="PlayButton_Click">
-                        <fa:FontAwesomeIcon SolidIcon="{Binding Path=ButtonLogo, ElementName=musicUC, FallbackValue=Play }" Foreground="DarkSlateGray" Height="18" Width="18" HorizontalAlignment="Right"/>
+                    <Button Height="40" Width="40" Margin="0,0,0,0"  Style="{StaticResource RoundButtonStyle}" HorizontalAlignment="Center" Cursor="Hand" Command="{Binding PlayToggleCommand}">
+                        <fa:FontAwesomeIcon SolidIcon="{Binding ButtonLogo, FallbackValue=Play }" Foreground="DarkSlateGray" Height="18" Width="18" HorizontalAlignment="Right"/>
                     </Button>
-                    <Button Height="40" Width="40" Margin="0,0,20,0" Style="{StaticResource RoundButtonStyle}" HorizontalAlignment="Right" Click="StepForward_Click">
+                    <Button Height="40" Width="40" Margin="0,0,20,0" Style="{StaticResource RoundButtonStyle}" HorizontalAlignment="Right" Cursor="Hand" Command="{Binding StepForwardCommand}">
                         <fa:FontAwesomeIcon SolidIcon="StepForward" Foreground="DarkSlateGray" Height="20" Width="14"/>
                     </Button>
                 </Grid>
-                <TextBlock Text="{Binding Path=Title, ElementName=musicUC, FallbackValue=Music title, TargetNullValue=Music title }" Height="16" FontSize="14" MaxWidth="180" Margin="0,5,0,0" FontFamily="Arial Black" Width="180" TextTrimming="CharacterEllipsis" >
+                <TextBlock Text="{Binding Title, FallbackValue=Music title, TargetNullValue=Music title }" Height="16" FontSize="14" MaxWidth="180" Margin="0,5,0,0" FontFamily="Arial Black" Width="180" TextTrimming="CharacterEllipsis" >
                     <TextBlock.ToolTip>
-                        <ToolTip DataContext="{Binding Path=PlacementTarget.Parent.Parent.Parent.Parent, RelativeSource={x:Static RelativeSource.Self}}" MaxWidth="350" >
-                            <TextBlock Text="{Binding Path=Title}"  TextWrapping="Wrap"/>
+                        <ToolTip MaxWidth="350" >
+                            <TextBlock Text="{Binding Title}" TextWrapping="Wrap"/>
                         </ToolTip>
                     </TextBlock.ToolTip>
                 </TextBlock>
-                <TextBlock x:Name="artist" Text="{Binding Path=Artist, ElementName=musicUC, FallbackValue=Artist name, TargetNullValue=Artist name }" Height="14" FontSize="12" Margin="0,2,0,0" FontFamily="Arial Black" Width="180" TextTrimming="CharacterEllipsis" />
+                <TextBlock Text="{Binding Artist, FallbackValue=Artist name, TargetNullValue=Artist name }" Height="14" FontSize="12" Margin="0,2,0,0" FontFamily="Arial Black" Width="180" TextTrimming="CharacterEllipsis" />
             </StackPanel>
         </StackPanel>
     </Border>
