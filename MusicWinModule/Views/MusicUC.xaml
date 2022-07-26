@@ -8,7 +8,7 @@
              xmlns:viewmodels="clr-namespace:MusicWinModule.ViewModels" 
              d:DataContext="{d:DesignInstance Type=viewmodels:MediaPlayerViewModel}"
              mc:Ignorable="d" 
-             Height="100" Width="280" Margin="0,0,0,15">
+             Height="100" Width="280" Margin="0,0,0,15" Visibility="{Binding ModuleVisibility}">
     <UserControl.Resources>
         <Style TargetType="Button" x:Key="RoundButtonStyle">
             <Setter Property="Background" Value="#14141f"/>
