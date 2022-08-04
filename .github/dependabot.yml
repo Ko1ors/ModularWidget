@@ -1,0 +1,34 @@
+version: 2
+updates:
+  - package-ecosystem: "nuget"
+    directory: "/CoinMarketCapPortfolioModule" #CoinMarketCapPortfolioModule.csproj
+    schedule:
+      interval: "weekly"
+  - package-ecosystem: "nuget"
+    directory: "/CryptoMarketCapModule" #CryptoMarketCapModule.csproj
+    schedule:
+      interval: "weekly"       
+  - package-ecosystem: "nuget"
+    directory: "/ETCModule" #ETCModule.csproj
+    schedule:
+      interval: "weekly"
+  - package-ecosystem: "nuget"
+    directory: "/ETHModule" #ETHModule.csproj
+    schedule:
+      interval: "weekly"    
+  - package-ecosystem: "nuget"
+    directory: "/FearGreedIndexModule" #FearGreedIndexModule.csproj
+    schedule:
+      interval: "weekly"    
+  - package-ecosystem: "nuget"
+    directory: "/ModularWidget" #ModularWidget.csproj
+    schedule:
+      interval: "weekly"
+  - package-ecosystem: "nuget"
+    directory: "/ModularWidget.Common" #ModularWidget.Common.csproj
+    schedule:
+      interval: "weekly"
+  - package-ecosystem: "nuget"
+    directory: "/MusicWinModule" #MusicWinModule.csproj
+    schedule:
+      interval: "weekly"
