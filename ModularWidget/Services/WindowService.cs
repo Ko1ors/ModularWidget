@@ -1,9 +1,6 @@
 ﻿using ModularWidget.UserControls;
-using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using System.Windows;
 
 namespace ModularWidget.Services
@@ -28,7 +25,7 @@ namespace ModularWidget.Services
             foreach (MainWindow window in _windows)
             {
                 rect = new Rect(window.Left, window.Top, window.Width, window.Height);
-                if(rect.Contains(w32Mouse.X, w32Mouse.Y))
+                if (rect.Contains(w32Mouse.X, w32Mouse.Y))
                     return true;
             }
             return false;

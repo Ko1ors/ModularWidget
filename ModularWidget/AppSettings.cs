@@ -162,7 +162,7 @@ namespace ModularWidget
 
         public bool ParameterExists(string menuKey, string parameterKey)
         {
-            return GetParameter(menuKey, parameterKey) != null;
+            return GetMenu(menuKey)?.Get(parameterKey) != null;
         }
 
         public SettingsMenu GetMenu(string key)
@@ -172,7 +172,7 @@ namespace ModularWidget
 
         public SettingsParameter GetParameter(string menuKey, string parameterKey)
         {
-            return GetMenu(menuKey)?.Parameters?.Find(x => x.Key == parameterKey);
+            return GetMenu(menuKey)?.Get(parameterKey);
         }
 
         public T Get<T>(string menuKey, string parameterKey)

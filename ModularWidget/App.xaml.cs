@@ -1,9 +1,9 @@
 ﻿using Microsoft.Extensions.DependencyInjection;
+using ModularWidget.Common.Clients;
 using ModularWidget.Services;
 using Prism.Ioc;
 using Prism.Modularity;
 using Prism.Unity;
-using Prism.Unity.Ioc;
 using Serilog;
 using System;
 using System.Windows;
@@ -28,7 +28,7 @@ namespace ModularWidget
         {
             var serviceCollection = new ServiceCollection();
 
-            Log.Logger = new LoggerConfiguration().WriteTo.File("logs/log-.txt", rollingInterval: RollingInterval.Day,
+            Log.Logger = new LoggerConfiguration().WriteTo.File("logs/log-.log", rollingInterval: RollingInterval.Day,
                 outputTemplate: "{Timestamp:yyyy-MM-dd HH:mm:ss.fff zzz} [{Level}] {SourceContext} {Method} | {Message} {Exception}{NewLine}").CreateLogger();
             serviceCollection.AddLogging(loggingBuilder => loggingBuilder.AddSerilog(dispose: true));
 
@@ -38,10 +38,10 @@ namespace ModularWidget
             return new UnityContainerExtension(container);
         }
 
-        public override void Initialize()
+        protected override void InitializeModules()
         {
             Log.Logger.ForContext<App>().Information("Application started", GetType());
-            base.Initialize();
+            base.InitializeModules();
         }
 
         private void CurrentDomain_UnhandledException(object sender, UnhandledExceptionEventArgs e)
@@ -66,6 +66,8 @@ namespace ModularWidget
             containerRegistry.RegisterSingleton<AppSettings>();
             containerRegistry.RegisterSingleton<IRegionService, RegionService>();
             containerRegistry.RegisterSingleton<IWindowService, WindowService>();
+
+            containerRegistry.RegisterSingleton<ModularHttpClient>();
         }
 
         protected override IModuleCatalog CreateModuleCatalog()

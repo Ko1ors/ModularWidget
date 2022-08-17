@@ -3,9 +3,11 @@
              xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
-             xmlns:local="clr-namespace:ETHModule.UserControls" xmlns:svgc1="http://sharpvectors.codeplex.com/svgc/"
+             xmlns:viewModels="clr-namespace:ETHModule.ViewModels" 
+             xmlns:svgc1="http://sharpvectors.codeplex.com/svgc/" 
+             d:DataContext="{d:DesignInstance viewModels:GasTrackerViewModel}"
              mc:Ignorable="d" 
-             Height="90" Width="280" Margin="0,0,0,15">
+             Height="90" d:DesignWidth="280" Margin="0,0,0,15">
     <Border BorderThickness="1,1,1,1" BorderBrush="Black" CornerRadius="10" >
         <StackPanel  Orientation="Horizontal">
             <svgc1:SvgViewbox Margin="15,10,0,0" Width="40" Source="pack://application:,,,/Images/gas-icon.svg" />
@@ -15,19 +17,19 @@
                     <Border Margin="10,0,0,0" BorderThickness="1,1,1,1" BorderBrush="Black" CornerRadius="15">
                         <StackPanel>
                             <Label Content="Low" FontSize="10" FontFamily="Arial Black" HorizontalContentAlignment="Center"/>
-                            <Label x:Name="labelGasLow" Content="ーー gwei" FontSize="10" FontFamily="Arial Black" HorizontalContentAlignment="Center" BorderBrush="Black"  BorderThickness="0,1,0,0" Foreground="#FF39CFC1"/>
+                            <Label Content="{Binding LowGasPrice}" d:Content="ーー gwei" FontSize="10" FontFamily="Arial Black" HorizontalContentAlignment="Center" BorderBrush="Black"  BorderThickness="0,1,0,0" Foreground="#FF39CFC1"/>
                         </StackPanel>
                     </Border>
                     <Border Margin="8,0,0,0" BorderThickness="1,1,1,1" BorderBrush="Black" CornerRadius="15">
                         <StackPanel>
                             <Label Content="Average" FontSize="10" FontFamily="Arial Black" HorizontalContentAlignment="Center"/>
-                            <Label x:Name="labelGasAvg" Content="ーー gwei" FontSize="10" FontFamily="Arial Black" HorizontalContentAlignment="Center" BorderBrush="Black"  BorderThickness="0,1,0,0" Foreground="#3498DB"/>
+                            <Label Content="{Binding AverageGasPrice}" d:Content="ーー gwei" FontSize="10" FontFamily="Arial Black" HorizontalContentAlignment="Center" BorderBrush="Black"  BorderThickness="0,1,0,0" Foreground="#3498DB"/>
                         </StackPanel>
                     </Border>
                     <Border Margin="8,0,0,0" BorderThickness="1,1,1,1" BorderBrush="Black" CornerRadius="15">
                         <StackPanel>
                             <Label Content="High" FontSize="10" FontFamily="Arial Black" HorizontalContentAlignment="Center"/>
-                            <Label x:Name="labelGasHigh" Content="ーー gwei" FontSize="10" FontFamily="Arial Black" HorizontalContentAlignment="Center" BorderBrush="Black"  BorderThickness="0,1,0,0" Foreground="#A52A2A"/>
+                            <Label Content="{Binding HighGasPrice}" d:Content="ーー gwei" FontSize="10" FontFamily="Arial Black" HorizontalContentAlignment="Center" BorderBrush="Black"  BorderThickness="0,1,0,0" Foreground="#A52A2A"/>
                         </StackPanel>
                     </Border>
                 </StackPanel>

@@ -13,11 +13,11 @@
   </PropertyGroup>
  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
     <OutputPath>..\ModularWidget\bin\Debug\Modules\</OutputPath>
-    <LangVersion>8.0</LangVersion>
+    <LangVersion>10.0</LangVersion>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
     <OutputPath>..\ModularWidget\bin\Release\Modules\</OutputPath>
-    <LangVersion>8.0</LangVersion>
+    <LangVersion>10.0</LangVersion>
   </PropertyGroup>
   <ItemGroup>
     <None Include="..\.editorconfig" Link=".editorconfig" />
@@ -28,9 +28,9 @@
   </ItemGroup>
   <ItemGroup>
     <PackageReference Include="Prism.Wpf">
-      <Version>7.2.0.1422</Version>
+      <Version>8.1.97</Version>
     </PackageReference>
-    <PackageReference Include="System.Data.DataSetExtensions" Version="4.5.0" />
+    <PackageReference Include="System.Data.DataSetExtensions" Version="4.6.0-preview3.19128.7" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\ModularWidget\ModularWidget.csproj" />

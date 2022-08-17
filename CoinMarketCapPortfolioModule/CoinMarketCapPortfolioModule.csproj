@@ -1,4 +1,4 @@
-<Project Sdk="Microsoft.NET.Sdk">
+﻿<Project Sdk="Microsoft.NET.Sdk">
 	<PropertyGroup>
 		<TargetFramework>net6.0-windows</TargetFramework>
 		<OutputType>Library</OutputType>
@@ -10,14 +10,15 @@
 	</PropertyGroup>
 	<PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
 		<OutputPath>..\ModularWidget\bin\Debug\Modules\</OutputPath>
-		<LangVersion>8.0</LangVersion>
+		<LangVersion>10.0</LangVersion>
 	</PropertyGroup>
 	<PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
 		<OutputPath>..\ModularWidget\bin\Release\Modules\</OutputPath>
-		<LangVersion>8.0</LangVersion>
+		<LangVersion>10.0</LangVersion>
 	</PropertyGroup>
 
 	<ItemGroup>
+		<ProjectReference Include="..\ModularWidget.Common\ModularWidget.Common.csproj" />
 		<ProjectReference Include="..\ModularWidget\ModularWidget.csproj" />
 	</ItemGroup>
 
@@ -26,8 +27,10 @@
 	</ItemGroup>
 
 	<ItemGroup>
-	  <PackageReference Include="FontAwesome.WPF" Version="4.7.0.9" />
-	  <PackageReference Include="Microsoft.Extensions.Logging.Abstractions" Version="6.0.1" />
+		<PackageReference Include="FontAwesome.WPF" Version="4.7.0.9">
+			<NoWarn>NU1701</NoWarn>
+		</PackageReference>
+	  <PackageReference Include="Microsoft.Extensions.Logging.Abstractions" Version="7.0.0-preview.6.22324.4" />
 	</ItemGroup>
 
 </Project>

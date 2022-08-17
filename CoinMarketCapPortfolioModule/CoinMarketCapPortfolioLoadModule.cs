@@ -29,8 +29,8 @@ namespace CoinMarketCapPortfolioModule
 
         public void OnInitialized(IContainerProvider containerProvider)
         {
-            _userControl = containerProvider.Resolve<CoinMarketCapPortfolioUC>();
             InitSettings();
+            _userControl = containerProvider.Resolve<CoinMarketCapPortfolioUC>();
 
             _regionService.RegionCreated += regionServiceRegionCreated;
             _regionService.RegionRequest(RegionName);

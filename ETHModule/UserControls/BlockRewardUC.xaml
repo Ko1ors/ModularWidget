@@ -3,15 +3,17 @@
              xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
-             xmlns:local="clr-namespace:ETHModule.UserControls" xmlns:svgc1="http://sharpvectors.codeplex.com/svgc/"
+             xmlns:viewModels="clr-namespace:ETHModule.ViewModels" 
+             xmlns:svgc1="http://sharpvectors.codeplex.com/svgc/" 
+             d:DataContext="{d:DesignInstance viewModels:BlockRewardViewModel}"
              mc:Ignorable="d" 
-             Height="50" Width="280" Margin="0,0,0,15">
+             Height="50" d:DesignWidth="280" Margin="0,0,0,15">
     <Border BorderThickness="1,1,1,1" BorderBrush="Black" CornerRadius="10">
         <StackPanel  Orientation="Horizontal">
             <svgc1:SvgViewbox Margin="20,0,5,0" Width="30" Height="50" Source="pack://application:,,,/Images/block-icon.svg"/>
             <StackPanel>
                 <Label Content="AVERAGE BLOCK REWARD" Foreground="#FF8E8A8F" FontSize="12" FontFamily="Arial Black"/>
-                <Label x:Name="labelBlockReward" Content="ーー ETH" FontSize="12" FontFamily="Arial Black"/>
+                <Label Content="{Binding AverageBlockRewardText}" d:Content="ーー ETH" FontSize="12" FontFamily="Arial Black"/>
             </StackPanel>
         </StackPanel>
     </Border>

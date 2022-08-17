@@ -1,5 +1,4 @@
-﻿using ETCModule.Models;
-using ETCModule.Services;
+﻿using ETCModule.Services;
 using ETCModule.Settings;
 using ETCModule.ViewModels;
 using ETCModule.Views;
@@ -9,7 +8,6 @@ using ModularWidget.Services;
 using Prism.Ioc;
 using Prism.Modularity;
 using Prism.Regions;
-using System;
 
 namespace ETCModule
 {
@@ -22,10 +20,10 @@ namespace ETCModule
         private readonly IRegionManager _regionManager;
         private readonly IRegionService _regionService;
         private IEtcService _etcService;
-
+        private SettingsMenu _settingsMenu;
         private EtcPriceUC _priceUC;
         private EtcWalletBalanceUC _balanceUC;
-        private int regionsToCreate;
+        private int _regionsToCreate;
 
 
         public EtcLoadModule(AppSettings appSettings, IRegionManager regionManager, IRegionService regionService)
@@ -41,12 +39,12 @@ namespace ETCModule
             _etcService = containerProvider.Resolve<IEtcService>();
             _priceUC = new EtcPriceUC(new EtcPriceViewModel(_etcService));
             _balanceUC = new EtcWalletBalanceUC(new EtcWalletBalanceViewModel(_etcService));
-            regionsToCreate = 1;
+            _regionsToCreate = 1;
             _regionService.RegionCreated += Manager_RegionCreated;
 
-            if (!string.IsNullOrWhiteSpace(_appSettings.Get<string>(Constants.Parameters.Wallet)))
+            if (!string.IsNullOrWhiteSpace(_settingsMenu.Get<string>(Constants.Parameters.Wallet)))
             {
-                regionsToCreate++;
+                _regionsToCreate++;
                 _regionService.RegionRequest(WalletBalanceRegionName);
             }
             _regionService.RegionRequest(PriceRegionName);
@@ -61,11 +59,14 @@ namespace ETCModule
 
             if (!_appSettings.MenuExists(menu.Key))
                 _appSettings.AddOrUpdateMenu(menu);
+
             foreach (var parameter in menu.Parameters)
             {
                 if (!_appSettings.ParameterExists(menu.Key, parameter.Key))
                     _appSettings.AddOrUpdateParameter(menu.Key, parameter);
             }
+
+            _settingsMenu = _appSettings.GetMenu(Constants.Menu.MenuKey);
         }
 
         private void Manager_RegionCreated(string regName)
@@ -80,7 +81,7 @@ namespace ETCModule
             }
             else
                 return;
-            if (--regionsToCreate < 1)
+            if (--_regionsToCreate < 1)
                 _regionService.RegionCreated -= Manager_RegionCreated;
         }
 
