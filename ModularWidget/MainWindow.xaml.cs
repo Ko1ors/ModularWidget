@@ -49,22 +49,14 @@ namespace ModularWidget
             _windowService = windowService;
             _logger = logger;
 
-            _mainWindowModel = new MainWindowModel();
-            if (startWindow)
-                _mainWindowModel.ShowLogo = true;
-            DataContext = _mainWindowModel;
-
-            if (_mainWindowModel.ShowLogo)
-            {
-                _logoTimeDuration = new TimeSpan(0, 0, 0, 10);
-                _logoShowStartTime = DateTime.Now;
-            }
-
             _windowService.AddWindow(this);
 
-            if (!_appSettings.IsLoaded)
+            _mainWindowModel = new MainWindowModel();
+            DataContext = _mainWindowModel;
+
+            if (startWindow)
             {
-                _appSettings.Load();
+                InitSettings(_mainWindowModel);
                 RegionManager.SetRegionManager(RegionListView, _regionManager);
                 _regionService.RegionRequested += CreateRegion;
             }
@@ -83,6 +75,31 @@ namespace ModularWidget
             _logger.LogInformation($"Main Window initialized.");
         }
 
+        private void InitSettings(MainWindowModel model)
+        {
+            _appSettings.Load();
+
+            var menu = new SettingsMenu(Constants.Menu.MenuKey, "Modular Widget Settings");
+            menu.Parameters.Add(new SettingsParameter<bool>(Constants.Parameters.ShowLogoOnStartup, "Show Logo On Startup", true));
+
+            if (!_appSettings.MenuExists(menu.Key))
+                _appSettings.AddOrUpdateMenu(menu);
+
+            foreach (var parameter in menu.Parameters)
+            {
+                if (!_appSettings.ParameterExists(menu.Key, parameter.Key))
+                    _appSettings.AddOrUpdateParameter(menu.Key, parameter);
+            }
+
+            menu = _appSettings.GetMenu(Constants.Menu.MenuKey);
+            model.ShowLogo = menu.Get<bool>(Constants.Parameters.ShowLogoOnStartup);
+
+            if (model.ShowLogo)
+            {
+                _logoTimeDuration = new TimeSpan(0, 0, 0, 10);
+                _logoShowStartTime = DateTime.Now;
+            }
+        }
 
         private void RegionListView_MouseMoveEvent(object sender, MouseEventArgs e)
         {
