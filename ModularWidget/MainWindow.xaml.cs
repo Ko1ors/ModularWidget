@@ -1,8 +1,11 @@
 ﻿using Microsoft.Extensions.Logging;
+using ModularWidget.Models;
 using ModularWidget.Services;
 using ModularWidget.UserControls;
 using Prism.Regions;
+using System;
 using System.Runtime.InteropServices;
+using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Input;
@@ -23,19 +26,21 @@ namespace ModularWidget
         private IRegionService _regionService;
         private IWindowService _windowService;
         private ILogger<MainWindow> _logger;
+        private MainWindowModel _mainWindowModel;
 
         private Window _dragdropWindow = null;
         private Effect _regionEffect = null;
+        private TimeSpan? _logoTimeDuration = null;
+        private DateTime? _logoShowStartTime = null;
 
-
-        public MainWindow(AppSettings settings, IRegionManager regionManager, IRegionService regionService, IWindowService windowService, RegionUC region, ILogger<MainWindow> logger)
+        public MainWindow(AppSettings settings, IRegionManager regionManager, IRegionService regionService, IWindowService windowService, RegionUC region, ILogger<MainWindow> logger, bool startWindow = true)
         {
-            Init(settings, regionManager, regionService, windowService, logger);
+            Init(settings, regionManager, regionService, windowService, logger, startWindow);
             if (!string.IsNullOrEmpty(region.RegionName))
                 AddRegion(region);
         }
 
-        public void Init(AppSettings settings, IRegionManager regionManager, IRegionService regionService, IWindowService windowService, ILogger<MainWindow> logger)
+        public void Init(AppSettings settings, IRegionManager regionManager, IRegionService regionService, IWindowService windowService, ILogger<MainWindow> logger, bool startWindow = true)
         {
             InitializeComponent();
             _appSettings = settings;
@@ -43,6 +48,17 @@ namespace ModularWidget
             _regionService = regionService;
             _windowService = windowService;
             _logger = logger;
+
+            _mainWindowModel = new MainWindowModel();
+            if (startWindow)
+                _mainWindowModel.ShowLogo = true;
+            DataContext = _mainWindowModel;
+
+            if (_mainWindowModel.ShowLogo)
+            {
+                _logoTimeDuration = new TimeSpan(0, 0, 0, 10);
+                _logoShowStartTime = DateTime.Now;
+            }
 
             _windowService.AddWindow(this);
 
@@ -107,7 +123,7 @@ namespace ModularWidget
                     RegionListView.Items.Remove(region);
                     if (RegionListView.Items.IsEmpty)
                         _windowService.RemoveAndCloseWindow(this);
-                    var window = new MainWindow(_appSettings, _regionManager, _regionService, _windowService, region, _logger)
+                    var window = new MainWindow(_appSettings, _regionManager, _regionService, _windowService, region, _logger, false)
                     {
                         Left = w32Mouse.X,
                         Top = w32Mouse.Y
@@ -225,6 +241,21 @@ namespace ModularWidget
 
         private void CreateRegion(string regName)
         {
+            _ = CreateRegionAsync(regName);
+        }
+
+        private async Task CreateRegionAsync(string regName)
+        {
+            if (_mainWindowModel.ShowLogo)
+            {
+                _mainWindowModel.ModuleFound = true;
+                TimeSpan? diff = DateTime.Now - _logoShowStartTime;
+                if (diff < _logoTimeDuration)
+                    await Task.Delay((_logoTimeDuration - diff).Value);
+                _mainWindowModel.ShowLogo = false;
+            }
+
+            _mainWindowModel.ModuleFound = true;
             RegionUC reg = new RegionUC();
             reg.RegionName = regName;
             AddRegion(reg);
