@@ -72,7 +72,7 @@ namespace ETHModule.Services
                 model.EthPrice = await GetPriceAsync(apiKey);
             if (!ignoreGas)
                 model.EthGasPrice = await GetGasPriceAsync(apiKey);
-            if (!ignoreBlockReward)
+            if (!ignoreBlockReward && !string.IsNullOrEmpty(model.EthGasPrice?.Result?.LastBlock))
                 model.AvgBlockReward = await GetAvgBlockRewardAsync(apiKey, int.Parse(model.EthGasPrice.Result.LastBlock));
             if (!string.IsNullOrEmpty(wallet))
                 model.WalletBalance = await GetWalletBalanceAsync(apiKey, wallet);
