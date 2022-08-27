@@ -1,13 +1,7 @@
-﻿using MusicWinModule.ViewModels;
-using System;
-using System.IO;
-using System.Threading;
+﻿using Microsoft.Extensions.Logging;
+using MusicWinModule.ViewModels;
 using System.Threading.Tasks;
-using System.Windows;
 using System.Windows.Controls;
-using System.Windows.Media.Imaging;
-using System.Windows.Threading;
-using Windows.Media.Control;
 
 namespace MusicWinModule.Views
 {
@@ -16,11 +10,15 @@ namespace MusicWinModule.Views
     /// </summary>
     public partial class MusicUC : UserControl
     {
-        public MusicUC(MediaPlayerViewModel viewModel)
+        public MusicUC(MediaPlayerViewModel viewModel, ILogger<MusicUC> logger)
         {
             InitializeComponent();
             DataContext = viewModel;
-            Task.Run(async () => await viewModel.StartAsync());
+            Task.Run(async () => await viewModel.StartAsync()).ContinueWith((t) =>
+            {
+                if (t.IsFaulted)
+                    logger.LogError(t.Exception, "Media Player Module Error.");
+            });
         }
     }
 }

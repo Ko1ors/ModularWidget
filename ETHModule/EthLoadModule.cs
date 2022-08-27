@@ -1,5 +1,4 @@
 ﻿using ETHModule.Services;
-using ETHModule.Settings;
 using ETHModule.UserControls;
 using ETHModule.ViewModels;
 using Microsoft.Extensions.Logging;
@@ -126,7 +125,12 @@ namespace ETHModule
                 var hideGasTracker = _settingsMenu.Get<bool>(Constants.Parameters.hideGasTracker);
                 var hideBlockReward = _settingsMenu.Get<bool>(Constants.Parameters.hideBlockReward);
 
-                _ = Task.Run(() => _ethService.StartAsync(apiKey, updateTime, wallet, hidePrice, hideGasTracker, hideBlockReward));
+                _ = Task.Run(() => _ethService.StartAsync(apiKey, updateTime, wallet, hidePrice, hideGasTracker, hideBlockReward))
+                    .ContinueWith((t) =>
+                    {
+                        if (t.IsFaulted)
+                            _logger.LogError(t.Exception, "Error while updating ETH data.");
+                    });
 
                 _logger.LogInformation($"Starting ETH Service. API Key: {apiKey}, UpdateTime: {updateTime.TotalMinutes} minutes, Wallet: {wallet}, Hide price: {hidePrice}, Hide gas tracker: {hideGasTracker}, Hide block reward: {hideBlockReward}");
             }
