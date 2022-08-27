@@ -96,7 +96,7 @@ namespace ModularWidget
 
             if (model.ShowLogo)
             {
-                _logoTimeDuration = new TimeSpan(0, 0, 0, 10);
+                _logoTimeDuration = TimeSpan.FromSeconds(5);
                 _logoShowStartTime = DateTime.Now;
             }
         }
