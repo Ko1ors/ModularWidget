@@ -8,6 +8,7 @@ using ModularWidget.Services;
 using Prism.Ioc;
 using Prism.Modularity;
 using Prism.Regions;
+using Constants = ETCModule.Settings.Constants;
 
 namespace ETCModule
 {

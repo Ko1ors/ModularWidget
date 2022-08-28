@@ -6,6 +6,7 @@ using ModularWidget.Models;
 using Newtonsoft.Json;
 using System;
 using System.Threading.Tasks;
+using Constants = ETCModule.Settings.Constants;
 
 namespace ETCModule.Services
 {
