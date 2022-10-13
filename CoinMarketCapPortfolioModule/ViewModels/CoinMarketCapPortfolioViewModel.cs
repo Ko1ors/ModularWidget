@@ -60,6 +60,7 @@ namespace CoinMarketCapPortfolioModule.ViewModels
         {
             _settingsMenu = settings.GetMenu(Constants.Menu.MenuKey);
             _logger = logger;
+            Portfolio = new PortfolioModel() { Name = "Portfolio" };
             PrivacyModeToggleCommand = new RelayCommand((obj) => PrivacyModeToggle());
         }
 
@@ -88,8 +89,12 @@ namespace CoinMarketCapPortfolioModule.ViewModels
         {
             try
             {
+                _logger.LogInformation("Loading portfolio from file");
                 if (!File.Exists(filePath))
+                {
+                    _logger.LogWarning("Portfolio file not found");
                     return;
+                }
 
                 Portfolio = JsonConvert.DeserializeObject<PortfolioModel>(File.ReadAllText(filePath));
                 _logger.LogInformation("Portfolio loaded from file");
