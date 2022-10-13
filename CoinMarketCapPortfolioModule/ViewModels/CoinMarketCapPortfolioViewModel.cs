@@ -67,6 +67,7 @@ namespace CoinMarketCapPortfolioModule.ViewModels
         public void PrivacyModeToggle()
         {
             Portfolio.PrivacyMode = !Portfolio.PrivacyMode;
+            SavePortfolio();
         }
 
         public async Task StartAsync()
