@@ -13,7 +13,7 @@ namespace ModularWidget.Models
 
         public Action<object> Action { get; set; }
 
-        public RelayCommand ActionCommand => new RelayCommand(Action);
+        public RelayCommand ActionCommand => Action is not null ? new RelayCommand(Action) : null;
 
         public ObservableCollection<NotifyIconElement> Children { get; set; }
 

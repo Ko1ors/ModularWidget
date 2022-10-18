@@ -1,11 +1,16 @@
-﻿using Microsoft.Extensions.DependencyInjection;
+﻿using Hardcodet.Wpf.TaskbarNotification;
+using Microsoft.Extensions.DependencyInjection;
 using ModularWidget.Common.Clients;
+using ModularWidget.Models;
 using ModularWidget.Services;
+using ModularWidget.ViewModels;
 using Prism.Ioc;
 using Prism.Modularity;
 using Prism.Unity;
 using Serilog;
 using System;
+using System.Collections.ObjectModel;
+using System.Linq;
 using System.Windows;
 using Unity;
 using Unity.Microsoft.DependencyInjection;
@@ -17,11 +22,17 @@ namespace ModularWidget
     /// </summary>
     public partial class App : PrismApplication
     {
+        private static IContainerProvider _container;
 
         public App()
         {
             Current.DispatcherUnhandledException += Current_DispatcherUnhandledException;
             AppDomain.CurrentDomain.UnhandledException += CurrentDomain_UnhandledException;
+        }
+
+        public static T Resolve<T>()
+        {
+            return _container.Resolve<T>();
         }
 
         protected override IContainerExtension CreateContainerExtension()
@@ -42,6 +53,19 @@ namespace ModularWidget
         {
             Log.Logger.ForContext<App>().Information("Application started", GetType());
             base.InitializeModules();
+            InitNotifyIcon();
+        }
+
+        private void InitNotifyIcon()
+        {
+            var rootElement = new NotifyIconElement
+            {
+                Name = "modules",
+                Header = "Loaded modules",
+                Children = new ObservableCollection<NotifyIconElement>()
+            };
+            rootElement.Children.AddRange(Resolve<IModuleManager>().Modules.Select(m => new NotifyIconElement() { Name = m.ModuleName, Header = m.ModuleType.Split('.')[0] }));
+            Resolve<INotifyIconService>().AddNotifyIconElement(rootElement);
         }
 
         private void CurrentDomain_UnhandledException(object sender, UnhandledExceptionEventArgs e)
@@ -58,7 +82,7 @@ namespace ModularWidget
 
         protected override Window CreateShell()
         {
-            return Container.Resolve<MainWindow>();
+            return Resolve<MainWindow>();
         }
 
         protected override void RegisterTypes(IContainerRegistry containerRegistry)
@@ -66,8 +90,17 @@ namespace ModularWidget
             containerRegistry.RegisterSingleton<AppSettings>();
             containerRegistry.RegisterSingleton<IRegionService, RegionService>();
             containerRegistry.RegisterSingleton<IWindowService, WindowService>();
+            containerRegistry.RegisterSingleton<INotifyIconService, NotifyIconService>();
+
+            containerRegistry.Register<NotifyIconViewModel>();
 
             containerRegistry.RegisterSingleton<ModularHttpClient>();
+            
+            _container = Container;
+
+            // Initialize tray notify icon
+            var taskbarIcon = (TaskbarIcon)FindResource("TrayNotifyIcon");
+            Resolve<INotifyIconService>().SetTaskbarIcon(taskbarIcon);
         }
 
         protected override IModuleCatalog CreateModuleCatalog()

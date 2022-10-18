@@ -1,0 +1,20 @@
+﻿<ContextMenu x:Class="ModularWidget.UserControls.NotifyIconUC"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
+             xmlns:viewmodels="clr-namespace:ModularWidget.ViewModels"
+             xmlns:models="clr-namespace:ModularWidget.Models"
+             d:DataContext="{d:DesignInstance Type=viewmodels:NotifyIconViewModel}"
+             mc:Ignorable="d" ItemsSource="{Binding Elements}">
+    <ContextMenu.ItemTemplate>
+        <HierarchicalDataTemplate DataType="{x:Type models:NotifyIconElement}" ItemsSource="{Binding Children}">
+            <TextBlock Text="{Binding Header}" />
+        </HierarchicalDataTemplate>
+    </ContextMenu.ItemTemplate>
+    <ContextMenu.ItemContainerStyle>
+        <Style TargetType="MenuItem">
+            <Setter Property="Command" Value="{Binding ActionCommand}"/>
+        </Style>
+    </ContextMenu.ItemContainerStyle>
+</ContextMenu>
