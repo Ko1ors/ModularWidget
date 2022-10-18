@@ -7,7 +7,7 @@
         xmlns:controls="clr-namespace:ModularWidget.Controls" 
         xmlns:models="clr-namespace:ModularWidget.Models" d:DataContext="{d:DesignInstance Type=models:MainWindowModel}"
         mc:Ignorable="d"
-        Title="MainWindow" Height="400" Width="300" SizeToContent="Height" WindowStartupLocation="Manual" BorderThickness="1" ShowInTaskbar="False">
+        Title="Modular Widget" Height="400" Width="300" SizeToContent="Height" Icon="/Images/logo.ico" WindowStartupLocation="Manual" BorderThickness="1" ShowInTaskbar="False">
     <shell:WindowChrome.WindowChrome>
         <shell:WindowChrome
 

@@ -32,7 +32,9 @@
     <LangVersion>10.0</LangVersion>
   </PropertyGroup>
   <ItemGroup>
+    <None Remove="Images\logo.ico" />
     <None Remove="Images\logo.png" />
+    <None Remove="Images\logo.svg" />
   </ItemGroup>
   <ItemGroup>
     <Resource Include="Images\block-icon.svg">
@@ -60,7 +62,9 @@
   </ItemGroup>
   <ItemGroup>
     <Resource Include="Images\ethwallet-icon2.png" />
+    <Resource Include="Images\logo.ico" />
     <Resource Include="Images\logo.png" />
+    <Resource Include="Images\logo.svg" />
   </ItemGroup>
   <ItemGroup>
     <PackageReference Include="Microsoft.CSharp" Version="4.7.0" />
