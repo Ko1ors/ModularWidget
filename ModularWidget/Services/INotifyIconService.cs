@@ -16,6 +16,10 @@ namespace ModularWidget.Services
 
         void AddNotifyIconElements(IEnumerable<NotifyIconElement> elements, string parentElementName);
 
+        void AddNotifyIconElement(NotifyIconElement element, NotifyIconElement parentElement = null);
+
+        void AddNotifyIconElement(NotifyIconElement element, string parentElementName);
+
         NotifyIconElement FindElementByName(string elementName);
     }
 }

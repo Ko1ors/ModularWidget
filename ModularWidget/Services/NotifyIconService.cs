@@ -14,6 +14,16 @@ namespace ModularWidget.Services
 
         public event NotifyIconHandler RootElementsChanged;
 
+        public void AddNotifyIconElement(NotifyIconElement element, NotifyIconElement parentElement = null)
+        {
+            AddNotifyIconElements(new[] { element }, parentElement);
+        }
+
+        public void AddNotifyIconElement(NotifyIconElement element, string parentElementName)
+        {
+            AddNotifyIconElements(new[] { element }, parentElementName);
+        }
+
         public void AddNotifyIconElements(IEnumerable<NotifyIconElement> elements, NotifyIconElement parentElement = null)
         {
             if (parentElement != null)
