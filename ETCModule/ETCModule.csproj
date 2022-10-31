@@ -34,7 +34,7 @@
       <Version>8.1.97</Version>
     </PackageReference>
     <PackageReference Include="SharpVectors.Reloaded">
-      <Version>1.8.0</Version>
+      <Version>1.8.1</Version>
     </PackageReference>
     <PackageReference Include="System.Data.DataSetExtensions" Version="4.6.0-preview3.19128.7" />
     <PackageReference Include="System.Runtime.WindowsRuntime.UI.Xaml">
