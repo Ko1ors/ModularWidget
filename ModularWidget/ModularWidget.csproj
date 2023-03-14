@@ -71,7 +71,7 @@
     <PackageReference Include="Microsoft.Extensions.DependencyInjection" Version="7.0.0" />
     <PackageReference Include="Microsoft.Extensions.Logging" Version="7.0.0" />
     <PackageReference Include="Newtonsoft.Json">
-      <Version>13.0.2-beta1</Version>
+      <Version>13.0.3</Version>
     </PackageReference>
     <PackageReference Include="Prism.Unity">
       <Version>8.1.97</Version>
