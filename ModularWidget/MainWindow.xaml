@@ -26,7 +26,7 @@
             <RowDefinition Height="75*"/>
         </Grid.RowDefinitions>
         <Border VerticalAlignment="Stretch" BorderThickness="0,0,0,1" BorderBrush="Black" >
-            <StackPanel Grid.Row="0" Orientation="Horizontal" Background="#FFF0F0F0" FlowDirection="RightToLeft">
+            <StackPanel Grid.Row="0" Orientation="Horizontal" Background="{StaticResource TitleBarBackgroundBrush}" FlowDirection="RightToLeft">
                 <Button Content="✕" FontSize="16"  Click="ExitButton_Click" WindowChrome.IsHitTestVisibleInChrome="True" HorizontalAlignment="Right" BorderThickness="0,0,1,0"  Height="25" Width="25" Background="{x:Null}"/>
                 <Button FontSize="16"  Click="SettingsButton_Click" WindowChrome.IsHitTestVisibleInChrome="True" Height="25" Width="25" Background="{x:Null}" BorderThickness="0,0,1,0">
                     <TextBlock Text="…" Margin="0,-10,0,0"/>
@@ -36,8 +36,8 @@
         <Grid Grid.Row="1" >
             <shell:Grid.Background>
                 <shell:LinearGradientBrush EndPoint="0.5,1" MappingMode="RelativeToBoundingBox" StartPoint="0.5,0">
-                    <shell:GradientStop Color="#FFECDCFF" Offset="1"/>
-                    <shell:GradientStop Color="White"/>
+                    <shell:GradientStop Color="{StaticResource BodyGradientStartColor}" Offset="1"/>
+                    <shell:GradientStop Color="{StaticResource BodyGradientEndColor}"/>
                 </shell:LinearGradientBrush>
             </shell:Grid.Background>
             <Grid.RowDefinitions>
@@ -47,13 +47,13 @@
             <StackPanel Grid.Row="0" Height="17">
                 <shell:StackPanel.Background>
                     <shell:LinearGradientBrush EndPoint="0.5,1" StartPoint="0.5,0">
-                        <shell:GradientStop Color="#FFF0F0F0" Offset="0"/>
-                        <shell:GradientStop Color="White" Offset="1"/>
+                        <shell:GradientStop Color="{StaticResource BodyTopGradientStartColor}" Offset="0"/>
+                        <shell:GradientStop Color="{StaticResource BodyTopGradientEndColor}" Offset="1"/>
                     </shell:LinearGradientBrush>
                 </shell:StackPanel.Background>
             </StackPanel>
             <StackPanel Grid.Row="1" Visibility="{Binding ShowLogoVisibility}">
-                <Image Source="/Images/logo.png" RenderOptions.BitmapScalingMode="HighQuality"  Height="200">
+                <Image Source="/Images/logo.png" RenderOptions.BitmapScalingMode="HighQuality" Height="200">
                     <Image.Triggers>
                         <EventTrigger RoutedEvent="MouseEnter">
                             <BeginStoryboard>
@@ -73,8 +73,8 @@
                         </EventTrigger>
                     </Image.Triggers>
                 </Image>
-                <TextBlock Text="MODULAR WIDGET" HorizontalAlignment="Center" FontSize="18" FontFamily="Arial Black" Foreground="#454A74"/>
-                <TextBlock Text="No modules found" Visibility="{Binding NoModuleFoundVisibility}" Margin="0 10 0 0" HorizontalAlignment="Center" FontSize="16" FontFamily="Arial Black" Foreground="#454A74"/>
+                <TextBlock Text="MODULAR WIDGET" HorizontalAlignment="Center" FontSize="18" FontFamily="Arial Black" Foreground="{StaticResource TextHeaderBrush}"/>
+                <TextBlock Text="No modules found" Visibility="{Binding NoModuleFoundVisibility}" Margin="0 10 0 0" HorizontalAlignment="Center" FontSize="16" FontFamily="Arial Black" Foreground="{StaticResource TextBrush}"/>
                 <Separator Opacity="0" Height="100"/>
             </StackPanel>
             <ListView x:Name="RegionListView" SelectionMode="Single" Background="Transparent" BorderThickness="0" Grid.Row="1" ScrollViewer.HorizontalScrollBarVisibility="Disabled">
