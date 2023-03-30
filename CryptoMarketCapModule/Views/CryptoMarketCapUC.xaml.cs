@@ -14,7 +14,7 @@ namespace CryptoMarketCapModule.Views
     {
         private readonly IMarketCapService _marketCapService;
         private readonly ILogger<CryptoMarketCapUC> _logger;
-        private readonly int timeInterval = 1;
+        private readonly int timeInterval = 5;
         private readonly Timer timer;
 
         public static readonly DependencyProperty MarketCapProperty = DependencyProperty.Register("MarketCap", typeof(long), typeof(CryptoMarketCapUC));

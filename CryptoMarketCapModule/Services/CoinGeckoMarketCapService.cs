@@ -20,6 +20,12 @@ namespace CryptoMarketCapModule.Services
         {
             _httpClient = httpClient;
             _logger = logger;
+            SetupHttpClient();
+        }
+
+        private void SetupHttpClient()
+        {
+            _httpClient.HttpClient.DefaultRequestHeaders.Add("User-Agent", "Modular Widget");
         }
 
         public async Task<long> GetMarketCap()
