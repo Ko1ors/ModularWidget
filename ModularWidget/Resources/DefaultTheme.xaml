@@ -1,13 +1,37 @@
 ﻿<ResourceDictionary xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
                     xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml">
+    
     <Color x:Key="TitleBarBackgroundColor">#FFF0F0F0</Color>
     <SolidColorBrush x:Key="TitleBarBackgroundBrush" Color="{StaticResource TitleBarBackgroundColor}" />
+
+    <Color x:Key="TitleBarButtonColor">Black</Color>
+    <SolidColorBrush x:Key="TitleBarButtonBrush" Color="{StaticResource TitleBarButtonColor}" />
+
+    <Color x:Key="TitleBarButtonBorderColor">Black</Color>
+    <SolidColorBrush x:Key="TitleBarButtonBorderBrush" Color="{StaticResource TitleBarButtonBorderColor}" />
+
+    <Color x:Key="TitleBarBorderColor">Black</Color>
+    <SolidColorBrush x:Key="TitleBarBorderBrush" Color="{StaticResource TitleBarBorderColor}" />
+
+
     <Color x:Key="BodyTopGradientStartColor">#FFF0F0F0</Color>
     <Color x:Key="BodyTopGradientEndColor">White</Color>
     <Color x:Key="BodyGradientStartColor">#FFECDCFF</Color>
     <Color x:Key="BodyGradientEndColor">White</Color>
+    
     <Color x:Key="TextHeaderColor">#454A74</Color>
     <SolidColorBrush x:Key="TextHeaderBrush" Color="{StaticResource TextHeaderColor}" />
+    
     <Color x:Key="TextColor">#454A74</Color>
     <SolidColorBrush x:Key="TextBrush" Color="{StaticResource TextHeaderColor}" />
+    
+    <Color x:Key="ModuleHeaderColor">#FF8E8A8F</Color>
+    <SolidColorBrush x:Key="ModuleHeaderBrush" Color="{StaticResource ModuleHeaderColor}" />
+    
+    <Color x:Key="ModuleTextColor">Black</Color>
+    <SolidColorBrush x:Key="ModuleTextBrush" Color="{StaticResource ModuleTextColor}" />
+
+    <Color x:Key="ModuleBorderColor">Black</Color>
+    <SolidColorBrush x:Key="ModuleBorderBrush" Color="{StaticResource ModuleBorderColor}" />
+
 </ResourceDictionary>
