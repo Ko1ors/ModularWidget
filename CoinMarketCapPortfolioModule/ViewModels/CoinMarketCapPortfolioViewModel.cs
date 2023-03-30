@@ -64,7 +64,7 @@ namespace CoinMarketCapPortfolioModule.ViewModels
             PrivacyModeToggleCommand = new RelayCommand((obj) => PrivacyModeToggle());
         }
 
-        public void PrivacyModeToggle()
+        private void PrivacyModeToggle()
         {
             Portfolio.PrivacyMode = !Portfolio.PrivacyMode;
             SavePortfolio();
@@ -97,7 +97,13 @@ namespace CoinMarketCapPortfolioModule.ViewModels
                     return;
                 }
 
-                Portfolio = JsonConvert.DeserializeObject<PortfolioModel>(File.ReadAllText(filePath));
+                var portfolio = JsonConvert.DeserializeObject<PortfolioModel>(File.ReadAllText(filePath));
+                if(portfolio is null)
+                {
+                    _logger.LogWarning("Portfolio file is empty");
+                    return;
+                }
+                Portfolio = portfolio;
                 _logger.LogInformation("Portfolio loaded from file");
             }
             catch (Exception ex)
