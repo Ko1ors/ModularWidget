@@ -16,10 +16,12 @@
             CaptionHeight="15"
 
             CornerRadius="0,0,0,0"
-            GlassFrameThickness="1">
+            
+            GlassFrameThickness="{StaticResource GlassFrameThickness}">
         </shell:WindowChrome>
     </shell:WindowChrome.WindowChrome>
-    <Grid >
+    <Border BorderBrush="{StaticResource WindowBorderBrush}" BorderThickness="{StaticResource WindowBorderThickness}">
+        <Grid >
         <Grid.RowDefinitions>
             <RowDefinition Height="25"/>
             <RowDefinition Height="75*"/>
@@ -105,4 +107,5 @@
             </ListView>
         </Grid>
     </Grid>
+    </Border>
 </Window>

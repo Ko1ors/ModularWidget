@@ -6,13 +6,13 @@
              xmlns:local="clr-namespace:FearGreedIndexModule.Views" xmlns:radialgaugelibrary="clr-namespace:RadialGaugeLibrary;assembly=RadialGaugeLibrary" xmlns:models="clr-namespace:FearGreedIndexModule.ViewModels" xmlns:feargreedindexmodule="clr-namespace:FearGreedIndexModule" d:DataContext="{d:DesignInstance Type=models:FearGreedIndexViewModel}"
              mc:Ignorable="d" 
              Height="140" Width="280" Margin="0,0,0,15">
-    <Border BorderThickness="1,1,1,1" BorderBrush="Black" CornerRadius="10">
+    <Border BorderThickness="1" d:BorderBrush="Black" BorderBrush="{StaticResource ModuleBorderBrush}" CornerRadius="10">
         <DockPanel>
-            <Label DockPanel.Dock="Top" HorizontalAlignment="Center" Content="CRYPTO FEAR &amp; GREED INDEX" Foreground="#FF8E8A8F" FontSize="12" FontFamily="Arial Black"/>
+            <Label DockPanel.Dock="Top" HorizontalAlignment="Center" Content="CRYPTO FEAR &amp; GREED INDEX" d:Foreground="#FF8E8A8F" Foreground="{StaticResource ModuleHeaderBrush}" FontSize="12" FontFamily="Arial Black"/>
             <Grid DockPanel.Dock="Bottom">
-                <Label Content="{Binding Index.Data[0].ValueClassification}" Margin="0 0 0 10" HorizontalAlignment="Center" VerticalAlignment="Center" Foreground="#FF8E8A8F" FontFamily="Arial Black"/>
-                <radialgaugelibrary:RadialGaugeUC HorizontalAlignment="Center" Margin="0 0 0 18" FontSize="30" Value="{Binding Index.Data[0].Value}" ForegroundBrush="LightSlateGray"/>
-                <Label Content="{Binding Index.Data[0].LastUpdateTimeString}" VerticalAlignment="Bottom" HorizontalAlignment="Right" Foreground="#FF8E8A8F" FontSize="10" FontFamily="Arial Black"/>
+                <Label Content="{Binding Index.Data[0].ValueClassification}" Margin="0 0 0 10" HorizontalAlignment="Center" VerticalAlignment="Center" d:Foreground="#FF8E8A8F" Foreground="{StaticResource ModuleTextBrush}" FontFamily="Arial Black"/>
+                <radialgaugelibrary:RadialGaugeUC HorizontalAlignment="Center" Margin="0 0 0 18" FontSize="30" Value="{Binding Index.Data[0].Value}" d:ForegroundBrush="LightSlateGray" ForegroundBrush="{StaticResource ModulePrimaryBrush}"/>
+                <Label Content="{Binding Index.Data[0].LastUpdateTimeString}" VerticalAlignment="Bottom" HorizontalAlignment="Right" d:Foreground="#FF8E8A8F" Foreground="{StaticResource ModuleTextBrush}" FontSize="10" FontFamily="Arial Black"/>
             </Grid>
         </DockPanel>
     </Border>

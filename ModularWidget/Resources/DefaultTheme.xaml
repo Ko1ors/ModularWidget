@@ -1,6 +1,13 @@
 ﻿<ResourceDictionary xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
-                    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml">
-    
+                    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml" 
+                    xmlns:sys="clr-namespace:System;assembly=netstandard">
+
+    <Color x:Key="WindowBorderColor">Black</Color>
+    <SolidColorBrush x:Key="WindowBorderBrush" Color="{StaticResource WindowBorderColor}" />
+
+    <Thickness x:Key="GlassFrameThickness">1</Thickness>
+    <Thickness x:Key="WindowBorderThickness">0</Thickness>
+
     <Color x:Key="TitleBarBackgroundColor">#FFF0F0F0</Color>
     <SolidColorBrush x:Key="TitleBarBackgroundBrush" Color="{StaticResource TitleBarBackgroundColor}" />
 
@@ -27,7 +34,13 @@
     
     <Color x:Key="ModuleHeaderColor">#FF8E8A8F</Color>
     <SolidColorBrush x:Key="ModuleHeaderBrush" Color="{StaticResource ModuleHeaderColor}" />
-    
+
+    <Color x:Key="ModulePrimaryColor">DarkSlateGray</Color>
+    <SolidColorBrush x:Key="ModulePrimaryBrush" Color="{StaticResource ModulePrimaryColor}" />
+
+    <Color x:Key="ModuleSecondaryColor">#FF8E8A8F</Color>
+    <SolidColorBrush x:Key="ModuleSecondaryBrush" Color="{StaticResource ModuleSecondaryColor}" />
+
     <Color x:Key="ModuleTextColor">Black</Color>
     <SolidColorBrush x:Key="ModuleTextBrush" Color="{StaticResource ModuleTextColor}" />
 
