@@ -20,16 +20,16 @@
             GlassFrameThickness="{StaticResource GlassFrameThickness}">
         </shell:WindowChrome>
     </shell:WindowChrome.WindowChrome>
-    <Border BorderBrush="{StaticResource WindowBorderBrush}" BorderThickness="{StaticResource WindowBorderThickness}">
+    <Border BorderBrush="{DynamicResource WindowBorderBrush}" BorderThickness="{DynamicResource WindowBorderThickness}">
         <Grid >
         <Grid.RowDefinitions>
             <RowDefinition Height="25"/>
             <RowDefinition Height="75*"/>
         </Grid.RowDefinitions>
-        <Border VerticalAlignment="Stretch" BorderThickness="0,0,0,1" BorderBrush="{StaticResource TitleBarBorderBrush}" >
-            <StackPanel Grid.Row="0" Orientation="Horizontal" Background="{StaticResource TitleBarBackgroundBrush}" FlowDirection="RightToLeft">
-                <Button Content="✕" FontSize="16" Click="ExitButton_Click" Foreground="{StaticResource TitleBarButtonBrush}" WindowChrome.IsHitTestVisibleInChrome="True" HorizontalAlignment="Right" BorderThickness="0,0,1,0" BorderBrush="{StaticResource TitleBarButtonBorderBrush}"  Height="25" Width="25" Background="{x:Null}"/>
-                <Button FontSize="16"  Click="SettingsButton_Click" Foreground="{StaticResource TitleBarButtonBrush}" WindowChrome.IsHitTestVisibleInChrome="True" Height="25" Width="25" Background="{x:Null}" BorderThickness="0,0,1,0" BorderBrush="{StaticResource TitleBarButtonBorderBrush}" >
+        <Border VerticalAlignment="Stretch" BorderThickness="0,0,0,1" BorderBrush="{DynamicResource TitleBarBorderBrush}" >
+            <StackPanel Grid.Row="0" Orientation="Horizontal" Background="{DynamicResource TitleBarBackgroundBrush}" FlowDirection="RightToLeft">
+                <Button Content="✕" FontSize="16" Click="ExitButton_Click" Foreground="{DynamicResource TitleBarButtonBrush}" WindowChrome.IsHitTestVisibleInChrome="True" HorizontalAlignment="Right" BorderThickness="0,0,1,0" BorderBrush="{DynamicResource TitleBarButtonBorderBrush}"  Height="25" Width="25" Background="{x:Null}"/>
+                <Button FontSize="16"  Click="SettingsButton_Click" Foreground="{DynamicResource TitleBarButtonBrush}" WindowChrome.IsHitTestVisibleInChrome="True" Height="25" Width="25" Background="{x:Null}" BorderThickness="0,0,1,0" BorderBrush="{DynamicResource TitleBarButtonBorderBrush}" >
                     <TextBlock Text="…" Margin="0,-10,0,0"/>
                 </Button>
             </StackPanel>
@@ -37,8 +37,8 @@
         <Grid Grid.Row="1" >
             <shell:Grid.Background>
                 <shell:LinearGradientBrush EndPoint="0.5,1" MappingMode="RelativeToBoundingBox" StartPoint="0.5,0">
-                    <shell:GradientStop Color="{StaticResource BodyGradientStartColor}" Offset="1"/>
-                    <shell:GradientStop Color="{StaticResource BodyGradientEndColor}"/>
+                    <shell:GradientStop Color="{DynamicResource BodyGradientStartColor}" Offset="1"/>
+                    <shell:GradientStop Color="{DynamicResource BodyGradientEndColor}"/>
                 </shell:LinearGradientBrush>
             </shell:Grid.Background>
             <Grid.RowDefinitions>
@@ -48,8 +48,8 @@
             <StackPanel Grid.Row="0" Height="17">
                 <shell:StackPanel.Background>
                     <shell:LinearGradientBrush EndPoint="0.5,1" StartPoint="0.5,0">
-                        <shell:GradientStop Color="{StaticResource BodyTopGradientStartColor}" Offset="0"/>
-                        <shell:GradientStop Color="{StaticResource BodyTopGradientEndColor}" Offset="1"/>
+                        <shell:GradientStop Color="{DynamicResource BodyTopGradientStartColor}" Offset="0"/>
+                        <shell:GradientStop Color="{DynamicResource BodyTopGradientEndColor}" Offset="1"/>
                     </shell:LinearGradientBrush>
                 </shell:StackPanel.Background>
             </StackPanel>
@@ -74,8 +74,8 @@
                         </EventTrigger>
                     </Image.Triggers>
                 </Image>
-                <TextBlock Text="MODULAR WIDGET" HorizontalAlignment="Center" FontSize="18" FontFamily="Arial Black" Foreground="{StaticResource TextHeaderBrush}"/>
-                <TextBlock Text="No modules found" Visibility="{Binding NoModuleFoundVisibility}" Margin="0 10 0 0" HorizontalAlignment="Center" FontSize="16" FontFamily="Arial Black" Foreground="{StaticResource TextBrush}"/>
+                <TextBlock Text="MODULAR WIDGET" HorizontalAlignment="Center" FontSize="18" FontFamily="Arial Black" Foreground="{DynamicResource TextHeaderBrush}"/>
+                <TextBlock Text="No modules found" Visibility="{Binding NoModuleFoundVisibility}" Margin="0 10 0 0" HorizontalAlignment="Center" FontSize="16" FontFamily="Arial Black" Foreground="{DynamicResource TextBrush}"/>
                 <Separator Opacity="0" Height="100"/>
             </StackPanel>
             <ListView x:Name="RegionListView" SelectionMode="Single" Background="Transparent" BorderThickness="0" Grid.Row="1" ScrollViewer.HorizontalScrollBarVisibility="Disabled">

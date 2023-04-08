@@ -7,12 +7,12 @@
              d:DataContext="{d:DesignInstance viewModels:EthWalletBalanceViewModel}"
              mc:Ignorable="d" 
              Height="50" d:DesignWidth="280" Margin="0,0,0,15">
-    <Border BorderThickness="1,1,1,1" d:BorderBrush="Black" BorderBrush="{StaticResource ModuleBorderBrush}" CornerRadius="10">
+    <Border BorderThickness="1,1,1,1" d:BorderBrush="Black" BorderBrush="{DynamicResource ModuleBorderBrush}" CornerRadius="10">
         <StackPanel  Orientation="Horizontal">
             <Image Margin="20,0,5,0" Source="pack://application:,,,/Images/ethwallet-icon2.png" Width="30" Height="50" />
             <StackPanel>
-                <Label Content="WALLET BALANCE" d:Foreground="#FF8E8A8F" Foreground="{StaticResource ModuleHeaderBrush}" FontSize="12" FontFamily="Arial Black"/>
-                <Label Content="{Binding EthWalletBalanceText}" d:Content="ーー ETH ❙ $ーー" d:Foreground="Black" Foreground="{StaticResource ModuleTextBrush}" FontSize="12" FontFamily="Arial Black" FontWeight="Bold"/>
+                <Label Content="WALLET BALANCE" d:Foreground="#FF8E8A8F" Foreground="{DynamicResource ModuleHeaderBrush}" FontSize="12" FontFamily="Arial Black"/>
+                <Label Content="{Binding EthWalletBalanceText}" d:Content="ーー ETH ❙ $ーー" d:Foreground="Black" Foreground="{DynamicResource ModuleTextBrush}" FontSize="12" FontFamily="Arial Black" FontWeight="Bold"/>
             </StackPanel>
         </StackPanel>
     </Border>

@@ -12,12 +12,12 @@
     <UserControl.Resources>
         <converters:MarketCapToStringConverter x:Key="converter"/>
     </UserControl.Resources>
-    <Border BorderThickness="1,1,1,1" d:BorderBrush="Black" BorderBrush="{StaticResource ModuleBorderBrush}" CornerRadius="10">
+    <Border BorderThickness="1,1,1,1" d:BorderBrush="Black" BorderBrush="{DynamicResource ModuleBorderBrush}" CornerRadius="10">
         <StackPanel  Orientation="Horizontal">
             <fa:ImageAwesome Icon="BarChart" Foreground="DarkSlateBlue" Margin="20,0,5,0" Width="35" Height="50" />
             <StackPanel>
-                <Label Content="CRYPTO MARKET CAP" d:Foreground="#FF8E8A8F" Foreground="{StaticResource ModuleHeaderBrush}" FontSize="12" FontFamily="Arial Black"/>
-                <Label Content="{Binding MarketCap, FallbackValue=ーー, Converter={StaticResource converter}}" d:Foreground="Black" Foreground="{StaticResource ModuleTextBrush}" ContentStringFormat="${0}" FontSize="13" FontFamily="Arial Black"/>
+                <Label Content="CRYPTO MARKET CAP" d:Foreground="#FF8E8A8F" Foreground="{DynamicResource ModuleHeaderBrush}" FontSize="12" FontFamily="Arial Black"/>
+                <Label Content="{Binding MarketCap, FallbackValue=ーー, Converter={StaticResource converter}}" d:Foreground="Black" Foreground="{DynamicResource ModuleTextBrush}" ContentStringFormat="${0}" FontSize="13" FontFamily="Arial Black"/>
             </StackPanel>
         </StackPanel>
     </Border>

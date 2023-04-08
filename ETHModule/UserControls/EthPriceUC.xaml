@@ -9,12 +9,12 @@
              mc:Ignorable="d" 
              Height="60" d:DesignWidth="280"  Margin="0,0,0,15">
     <Grid>
-        <Border BorderThickness="1,1,1,1" d:BorderBrush="Black" BorderBrush="{StaticResource ModuleBorderBrush}" CornerRadius="10">
+        <Border BorderThickness="1,1,1,1" d:BorderBrush="Black" BorderBrush="{DynamicResource ModuleBorderBrush}" CornerRadius="10">
             <StackPanel  Orientation="Horizontal">
                 <svgc1:SvgViewbox Margin="20,0,5,0" Width="30" Height="50" Source="pack://application:,,,/Images/ethereumLogo.svg"/>
                 <StackPanel>
-                    <Label Content="ETH PRICE" d:Foreground="#FF8E8A8F" Foreground="{StaticResource ModuleHeaderBrush}" FontSize="12" FontFamily="Arial Black"/>
-                    <Label Content="{Binding EthPriceText}" d:Content="$ーー ❙ ーー BTC" Foreground="{StaticResource ModuleTextBrush}" Margin="0,10,0,0" FontSize="12" FontFamily="Arial Black"/>
+                    <Label Content="ETH PRICE" d:Foreground="#FF8E8A8F" Foreground="{DynamicResource ModuleHeaderBrush}" FontSize="12" FontFamily="Arial Black"/>
+                    <Label Content="{Binding EthPriceText}" d:Content="$ーー ❙ ーー BTC" Foreground="{DynamicResource ModuleTextBrush}" Margin="0,10,0,0" FontSize="12" FontFamily="Arial Black"/>
                 </StackPanel>
             </StackPanel>
         </Border>
