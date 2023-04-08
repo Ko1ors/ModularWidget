@@ -26,10 +26,10 @@
                         <ControlTemplate.Triggers>
                             <Trigger Property="IsMouseOver" Value="True">
                                 <Setter TargetName="NavButton" Property="BorderBrush" d:Value="SlateGray" Value="{StaticResource ModulePrimaryBrush}"/>
-                                <Setter TargetName="NavButton" Property="Background" d:Value="WhiteSmoke" Value="{StaticResource ModuleSecondaryBrush}"/>
+                                <Setter TargetName="NavButton" Property="Background" d:Value="WhiteSmoke" Value="{StaticResource ModuleButtonHoverBrush}"/>
                             </Trigger>
                             <Trigger Property="IsPressed" Value="True">
-                                <Setter TargetName="NavButton" Property="Background" d:Value="White" Value="{StaticResource ModuleSecondaryBrush}"/>
+                                <Setter TargetName="NavButton" Property="Background" d:Value="White" Value="{StaticResource ModuleButtonPressedBrush}"/>
                             </Trigger>
                         </ControlTemplate.Triggers>
                     </ControlTemplate>
