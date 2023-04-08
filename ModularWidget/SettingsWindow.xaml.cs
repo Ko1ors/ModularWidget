@@ -1,5 +1,10 @@
-﻿using System.Diagnostics;
+﻿using ModularWidget.Models;
+using ModularWidget.Services;
+using System.Diagnostics;
+using System.Linq;
 using System.Windows;
+using System.Windows.Controls;
+using System.Xml.Linq;
 
 namespace ModularWidget
 {
@@ -8,13 +13,27 @@ namespace ModularWidget
     /// </summary>
     public partial class SettingsWindow : Window
     {
-        private readonly AppSettings _appSettings;
+        private static readonly string ThemeFolderPath = "./Themes";
 
-        public SettingsWindow(AppSettings settings)
+        private readonly AppSettings _appSettings;
+        private readonly IThemeService _themeService;
+        private readonly AppSettingsModel _context;
+        private ThemeConfigModel _activeTheme;
+
+        public SettingsWindow(AppSettings settings, IThemeService themeService)
         {
             InitializeComponent();
             _appSettings = settings;
-            DataContext = _appSettings.Menus;
+            _themeService = themeService;
+
+            var themes = _themeService.GetAllConfigurations(ThemeFolderPath).Select(t => new ThemeConfigModel(t)).ToList();
+            _activeTheme = themes.First(t => t.Active);
+            _context = new AppSettingsModel()
+            {
+                Menus = _appSettings.Menus,
+                Themes = themes
+            };
+            DataContext = _context;
 
             Left = SystemParameters.PrimaryScreenWidth - this.Width * 1.15;
             Top = SystemParameters.PrimaryScreenHeight * 0.1;
@@ -38,6 +57,14 @@ namespace ModularWidget
             _appSettings.Save();
             Process.Start(System.Environment.ProcessPath);
             Application.Current.Shutdown();
+        }
+
+        private void StackPanel_MouseDown(object sender, System.Windows.Input.MouseButtonEventArgs e)
+        {
+            _activeTheme.Active = false;
+            _activeTheme = ((StackPanel)sender).Tag as ThemeConfigModel;
+            _activeTheme.Active = true;
+            _themeService.LoadTheme(_activeTheme.RelativeUri);
         }
     }
 }

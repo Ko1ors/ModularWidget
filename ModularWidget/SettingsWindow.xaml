@@ -3,7 +3,12 @@
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
         xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
-        xmlns:shell="http://schemas.microsoft.com/winfx/2006/xaml/presentation" xmlns:validation="clr-namespace:ModularWidget.Validation" xmlns:datatemplateselectors="clr-namespace:ModularWidget.DataTemplateSelectors"
+        xmlns:shell="http://schemas.microsoft.com/winfx/2006/xaml/presentation" 
+        xmlns:validation="clr-namespace:ModularWidget.Validation" 
+        xmlns:datatemplateselectors="clr-namespace:ModularWidget.DataTemplateSelectors" 
+        xmlns:usercontrols="clr-namespace:ModularWidget.UserControls" 
+        xmlns:models="clr-namespace:ModularWidget.Models" 
+        d:DataContext="{d:DesignInstance Type=models:AppSettingsModel}"
         mc:Ignorable="d"
         Title="Settings" Height="400" Width="280" Top="0" ResizeMode="NoResize" WindowStartupLocation="Manual" BorderThickness="1">
     <Window.Resources>
@@ -80,74 +85,105 @@
                     </shell:LinearGradientBrush>
                 </shell:StackPanel.Background>
             </StackPanel>
-            <!--<StackPanel Grid.Row="1">
-                <Label Margin="10,0,0,0" Content="Api Key" Height="30" FontFamily="Arial Black" VerticalContentAlignment="Center" VerticalAlignment="Center"/>
-                <TextBox  x:Name="textBoxApiKey" Text="" VerticalContentAlignment="Center" FontFamily="Arial Black" Height="30" Width="250" VerticalAlignment="Center"/>
-                <Label Margin="10,0,0,0" Content="ETH Wallet" Height="30" FontFamily="Arial Black" VerticalContentAlignment="Center" VerticalAlignment="Center"/>
-                <TextBox  x:Name="textBoxEthWallet" Text="" VerticalContentAlignment="Center"  FontFamily="Arial Black" Height="30" Width="250"/>
-                <Label Margin="10,0,0,0" Content="Update Time" Height="30" FontFamily="Arial Black" VerticalContentAlignment="Center" VerticalAlignment="Center"/>
-                <TextBox  x:Name="textBoxUpdateTime" Text="" VerticalContentAlignment="Center"  FontFamily="Arial Black" Height="30" Width="250"/>
-            </StackPanel>-->
-            <ListView x:Name="listView" Grid.Row="1" Background="Transparent" ItemsSource="{Binding}" ScrollViewer.CanContentScroll="False">
-                <ListView.ItemTemplate>
-                    <DataTemplate>
-                        <StackPanel Margin="0 10 0 0" Width="Auto" MinHeight="50" HorizontalAlignment="Stretch">
+            <ScrollViewer Grid.Row="1">
+                <StackPanel>
 
-                            <TextBlock FontFamily="Arial Black" Text="{Binding Name}" HorizontalAlignment="Center"/>
-                            <Border BorderBrush="Black" BorderThickness="1" Width="200" HorizontalAlignment="Center" />
+                    <ListView x:Name="listView" Grid.Row="1" BorderThickness="0" Background="Transparent" ItemsSource="{Binding Menus}" ScrollViewer.CanContentScroll="False">
+                        <ListView.ItemTemplate>
+                            <DataTemplate>
+                                <StackPanel Margin="0 10 0 0" Width="Auto" MinHeight="50" HorizontalAlignment="Stretch">
 
-                            <ListView Grid.Row="1" Background="Transparent" ItemsSource="{Binding Parameters}">
-                                <ListView.ItemTemplate>
-                                    <DataTemplate>
-                                        <StackPanel Margin="0 10 0 0" Width="Auto" MinHeight="50" HorizontalAlignment="Stretch">
-                                            <TextBlock FontFamily="Arial Black" Text="{Binding Name}"/>
-                                            <ContentControl Content="{Binding}" ContentTemplateSelector="{StaticResource templateSelector}"/>
-                                        </StackPanel>
-                                    </DataTemplate>
-                                </ListView.ItemTemplate>
+                                    <TextBlock FontFamily="Arial Black" Text="{Binding Name}" HorizontalAlignment="Center"/>
+                                    <Border BorderBrush="Black" BorderThickness="1" Width="200" HorizontalAlignment="Center" />
 
-                                <ListView.ItemContainerStyle>
-                                    <Style TargetType="ListBoxItem">
-                                        <Setter Property="HorizontalContentAlignment" Value="Stretch"/>
-                                        <Setter Property="Template">
-                                            <Setter.Value>
-                                                <ControlTemplate TargetType="{x:Type ListBoxItem}">
-                                                    <Border x:Name="RootBorder" Padding="5">
-                                                        <ContentPresenter/>
-                                                    </Border>
-                                                </ControlTemplate>
-                                            </Setter.Value>
-                                        </Setter>
-                                    </Style>
-                                </ListView.ItemContainerStyle>
-                                <ListView.Template>
-                                    <ControlTemplate>
-                                        <ItemsPresenter></ItemsPresenter>
-                                    </ControlTemplate>
-                                </ListView.Template>
-                            </ListView>
-                            
-                            <Border Margin="0 10 0 0" BorderBrush="Black" BorderThickness="1" Width="240" HorizontalAlignment="Center" />
-                        </StackPanel>
-                    </DataTemplate>
-                </ListView.ItemTemplate>
-                
-                <ListView.ItemContainerStyle>
-                    <Style TargetType="ListBoxItem">
-                        <Setter Property="HorizontalContentAlignment" Value="Stretch"/>
-                        <Setter Property="Template">
-                            <Setter.Value>
-                                <ControlTemplate TargetType="{x:Type ListBoxItem}">
-                                    <Border x:Name="RootBorder" Padding="5">
-                                        <ContentPresenter/>
-                                    </Border>
+                                    <ListView Grid.Row="1" Background="Transparent" ItemsSource="{Binding Parameters}">
+                                        <ListView.ItemTemplate>
+                                            <DataTemplate>
+                                                <StackPanel Margin="0 10 0 0" Width="Auto" MinHeight="50" HorizontalAlignment="Stretch">
+                                                    <TextBlock FontFamily="Arial Black" Text="{Binding Name}"/>
+                                                    <ContentControl Content="{Binding}" ContentTemplateSelector="{StaticResource templateSelector}"/>
+                                                </StackPanel>
+                                            </DataTemplate>
+                                        </ListView.ItemTemplate>
+
+                                        <ListView.ItemContainerStyle>
+                                            <Style TargetType="ListBoxItem">
+                                                <Setter Property="HorizontalContentAlignment" Value="Stretch"/>
+                                                <Setter Property="Template">
+                                                    <Setter.Value>
+                                                        <ControlTemplate TargetType="{x:Type ListBoxItem}">
+                                                            <Border x:Name="RootBorder" Padding="5">
+                                                                <ContentPresenter/>
+                                                            </Border>
+                                                        </ControlTemplate>
+                                                    </Setter.Value>
+                                                </Setter>
+                                            </Style>
+                                        </ListView.ItemContainerStyle>
+                                        <ListView.Template>
+                                            <ControlTemplate>
+                                                <ItemsPresenter></ItemsPresenter>
+                                            </ControlTemplate>
+                                        </ListView.Template>
+                                    </ListView>
+
+                                    <Border Margin="0 10 0 0" BorderBrush="Black" BorderThickness="1" Width="240" HorizontalAlignment="Center" />
+                                </StackPanel>
+                            </DataTemplate>
+                        </ListView.ItemTemplate>
+
+                        <ListView.ItemContainerStyle>
+                            <Style TargetType="ListBoxItem">
+                                <Setter Property="HorizontalContentAlignment" Value="Stretch"/>
+                                <Setter Property="Template">
+                                    <Setter.Value>
+                                        <ControlTemplate TargetType="{x:Type ListBoxItem}">
+                                            <Border x:Name="RootBorder" Padding="5">
+                                                <ContentPresenter/>
+                                            </Border>
+                                        </ControlTemplate>
+                                    </Setter.Value>
+                                </Setter>
+                            </Style>
+                        </ListView.ItemContainerStyle>
+                    </ListView>
+
+                    <StackPanel  Margin="0 10 0 0">
+                        <TextBlock Margin="10 0 0 0" FontFamily="Arial Black" Text="Themes"/>
+
+                        <ListView Background="Transparent" ItemsSource="{Binding Themes}" ScrollViewer.CanContentScroll="False">
+                            <ListView.ItemTemplate>
+                                <DataTemplate>
+                                    <StackPanel Cursor="Hand" MouseDown="StackPanel_MouseDown" Tag="{Binding}">
+                                        <TextBlock FontFamily="Arial Black" Foreground="{Binding TitleColor, UpdateSourceTrigger=PropertyChanged}" Text="{Binding Name}" HorizontalAlignment="Center"/>
+                                        <usercontrols:ThemeColorsUC Height="25" Margin="5" Colors="{Binding PreviewTopColors}"/>
+                                    </StackPanel>
+                                </DataTemplate>
+                            </ListView.ItemTemplate>
+                            <ListView.ItemContainerStyle>
+                                <Style TargetType="ListBoxItem">
+                                    <Setter Property="HorizontalContentAlignment" Value="Stretch"/>
+                                    <Setter Property="Template">
+                                        <Setter.Value>
+                                            <ControlTemplate TargetType="{x:Type ListBoxItem}">
+                                                <Border x:Name="RootBorder" Padding="5">
+                                                    <ContentPresenter/>
+                                                </Border>
+                                            </ControlTemplate>
+                                        </Setter.Value>
+                                    </Setter>
+                                </Style>
+                            </ListView.ItemContainerStyle>
+                            <ListView.Template>
+                                <ControlTemplate>
+                                    <ItemsPresenter></ItemsPresenter>
                                 </ControlTemplate>
-                            </Setter.Value>
-                        </Setter>
-                    </Style>
-                </ListView.ItemContainerStyle>
-            </ListView>
+                            </ListView.Template>
+                        </ListView>
+                    </StackPanel>
 
+                </StackPanel>
+            </ScrollViewer>
             <!--<Label Grid.Row="3" x:Name="labelNextUpdate" FontFamily="Arial Black" Content="Next update in" FontSize="10" VerticalAlignment="Bottom"/>-->
             <Border Grid.Row="3" BorderBrush="Black" BorderThickness="0,1,0,0">
                 <StackPanel  Orientation="Horizontal" FlowDirection="RightToLeft">

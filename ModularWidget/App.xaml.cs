@@ -41,7 +41,14 @@ namespace ModularWidget
         protected override void InitializeModules()
         {
             Log.Logger.ForContext<App>().Information("Application started", GetType());
+            InitializeTheme();
             base.InitializeModules();
+        }
+
+        private void InitializeTheme()
+        {
+            var themeService = Container.Resolve<IThemeService>();
+            themeService.LoadDefaultThemeConfiguration();
         }
 
         private void CurrentDomain_UnhandledException(object sender, UnhandledExceptionEventArgs e)
@@ -66,6 +73,7 @@ namespace ModularWidget
             containerRegistry.RegisterSingleton<AppSettings>();
             containerRegistry.RegisterSingleton<IRegionService, RegionService>();
             containerRegistry.RegisterSingleton<IWindowService, WindowService>();
+            containerRegistry.RegisterSingleton<IThemeService, ThemeService>();
 
             containerRegistry.RegisterSingleton<ModularHttpClient>();
         }
