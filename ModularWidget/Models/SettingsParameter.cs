@@ -18,6 +18,8 @@ namespace ModularWidget.Models
 
         public string Name { get; set; }
 
+        public bool Hidden { get; set; }
+
         public virtual string DataTypeName { get; }
 
         private object _value;
@@ -48,11 +50,12 @@ namespace ModularWidget.Models
             Value = value;
         }
 
-        public SettingsParameter(string key, string name, T value)
+        public SettingsParameter(string key, string name, T value, bool hidden = false)
         {
             Key = key;
             Name = name;
             Value = value;
+            Hidden = hidden;
         }
     }
 }

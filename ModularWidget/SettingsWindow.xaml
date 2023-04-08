@@ -7,11 +7,13 @@
         xmlns:validation="clr-namespace:ModularWidget.Validation" 
         xmlns:datatemplateselectors="clr-namespace:ModularWidget.DataTemplateSelectors" 
         xmlns:usercontrols="clr-namespace:ModularWidget.UserControls" 
-        xmlns:models="clr-namespace:ModularWidget.Models" 
+        xmlns:models="clr-namespace:ModularWidget.Models" xmlns:converters="clr-namespace:ModularWidget.Converters"
         d:DataContext="{d:DesignInstance Type=models:AppSettingsModel}"
         mc:Ignorable="d"
         Title="Settings" Height="400" Width="280" Top="0" ResizeMode="NoResize" WindowStartupLocation="Manual" BorderThickness="1">
     <Window.Resources>
+        <converters:InverseBooleanToVisibilityConverter x:Key="booleanConverter" />
+        
         <DataTemplate x:Key="DefaultDataTemplate">
             <TextBox Margin="0 10 0 0" FontFamily="Arial Black" Height="30" Width="235" VerticalContentAlignment="Center" >
                 <TextBox.Resources>
@@ -99,7 +101,7 @@
                                     <ListView Grid.Row="1" Background="Transparent" ItemsSource="{Binding Parameters}">
                                         <ListView.ItemTemplate>
                                             <DataTemplate>
-                                                <StackPanel Margin="0 10 0 0" Width="Auto" MinHeight="50" HorizontalAlignment="Stretch">
+                                                <StackPanel Visibility="{Binding Hidden, Converter={StaticResource booleanConverter}}" Margin="0 10 0 0" Width="Auto" MinHeight="50" HorizontalAlignment="Stretch">
                                                     <TextBlock FontFamily="Arial Black" Text="{Binding Name}"/>
                                                     <ContentControl Content="{Binding}" ContentTemplateSelector="{StaticResource templateSelector}"/>
                                                 </StackPanel>
