@@ -18,6 +18,7 @@ namespace ModularWidget
         private readonly AppSettings _appSettings;
         private readonly IThemeService _themeService;
         private readonly AppSettingsModel _context;
+        private readonly SettingsParameter _themeParameter;
         private ThemeConfigModel _activeTheme;
 
         public SettingsWindow(AppSettings settings, IThemeService themeService)
@@ -27,6 +28,7 @@ namespace ModularWidget
             _themeService = themeService;
 
             var themes = _themeService.GetAllConfigurations(ThemeFolderPath).Select(t => new ThemeConfigModel(t)).ToList();
+            _themeParameter = _appSettings.GetMenu(Constants.Menu.MenuKey).Get(Constants.Parameters.ThemeUri);
             _activeTheme = themes.First(t => t.Active);
             _context = new AppSettingsModel()
             {
@@ -64,6 +66,7 @@ namespace ModularWidget
             _activeTheme.Active = false;
             _activeTheme = ((StackPanel)sender).Tag as ThemeConfigModel;
             _activeTheme.Active = true;
+            _themeParameter.Value = _activeTheme.RelativeUri;
             _themeService.LoadTheme(_activeTheme.RelativeUri);
         }
     }

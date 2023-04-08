@@ -83,7 +83,8 @@ namespace ModularWidget
 
             var menu = new SettingsMenu(Constants.Menu.MenuKey, "Modular Widget Settings");
             menu.Parameters.Add(new SettingsParameter<bool>(Constants.Parameters.ShowLogoOnStartup, "Show Logo On Startup", true));
-
+            menu.Parameters.Add(new SettingsParameter<string>(Constants.Parameters.ThemeUri, Constants.Parameters.ThemeUri, Constants.Themes.DefaultThemeUri, true));
+            
             if (!_appSettings.MenuExists(menu.Key))
                 _appSettings.AddOrUpdateMenu(menu);
 
@@ -95,6 +96,8 @@ namespace ModularWidget
 
             menu = _appSettings.GetMenu(Constants.Menu.MenuKey);
             model.ShowLogo = menu.Get<bool>(Constants.Parameters.ShowLogoOnStartup);
+
+            _themeService.LoadTheme(menu.Get<string>(Constants.Parameters.ThemeUri));
 
             if (model.ShowLogo)
             {

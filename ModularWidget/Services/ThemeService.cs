@@ -6,7 +6,6 @@ using System.IO;
 using System.Linq;
 using System.Windows;
 using System.Windows.Media;
-using System.Xml.Linq;
 
 namespace ModularWidget.Services
 {
@@ -92,8 +91,9 @@ namespace ModularWidget.Services
             {
                 var resources = Application.Current.Resources;
                 var themeDictionary = new ResourceDictionary() { Source = new Uri(themeUri, UriKind.Relative) };
-                Application.Current.Resources.MergedDictionaries.Clear();
-                Application.Current.Resources.MergedDictionaries.Add(themeDictionary);
+                resources.MergedDictionaries.Clear();
+                resources.MergedDictionaries.Add(themeDictionary);
+                _currentThemeName = FormatThemeName(themeUri);
             }
             catch (Exception ex)
             {
