@@ -25,6 +25,7 @@ namespace ModularWidget
         private IRegionManager _regionManager;
         private IRegionService _regionService;
         private IWindowService _windowService;
+        private IThemeService _themeService;
         private ILogger<MainWindow> _logger;
         private MainWindowModel _mainWindowModel;
 
@@ -33,20 +34,21 @@ namespace ModularWidget
         private TimeSpan? _logoTimeDuration = null;
         private DateTime? _logoShowStartTime = null;
 
-        public MainWindow(AppSettings settings, IRegionManager regionManager, IRegionService regionService, IWindowService windowService, RegionUC region, ILogger<MainWindow> logger, bool startWindow = true)
+        public MainWindow(AppSettings settings, IRegionManager regionManager, IRegionService regionService, IWindowService windowService, IThemeService themeService, RegionUC region, ILogger<MainWindow> logger, bool startWindow = true)
         {
-            Init(settings, regionManager, regionService, windowService, logger, startWindow);
+            Init(settings, regionManager, regionService, windowService, themeService, logger, startWindow);
             if (!string.IsNullOrEmpty(region.RegionName))
                 AddRegion(region);
         }
 
-        public void Init(AppSettings settings, IRegionManager regionManager, IRegionService regionService, IWindowService windowService, ILogger<MainWindow> logger, bool startWindow = true)
+        public void Init(AppSettings settings, IRegionManager regionManager, IRegionService regionService, IWindowService windowService, IThemeService themeService, ILogger<MainWindow> logger, bool startWindow = true)
         {
             InitializeComponent();
             _appSettings = settings;
             _regionManager = regionManager;
             _regionService = regionService;
             _windowService = windowService;
+            _themeService = themeService;
             _logger = logger;
 
             _windowService.AddWindow(this);
@@ -81,7 +83,8 @@ namespace ModularWidget
 
             var menu = new SettingsMenu(Constants.Menu.MenuKey, "Modular Widget Settings");
             menu.Parameters.Add(new SettingsParameter<bool>(Constants.Parameters.ShowLogoOnStartup, "Show Logo On Startup", true));
-
+            menu.Parameters.Add(new SettingsParameter<string>(Constants.Parameters.ThemeUri, Constants.Parameters.ThemeUri, Constants.Themes.DefaultThemeUri, true));
+            
             if (!_appSettings.MenuExists(menu.Key))
                 _appSettings.AddOrUpdateMenu(menu);
 
@@ -93,6 +96,8 @@ namespace ModularWidget
 
             menu = _appSettings.GetMenu(Constants.Menu.MenuKey);
             model.ShowLogo = menu.Get<bool>(Constants.Parameters.ShowLogoOnStartup);
+
+            _themeService.LoadTheme(menu.Get<string>(Constants.Parameters.ThemeUri));
 
             if (model.ShowLogo)
             {
@@ -140,7 +145,7 @@ namespace ModularWidget
                     RegionListView.Items.Remove(region);
                     if (RegionListView.Items.IsEmpty)
                         _windowService.RemoveAndCloseWindow(this);
-                    var window = new MainWindow(_appSettings, _regionManager, _regionService, _windowService, region, _logger, false)
+                    var window = new MainWindow(_appSettings, _regionManager, _regionService, _windowService, _themeService, region, _logger, false)
                     {
                         Left = w32Mouse.X,
                         Top = w32Mouse.Y
@@ -252,7 +257,7 @@ namespace ModularWidget
 
         private void SettingsButton_Click(object sender, RoutedEventArgs e)
         {
-            var settingsWindow = new SettingsWindow(_appSettings);
+            var settingsWindow = new SettingsWindow(_appSettings, _themeService);
             settingsWindow.ShowDialog();
         }
 

@@ -39,7 +39,7 @@ namespace CoinMarketCapPortfolioModule
         private void InitSettings()
         {
             var menu = new SettingsMenu(Constants.Menu.MenuKey, "CoinMarketCap Portfolio Settings");
-            menu.Parameters.Add(new SettingsParameter<string>(Constants.Parameters.AuthTokern, "Auth Token", string.Empty));
+            menu.Parameters.Add(new SettingsParameter<string>(Constants.Parameters.AuthToken, "Auth Token", string.Empty));
 
             if (!_appSettings.MenuExists(menu.Key))
                 _appSettings.AddOrUpdateMenu(menu);

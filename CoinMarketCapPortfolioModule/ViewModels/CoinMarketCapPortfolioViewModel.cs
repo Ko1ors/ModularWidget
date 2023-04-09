@@ -138,7 +138,7 @@ namespace CoinMarketCapPortfolioModule.ViewModels
             try
             {
                 // get bearer token from settings
-                var bearerToken = _settingsMenu.Get<string>(Constants.Parameters.AuthTokern);
+                var bearerToken = _settingsMenu.Get<string>(Constants.Parameters.AuthToken);
                 if (string.IsNullOrEmpty(bearerToken))
                 {
                     _logger.LogWarning("Bearer token is empty");

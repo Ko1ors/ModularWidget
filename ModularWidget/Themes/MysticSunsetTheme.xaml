@@ -1,0 +1,50 @@
+﻿<ResourceDictionary xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+                    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml">
+    <Color x:Key="WindowBorderColor">#F0EB8D</Color>
+    <SolidColorBrush x:Key="WindowBorderBrush" Color="{StaticResource WindowBorderColor}" />
+
+    <Thickness x:Key="GlassFrameThickness">1</Thickness>
+    <Thickness x:Key="WindowBorderThickness">0</Thickness>
+
+    <Color x:Key="TitleBarBackgroundColor">#413543</Color>
+    <SolidColorBrush x:Key="TitleBarBackgroundBrush" Color="{StaticResource TitleBarBackgroundColor}" />
+
+    <Color x:Key="TitleBarButtonColor">#F0EB8D</Color>
+    <SolidColorBrush x:Key="TitleBarButtonBrush" Color="{StaticResource TitleBarButtonColor}" />
+
+    <Color x:Key="TitleBarButtonBorderColor">#F0EB8D</Color>
+    <SolidColorBrush x:Key="TitleBarButtonBorderBrush" Color="{StaticResource TitleBarButtonBorderColor}" />
+
+    <Color x:Key="TitleBarBorderColor">#F0EB8D</Color>
+    <SolidColorBrush x:Key="TitleBarBorderBrush" Color="{StaticResource TitleBarBorderColor}" />
+
+    <Color x:Key="BodyTopGradientStartColor">#413543</Color>
+    <Color x:Key="BodyTopGradientEndColor">#2D2727</Color>
+    <Color x:Key="BodyGradientStartColor">#2D2727</Color>
+    <Color x:Key="BodyGradientEndColor">#2D2727</Color>
+
+    <Color x:Key="TextHeaderColor">#454A74</Color>
+    <SolidColorBrush x:Key="TextHeaderBrush" Color="{StaticResource TextHeaderColor}" />
+
+    <Color x:Key="TextColor">#454A74</Color>
+    <SolidColorBrush x:Key="TextBrush" Color="{StaticResource TextColor}" />
+
+    <Color x:Key="ModuleHeaderColor">#8F43EE</Color>
+    <SolidColorBrush x:Key="ModuleHeaderBrush" Color="{StaticResource ModuleHeaderColor}" />
+
+    <Color x:Key="ModulePrimaryColor">#8F43EE</Color>
+    <SolidColorBrush x:Key="ModulePrimaryBrush" Color="{StaticResource ModulePrimaryColor}" />
+
+    <Color x:Key="ModuleButtonHoverColor">#A484C8</Color>
+    <SolidColorBrush x:Key="ModuleButtonHoverBrush" Color="{StaticResource ModuleButtonHoverColor}" />
+
+    <Color x:Key="ModuleButtonPressedColor">#8F43EE</Color>
+    <SolidColorBrush x:Key="ModuleButtonPressedBrush" Color="{StaticResource ModuleButtonPressedColor}" />
+
+    <Color x:Key="ModuleTextColor">#A484C8</Color>
+    <SolidColorBrush x:Key="ModuleTextBrush" Color="{StaticResource ModuleTextColor}" />
+
+    <Color x:Key="ModuleBorderColor">#F0EB8D</Color>
+    <SolidColorBrush x:Key="ModuleBorderBrush" Color="{StaticResource ModuleBorderColor}" />
+
+</ResourceDictionary>

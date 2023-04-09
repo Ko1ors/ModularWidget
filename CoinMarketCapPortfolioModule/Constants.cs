@@ -9,7 +9,7 @@
 
         public class Parameters
         {
-            public const string AuthTokern = "authTokern";
+            public const string AuthToken = "authToken";
         }
     }
 }

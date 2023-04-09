@@ -8,27 +8,27 @@
              d:DataContext="{d:DesignInstance viewModels:GasTrackerViewModel}"
              mc:Ignorable="d" 
              Height="90" d:DesignWidth="280" Margin="0,0,0,15">
-    <Border BorderThickness="1,1,1,1" BorderBrush="Black" CornerRadius="10" >
+    <Border BorderThickness="1,1,1,1" d:BorderBrush="Black" BorderBrush="{DynamicResource ModuleBorderBrush}" CornerRadius="10" >
         <StackPanel  Orientation="Horizontal">
             <svgc1:SvgViewbox Margin="15,10,0,0" Width="40" Source="pack://application:,,,/Images/gas-icon.svg" />
             <StackPanel>
-                <Label Content="GAS TRACKER" Foreground="#FF8E8A8F" Margin="0,5,0,0"  FontSize="12" FontFamily="Arial Black"/>
+                <Label Content="GAS TRACKER" d:Foreground="#FF8E8A8F" Foreground="{DynamicResource ModuleHeaderBrush}" Margin="0,5,0,0"  FontSize="12" FontFamily="Arial Black"/>
                 <StackPanel Orientation="Horizontal">
-                    <Border Margin="10,0,0,0" BorderThickness="1,1,1,1" BorderBrush="Black" CornerRadius="15">
+                    <Border Margin="10,0,0,0" BorderThickness="1,1,1,1" d:BorderBrush="Black" BorderBrush="{DynamicResource ModuleBorderBrush}" CornerRadius="15">
                         <StackPanel>
-                            <Label Content="Low" FontSize="10" FontFamily="Arial Black" HorizontalContentAlignment="Center"/>
+                            <Label Content="Low" Foreground="{DynamicResource ModuleTextBrush}" FontSize="10" FontFamily="Arial Black" HorizontalContentAlignment="Center"/>
                             <Label Content="{Binding LowGasPrice}" d:Content="ーー gwei" FontSize="10" FontFamily="Arial Black" HorizontalContentAlignment="Center" BorderBrush="Black"  BorderThickness="0,1,0,0" Foreground="#FF39CFC1"/>
                         </StackPanel>
                     </Border>
-                    <Border Margin="8,0,0,0" BorderThickness="1,1,1,1" BorderBrush="Black" CornerRadius="15">
+                    <Border Margin="8,0,0,0" BorderThickness="1,1,1,1" d:BorderBrush="Black" BorderBrush="{DynamicResource ModuleBorderBrush}" CornerRadius="15">
                         <StackPanel>
-                            <Label Content="Average" FontSize="10" FontFamily="Arial Black" HorizontalContentAlignment="Center"/>
+                            <Label Content="Average" Foreground="{DynamicResource ModuleTextBrush}" FontSize="10" FontFamily="Arial Black" HorizontalContentAlignment="Center"/>
                             <Label Content="{Binding AverageGasPrice}" d:Content="ーー gwei" FontSize="10" FontFamily="Arial Black" HorizontalContentAlignment="Center" BorderBrush="Black"  BorderThickness="0,1,0,0" Foreground="#3498DB"/>
                         </StackPanel>
                     </Border>
-                    <Border Margin="8,0,0,0" BorderThickness="1,1,1,1" BorderBrush="Black" CornerRadius="15">
+                    <Border Margin="8,0,0,0" BorderThickness="1,1,1,1" d:BorderBrush="Black" BorderBrush="{DynamicResource ModuleBorderBrush}" CornerRadius="15">
                         <StackPanel>
-                            <Label Content="High" FontSize="10" FontFamily="Arial Black" HorizontalContentAlignment="Center"/>
+                            <Label Content="High" Foreground="{DynamicResource ModuleTextBrush}" FontSize="10" FontFamily="Arial Black" HorizontalContentAlignment="Center"/>
                             <Label Content="{Binding HighGasPrice}" d:Content="ーー gwei" FontSize="10" FontFamily="Arial Black" HorizontalContentAlignment="Center" BorderBrush="Black"  BorderThickness="0,1,0,0" Foreground="#A52A2A"/>
                         </StackPanel>
                     </Border>
