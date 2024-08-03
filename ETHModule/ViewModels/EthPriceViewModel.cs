@@ -25,7 +25,7 @@ namespace ETHModule.ViewModels
                 if (EthPrice is null)
                     return "$ーー ❙ ーー BTC";
 
-                return $"${EthPrice.Result.Ethusd} ❙ {EthPrice.Result.Ethbtc} BTC";
+                return $"${EthPrice.Result.EthUsdRounded} ❙ {EthPrice.Result.EtcBtcRounded} BTC";
             }
         }
 
