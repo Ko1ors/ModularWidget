@@ -74,7 +74,7 @@
       <Version>13.0.3</Version>
     </PackageReference>
     <PackageReference Include="Prism.Unity">
-      <Version>8.1.97</Version>
+      <Version>9.0.537</Version>
     </PackageReference>
     <PackageReference Include="Serilog" Version="4.0.1" />
     <PackageReference Include="Serilog.Extensions.Logging" Version="8.0.0" />
