@@ -76,7 +76,7 @@
     <PackageReference Include="Prism.Unity">
       <Version>8.1.97</Version>
     </PackageReference>
-    <PackageReference Include="Serilog" Version="4.0.1" />
+    <PackageReference Include="Serilog" Version="4.0.2" />
     <PackageReference Include="Serilog.Extensions.Logging" Version="8.0.0" />
     <PackageReference Include="Serilog.Sinks.File" Version="6.0.0" />
     <PackageReference Include="SharpVectors.Reloaded">
